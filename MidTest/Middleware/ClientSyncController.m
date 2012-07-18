@@ -75,7 +75,7 @@
 //    buffer=[documentsDirectory dataUsingEncoding:NSUTF8StringEncoding];
 //    [outFile writeData:buffer];  
     
-    
+    ;
     buffer=[inFile readDataOfLength:1000];
     [buffer subdataWithRange:NSMakeRange(0, 1)];
     [outFile writeData:buffer];  
