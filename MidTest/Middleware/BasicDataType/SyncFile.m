@@ -7,6 +7,7 @@
 //
 
 #import "SyncFile.h"
+#import "Toolkit.h"
 
 @implementation SyncFile
 
@@ -29,11 +30,15 @@
     
     if (![fileManager fileExistsAtPath:targetPath]) {
         //NSLog(@"创建文件夹%@", targetPath);
-        [fileManager createDirectoryAtPath:targetPath withIntermediateDirectories:YES attributes:nil error:nil];
+        if([fileManager createDirectoryAtPath:targetPath withIntermediateDirectories:YES attributes:nil error:nil])
+        {
+            [Toolkit MidLog:[NSString stringWithFormat:@"创建文件夹%@", targetPath] LogType:info];
+        }
         [fileManager changeCurrentDirectoryPath:targetPath];
     }
     if (![fileManager createFileAtPath:fileName contents:nil attributes:nil]) {
-        NSLog(@"文件创建失败!\n path = %@\n name = %@", filePath, fileName);
+        [Toolkit MidLog:[NSString stringWithFormat:@"文件创建失败!\n path = %@\n name = %@", filePath, fileName] LogType:error];
+        //NSLog(@"文件创建失败!\n path = %@\n name = %@", filePath, fileName);
     }
     return stream;
 }
@@ -66,6 +71,7 @@
     NSString *targetPath = [documentsDirectory stringByAppendingFormat:@"/Middleware%@", filePath];
     [fileManager changeCurrentDirectoryPath:targetPath];
     if ([fileManager removeItemAtPath:fileName error:nil]) {
+        [Toolkit MidLog:[NSString stringWithFormat:@"删除文件%@%@", targetPath, fileName] LogType:info];
         return YES;
     }
     return NO;

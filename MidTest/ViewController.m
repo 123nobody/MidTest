@@ -20,11 +20,14 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    NSLog(@"程序启动！");
+    NSLog(@"应用程序启动！");
     
     ClientSyncController *csc = [[ClientSyncController alloc]init];
     csc.delegate = self;
+    NSLog(@"调用打包方法，将要同步的数据打包。");
+    NSLog(@"调用方法，将要同步的数据打包。");
     [csc addTask:@"这里是数据包！"];
+    NSLog(@"调用中间件同步方法");
     [csc synchronize];
     
     

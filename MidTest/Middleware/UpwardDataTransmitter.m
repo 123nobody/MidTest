@@ -7,6 +7,7 @@
 //
 
 #import "UpwardDataTransmitter.h"
+#import "Toolkit.h"
 #import "ClientSyncController.h"
 #import "SyncTaskDescription.h"
 #import "SyncTaskDescriptionList.h"
@@ -33,7 +34,7 @@
     
 //    NSLog(@"count:%d", [syncTaskList count]);
     if ([syncTaskList count] <= 0) {
-        NSLog(@"任务队列为空！");
+        [Toolkit MidLog:@"任务队列为空！" LogType:debug];
         return NO;
     }
     for (int i = 0; i < [syncTaskList count]; i++) {
@@ -41,7 +42,7 @@
         
         //设置任务状态为待传输态
         taskDescription.taskState = Totransmit;
-        NSLog(@"已修改任务状态为待传输态...%i", taskDescription.taskState);
+        [Toolkit MidLog:[NSString stringWithFormat:@"已修改任务状态为待传输态...%i", taskDescription.taskState] LogType:debug];
         
         NSString *taskId = taskDescription.taskId;
         NSString *taskName = taskDescription.taskName;
@@ -49,16 +50,16 @@
         
         //设置任务状态为传输态
         taskDescription.taskState = Transmitting;
-        NSLog(@"已修改任务状态为传输态...%i", taskDescription.taskState);
+        [Toolkit MidLog:[NSString stringWithFormat:@"已修改任务状态为传输态...%i", taskDescription.taskState] LogType:debug];
         //上传
         [_delegate uploadBegin];
-        NSLog(@"上传第%d个任务 - id:%@ name:%@ state:%d", (i + 1), taskId, taskName, taskDescription.taskState);
+        [Toolkit MidLog:[NSString stringWithFormat:@"上传第%d个任务 - id:%@ name:%@ state:%d", (i + 1), taskId, taskName, taskDescription.taskState] LogType:debug];
         [_delegate uploadFinish];
         
         //如果上传结束且成功，修改对应的任务状态为已完成。
         if (YES) {
             taskDescription.taskState = Completion;
-            NSLog(@"已修改任务状态为完成态...%i", taskDescription.taskState);
+            [Toolkit MidLog:[NSString stringWithFormat:@"已修改任务状态为完成态...%i", taskDescription.taskState] LogType:debug];
         }
     }
     

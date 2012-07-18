@@ -7,6 +7,7 @@
 //
 
 #import "TaskManager.h"
+#import "Toolkit.h"
 #import "SyncTaskDescription.h"
 #import "SyncTaskDescriptionList.h"
 #import "SyncTaskState.h"
@@ -38,7 +39,7 @@
 
 - (BOOL) addTask:(NSString *) msg
 {
-    NSLog(@"生成上行任务文件,数据包为：%@", msg);
+    [Toolkit MidLog:[NSString stringWithFormat:@"生成上行任务文件,数据包为：%@", msg] LogType:info];
     
     return YES;
 }
