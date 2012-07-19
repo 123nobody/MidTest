@@ -36,22 +36,22 @@
 #pragma mark - 控制器委托
 -(void)uploadBegin
 {
-    NSLog(@"这里是应用程序控制的uploadBegin");
+    //NSLog(@"这里是应用程序控制的uploadBegin");
 }
 
 -(void)uploadFinish
 {
-    NSLog(@"这里是应用程序控制的uploadFinish");
+    //NSLog(@"这里是应用程序控制的uploadFinish");
 }
 
 -(void)downloadBegin
 {
-    NSLog(@"这里是应用程序控制的downloadBegin");
+    //NSLog(@"这里是应用程序控制的downloadBegin");
 }
 
 -(void)downloadFinish
 {
-    NSLog(@"这里是应用程序控制的downloadFinish");
+    //NSLog(@"这里是应用程序控制的downloadFinish");
 }
 
 - (BOOL)doUpdateOfTask:(SyncTaskDescription *)taskDescription WithDataPackage:(NSString *)dataPackage

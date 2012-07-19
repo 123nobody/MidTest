@@ -30,9 +30,12 @@
 
 - (BOOL) upload: (NSString *)msg
 {
+    //设置上行传输线程开始
+    _csc.upwardThreadStoped = NO;
+    
+    //从控制器获取同步任务列表
     SyncTaskDescriptionList *syncTaskList = [_csc getSyncTaskList];
     
-//    NSLog(@"count:%d", [syncTaskList count]);
     if ([syncTaskList count] <= 0) {
         [Toolkit MidLog:@"任务队列为空！" LogType:debug];
         return NO;
@@ -63,6 +66,9 @@
         }
     }
     
+    [Toolkit MidLog:@"上行数据传输线程结束!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" LogType:debug];
+    //设置上行传输线程结束
+    _csc.upwardThreadStoped = YES;
     return YES;
 }
 

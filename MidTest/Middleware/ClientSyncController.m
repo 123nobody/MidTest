@@ -13,6 +13,10 @@
 
 @implementation ClientSyncController
 
+@synthesize upwardThreadStoped = _upwardThreadStoped;
+@synthesize downwardThreadStoped = _downwardThreadStoped;
+@synthesize updateThreadStoped = _updateThreadStoped;
+
 @synthesize delegate = _delegate;
 
 #pragma mark 初始化
@@ -23,10 +27,14 @@
         _taskManager = [[TaskManager alloc]init];
         _stateController = [[StateController alloc]initWithController:self];
         _upwardDataTransmitter = [[UpwardDataTransmitter alloc]initWithController:self];
-        _downwardDataTransmitter = [[DownwardDataTransmitter alloc]init];
+        _downwardDataTransmitter = [[DownwardDataTransmitter alloc]initWithController:self];
         
         _upwardDataTransmitter.delegage = self;
         _downwardDataTransmitter.delegate = self;
+        
+        _upwardThreadStoped = YES;
+        _downwardThreadStoped = YES;
+        _updateThreadStoped = YES;
     }
     return self;
 }
@@ -41,29 +49,60 @@
 #pragma mark - 同步
 - (BOOL) synchronize
 {
-    [Toolkit MidLog:@"同步开始..." LogType:info];    
+    [Toolkit MidLog:@"同步开始..." LogType:info];
     
     [Toolkit MidLog:@"调用用户认证方法，得到用户认证字符串..." LogType:info];
     
     /************多线程********必要时注意加锁*********/
     _upwardThread = [[NSThread alloc]initWithTarget:self selector:@selector(doUpload) object:nil];
     [_upwardThread setName:@"上行数据传输器线程"];
-    [_upwardThread start];
     [Toolkit MidLog:@"上行数据传输器线程start" LogType:info];
+    [_upwardThread start];
     
     _downwardThread = [[NSThread alloc]initWithTarget:self selector:@selector(doDownload) object:nil];
     [_downwardThread setName:@"下行数据传输器线程"];
-    [_downwardThread start];
     [Toolkit MidLog:@"下行数据传输器线程start" LogType:info];
+    [_downwardThread start];
+    _downwardThreadStoped = NO;
     
-    _dataUpdaterThread = [[NSThread alloc]initWithTarget:self selector:@selector(doUpload) object:nil];
+    _dataUpdaterThread = [[NSThread alloc]initWithTarget:self selector:@selector(doUpdate) object:nil];
     [_dataUpdaterThread setName:@"数据更新调度器线程"];
-    [_dataUpdaterThread start];
     [Toolkit MidLog:@"数据更新调度器线程start" LogType:info];
+    [_dataUpdaterThread start];
     
     /************多线程*****************/
+    //BOOL loopFlag = YES;
+    while (YES) {
+        if (_upwardThreadStoped && _downwardThreadStoped && _updateThreadStoped) {
+            //loopFlag = NO;
+            break;
+        }
+    }
+    [Toolkit MidLog:@"同步结束。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。" LogType:debug];
+    
     
     return YES;
+}
+
+- (void) upload
+{
+    [Toolkit MidLog:@"上行开始..." LogType:info];
+    [self check];
+    
+    [Toolkit MidLog:@"上行结束..." LogType:info];
+}
+
+- (void) download
+{
+    [Toolkit MidLog:@"下行开始..." LogType:info];
+    [self check];
+    
+    [Toolkit MidLog:@"下行结束..." LogType:info];
+}
+//同步开始时的验证
+- (void) check
+{
+    
 }
 
 #pragma mark - 获取任务状态
@@ -86,10 +125,14 @@
 #pragma mark - 多线程方法
 - (void) doUpdate
 {
+    _updateThreadStoped = NO;
     for (int i = 0; i < 10; i++) {
         NSLog(@"doUpdate线程:%d", i);
-        pause();
+        //NSLog(@"--------------------------------------------------------------------");
+        //pause();
     }
+    [Toolkit MidLog:@"更新线程结束!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" LogType:debug];
+    _updateThreadStoped = YES;
 }
 
 - (void) doUpload
@@ -126,7 +169,7 @@
 
 - (void)downloadFinish
 {
-    [_dataUpdaterThread start];
+    //[_dataUpdaterThread start];
     [Toolkit MidLog:@"结束了一个下行任务" LogType:info];
     [_delegate downloadFinish];
 }

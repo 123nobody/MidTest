@@ -34,6 +34,13 @@
     DownwardDataTransmitter *_downwardDataTransmitter;
     StateController *_stateController;
     
+    //上行传输线程标记
+    BOOL _upwardThreadStoped;
+    //下行传输线程标记
+    BOOL _downwardThreadStoped;
+    //更新线程标记
+    BOOL _updateThreadStoped;
+    
     //多线程
     NSThread *_dataUpdaterThread;
     NSThread *_upwardThread;
@@ -41,10 +48,18 @@
     NSThread *_stateThread;
 }
 
+@property (assign, nonatomic) BOOL upwardThreadStoped;
+@property (assign, nonatomic) BOOL downwardThreadStoped;
+@property (assign, nonatomic) BOOL updateThreadStoped;
 @property (strong, nonatomic) id<ClientSyncControllerDelegate> delegate;
 
 - (BOOL) addTask: (NSString *)msg;
 - (BOOL) synchronize;
+
+- (void) upload;
+- (void) download;
+- (void) check;
+
 - (SyncTaskDescriptionList *) getSyncTaskList;
 - (void) setStateOfTask: (NSString *)taskId taskState: (TaskState)taskState;
 

@@ -25,7 +25,7 @@
 
 @property (strong, nonatomic) id<DownwardDataTransmitterDelegate> delegate;
 
-@property ClientSyncController *csc;
+//@property ClientSyncController *csc;
 
 - (id)initWithController: (ClientSyncController *)csc;
 - (BOOL) download;

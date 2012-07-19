@@ -21,7 +21,7 @@
             break;
             
         case info:
-            NSLog(@" [INFO] %@", logInfo);
+            //NSLog(@" [INFO] %@", logInfo);
             break;
             
         case error:
