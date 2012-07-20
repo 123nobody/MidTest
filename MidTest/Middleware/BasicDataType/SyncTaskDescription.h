@@ -9,6 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "SyncTaskState.h"
 
+typedef enum {
+    Draft,          //草稿态
+    Totransmit,     //待传输态
+    Transmitting,   //传输态
+    Pending,        //待处理态
+    Completion,     //完成态
+    Termination     //终止态
+}TaskState;
+
 @interface SyncTaskDescription : NSObject
 {
     NSString    *_taskId;           //任务标识

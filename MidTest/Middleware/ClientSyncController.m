@@ -53,17 +53,17 @@
     
     [Toolkit MidLog:@"调用用户认证方法，得到用户认证字符串..." LogType:info];
     
-    /************多线程********必要时注意加锁*********/
-    _upwardThread = [[NSThread alloc]initWithTarget:self selector:@selector(doUpload) object:nil];
-    [_upwardThread setName:@"上行数据传输器线程"];
-    [Toolkit MidLog:@"上行数据传输器线程start" LogType:info];
-    [_upwardThread start];
-    
-    _downwardThread = [[NSThread alloc]initWithTarget:self selector:@selector(doDownload) object:nil];
-    [_downwardThread setName:@"下行数据传输器线程"];
-    [Toolkit MidLog:@"下行数据传输器线程start" LogType:info];
-    [_downwardThread start];
-    _downwardThreadStoped = NO;
+//    /************多线程********必要时注意加锁*********/
+//    _upwardThread = [[NSThread alloc]initWithTarget:self selector:@selector(doUpload) object:nil];
+//    [_upwardThread setName:@"上行数据传输器线程"];
+//    [Toolkit MidLog:@"上行数据传输器线程start" LogType:info];
+//    [_upwardThread start];
+//    
+//    _downwardThread = [[NSThread alloc]initWithTarget:self selector:@selector(doDownload) object:nil];
+//    [_downwardThread setName:@"下行数据传输器线程"];
+//    [Toolkit MidLog:@"下行数据传输器线程start" LogType:info];
+//    [_downwardThread start];
+    //_downwardThreadStoped = NO;
     
     _dataUpdaterThread = [[NSThread alloc]initWithTarget:self selector:@selector(doUpdate) object:nil];
     [_dataUpdaterThread setName:@"数据更新调度器线程"];
@@ -84,20 +84,30 @@
     return YES;
 }
 
-- (void) upload
+- (void) startUpwardTransmitThread
 {
-    [Toolkit MidLog:@"上行开始..." LogType:info];
-    [self check];
+    [Toolkit MidLog:@"上行开始..." LogType:debug];
     
-    [Toolkit MidLog:@"上行结束..." LogType:info];
+    _upwardThread = [[NSThread alloc]initWithTarget:self selector:@selector(doUpload) object:nil];
+    [_upwardThread setName:@"上行数据传输器线程"];
+    [Toolkit MidLog:@"上行数据传输器线程start" LogType:info];
+    [_upwardThread start];
+    
+    [_delegate upwardTransminThreadStoped];
+    //[Toolkit MidLog:@"上行结束..." LogType:debug];
 }
 
-- (void) download
+- (void) startDownwardTransmitThread
 {
-    [Toolkit MidLog:@"下行开始..." LogType:info];
-    [self check];
+    [Toolkit MidLog:@"下行开始..." LogType:debug];
     
-    [Toolkit MidLog:@"下行结束..." LogType:info];
+    _downwardThread = [[NSThread alloc]initWithTarget:self selector:@selector(doDownload) object:nil];
+    [_downwardThread setName:@"下行数据传输器线程"];
+    [Toolkit MidLog:@"下行数据传输器线程start" LogType:info];
+    [_downwardThread start];
+    
+    [_delegate downwardTransminThreadStoped];
+    //[Toolkit MidLog:@"下行结束..." LogType:debug];
 }
 //同步开始时的验证
 - (void) check

@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SyncTaskState.h"
+//#import "SyncTaskState.h"
+#import "SyncTaskDescription.h"
 @class ClientSyncController;
 
 @interface StateController : NSObject

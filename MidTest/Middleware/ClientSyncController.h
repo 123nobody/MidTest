@@ -23,6 +23,9 @@
 - (void) downloadFinish;
 - (BOOL) doUpdateOfTask: (SyncTaskDescription *)taskDescription WithDataPackage: (NSString *) dataPackage;
 
+- (void) upwardTransminThreadStoped;
+- (void) downwardTransminThreadStoped;
+
 @end
 
 @interface ClientSyncController : NSObject <UpwardDataTransmitterDelegate, DownwardDataTransmitterDelegate>
@@ -56,8 +59,8 @@
 - (BOOL) addTask: (NSString *)msg;
 - (BOOL) synchronize;
 
-- (void) upload;
-- (void) download;
+- (void) startUpwardTransmitThread;
+- (void) startDownwardTransmitThread;
 - (void) check;
 
 - (SyncTaskDescriptionList *) getSyncTaskList;
