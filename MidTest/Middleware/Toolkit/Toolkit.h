@@ -10,8 +10,11 @@
 #import "Config.h"
 
 @interface Toolkit : NSObject
-
+//Log
 + (void) MidLog: (NSString *)logInfo LogType: (LogType)logType;
+//获取系统时间戳
++ (NSString *) getTimestampString;
+
 
 + (NSData *)trimData: (NSData *)data;
 

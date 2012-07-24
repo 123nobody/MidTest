@@ -41,11 +41,18 @@
 }
 
 #pragma mark 添加任务
-- (BOOL) addTask: (NSString *)msg
+
+- (BOOL) addTaskWithFilePath: (NSString *)filePath
 {
-    [Toolkit MidLog:@"ClientSyncController.addTask:调用taskmanager.addTask..." LogType:info];
-    return [_taskManager addTask:msg];
+    [Toolkit MidLog:@"[同步控制器]:添加任务" LogType:info];
+    [_taskManager addTaskWithDataFilePath:filePath];
+    return YES;
 }
+//- (BOOL) addTask: (NSString *)msg
+//{
+//    [Toolkit MidLog:@"ClientSyncController.addTask:调用taskmanager.addTask..." LogType:info];
+//    return [_taskManager addTask:msg];
+//}
 
 
 //测试方法

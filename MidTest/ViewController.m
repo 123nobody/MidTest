@@ -61,13 +61,17 @@
     */
     
     ClientSyncController *csc = [[ClientSyncController alloc]init];
-    [csc test];
+    csc.delegate = self;
+    
+    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage.txt"];
+    //[csc startUpwardTransmitThread];
+    
+    
     return;
     
-    csc.delegate = self;
     NSLog(@"调用打包方法，将要同步的数据打包。");
     NSLog(@"调用方法，将要同步的数据打包。");
-    [csc addTask:@"这里是数据包！"];
+    //[csc addTask:@"这里是数据包！"];
 //    NSLog(@"调用中间件同步方法");
 //    [csc synchronize];
     

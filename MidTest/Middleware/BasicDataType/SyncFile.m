@@ -36,7 +36,7 @@
  */
 + (SyncStream *) createFileAtPath: (NSString *)filePath WithName: (NSString *)fileName
 {
-    SyncStream *stream;
+    SyncStream *stream = [[SyncStream alloc]init];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -44,16 +44,21 @@
     NSString *targetPath = [documentsDirectory stringByAppendingFormat:@"/Middleware%@", filePath];
     [fileManager changeCurrentDirectoryPath:targetPath];
     
+    if ([fileManager fileExistsAtPath:fileName]) {
+        [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]文件已存在:%@", fileName] LogType:debug];
+        return nil;
+    }
+    
     if (![fileManager fileExistsAtPath:targetPath]) {
         //NSLog(@"创建文件夹%@", targetPath);
         if([fileManager createDirectoryAtPath:targetPath withIntermediateDirectories:YES attributes:nil error:nil])
         {
-            [Toolkit MidLog:[NSString stringWithFormat:@"创建文件夹%@", targetPath] LogType:info];
+            [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]创建文件夹%@", targetPath] LogType:info];
         }
         [fileManager changeCurrentDirectoryPath:targetPath];
     }
     if (![fileManager createFileAtPath:fileName contents:nil attributes:nil]) {
-        [Toolkit MidLog:[NSString stringWithFormat:@"文件创建失败!\n path = %@\n name = %@", filePath, fileName] LogType:error];
+        [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]文件创建失败!\n path = %@\n name = %@", filePath, fileName] LogType:error];
         //NSLog(@"文件创建失败!\n path = %@\n name = %@", filePath, fileName);
     }
     return stream;

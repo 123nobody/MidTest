@@ -11,6 +11,17 @@
 
 @implementation Toolkit
 
+
+//获取系统时间戳
++ (NSString *) getTimestampString
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyyMMddHHmmssSSS"];
+    NSString *timestampString = [dateFormatter stringFromDate:[NSDate date]];
+    
+    return timestampString;
+}
+
 + (void) MidLog: (NSString *)logInfo LogType: (LogType)logType;
 {
     if (!MidLogSwitch)
@@ -21,7 +32,7 @@
             break;
             
         case info:
-            //NSLog(@" [INFO] %@", logInfo);
+            NSLog(@" [INFO] %@", logInfo);
             break;
             
         case error:

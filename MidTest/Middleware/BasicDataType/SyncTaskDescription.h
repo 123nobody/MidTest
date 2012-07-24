@@ -10,12 +10,12 @@
 #import "SyncTaskState.h"
 
 typedef enum {
-    Draft,          //草稿态
-    Totransmit,     //待传输态
-    Transmitting,   //传输态
-    Pending,        //待处理态
-    Completion,     //完成态
-    Termination     //终止态
+    Draft = 0,          //草稿态
+    Totransmit = 1,     //待传输态
+    Transmitting = 2,   //传输态
+    Pending = 3,        //待处理态
+    Completion = 4,     //完成态
+    Termination = 5     //终止态
 }TaskState;
 
 @interface SyncTaskDescription : NSObject
@@ -32,6 +32,9 @@ typedef enum {
     NSInteger   *_transferSize;     //已传输尺寸
     NSDate      *_receiveTime;      //接收时间
     TaskState   _taskState;         //任务状态
+    
+    
+    NSArray *_syncFileList;    //需要同步的文件列表
 }
 
 @property (strong ,nonatomic, readonly) NSString  *taskId;
@@ -48,6 +51,11 @@ typedef enum {
 @property (assign, nonatomic) TaskState taskState;
 
 
+@property (strong, nonatomic) NSArray *syncFileList;
+
+
 - (id)initWithTaskId: (NSString *)taskId taskName:(NSString *)taskName;
+
+- (NSDictionary *) getDictionary;
 
 @end

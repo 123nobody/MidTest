@@ -16,6 +16,6 @@
 
 @property (strong, nonatomic) SyncTaskDescriptionList *syncTaskList;
 
-- (BOOL) addTask:(NSString *) msg;
+- (BOOL) addTaskWithDataFilePath: (NSString *)dataFilePath;
 
 @end

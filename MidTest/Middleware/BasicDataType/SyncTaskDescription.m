@@ -25,19 +25,27 @@
 @synthesize taskState       = _taskState;       //任务状态
 
 
+@synthesize syncFileList = _syncFileList;
+
+
 - (id)initWithTaskId: (NSString *)taskId taskName:(NSString *)taskName
 {
     self = [super init];
     if (self) {
         _taskId = taskId;
         _taskName = taskName;
-        //_createTime = 
         _taskState = Draft;
-//        _taskId = @"1";
-//        _taskName = @"TestTask";
-        //_taskState = SyncTaskState.dr
     }
     return self;
+}
+
+- (NSDictionary *) getDictionary
+{
+    NSArray *key = [[NSArray alloc]initWithObjects:@"taskId", @"taskName", @"taskState", @"syncFileList", nil];
+    NSArray *descriptionArray = [[NSArray alloc]initWithObjects:_taskId, _taskName, [NSNumber numberWithInt:_taskState], _syncFileList, nil];
+    NSDictionary *dic = [[NSDictionary alloc]initWithObjects:descriptionArray forKeys:key];
+    
+    return dic;
 }
 
 @end

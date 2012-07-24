@@ -56,7 +56,13 @@
 @property (assign, nonatomic) BOOL updateThreadStoped;
 @property (strong, nonatomic) id<ClientSyncControllerDelegate> delegate;
 
-- (BOOL) addTask: (NSString *)msg;
+/*!
+ @method
+ @abstract 添加一个任务
+ @param filePath 数据文件的路径，包括文件名。 
+ @result 是否添加成功, 成功返回YES，失败返回NO。
+ */
+- (BOOL) addTaskWithFilePath: (NSString *)filePath;
 - (BOOL) synchronize;
 
 - (void) startUpwardTransmitThread;
