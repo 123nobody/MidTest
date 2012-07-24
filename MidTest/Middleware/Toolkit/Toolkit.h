@@ -13,4 +13,6 @@
 
 + (void) MidLog: (NSString *)logInfo LogType: (LogType)logType;
 
++ (NSData *)trimData: (NSData *)data;
+
 @end

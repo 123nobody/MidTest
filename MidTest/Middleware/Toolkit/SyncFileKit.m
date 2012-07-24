@@ -14,11 +14,13 @@
 {
     self = [super init];
     if (self) {
-        _fileName = fileName;
-        _filePath = filePath;
         _fileManager = [NSFileManager defaultManager];
         [_fileManager changeCurrentDirectoryPath:filePath];
-        [_fileManager createFileAtPath:fileName contents:nil attributes:nil];
+        _fileName = fileName;
+        _filePath = [[_fileManager currentDirectoryPath] stringByAppendingFormat:@"/%@", _fileName];
+        if (![_fileManager fileExistsAtPath:_filePath]) {
+            [_fileManager createFileAtPath:fileName contents:nil attributes:nil];
+        }
     }
     return self;
 }
@@ -33,7 +35,10 @@
         NSString *documentsDirectory = [path objectAtIndex:0];
         documentsDirectory = [documentsDirectory stringByAppendingString:@"/Middleware/"];
         [_fileManager changeCurrentDirectoryPath:documentsDirectory];
-        [_fileManager createFileAtPath:fileName contents:nil attributes:nil];
+        _filePath = [[_fileManager currentDirectoryPath] stringByAppendingFormat:@"/%@", _fileName];
+        if (![_fileManager fileExistsAtPath:_filePath]) {
+            [_fileManager createFileAtPath:fileName contents:nil attributes:nil];
+        }
     }
     return self;
 }
@@ -49,7 +54,8 @@
     //获取文件大小，以便从文件尾部最佳内容
     NSInteger fileSize = [[[_fileManager attributesOfItemAtPath:filePath error:nil] objectForKey:NSFileSize] intValue];
     //设置文件偏移量
-    [file truncateFileAtOffset:fileSize];
+    [file seekToFileOffset:fileSize];
+    //[file truncateFileAtOffset:fileSize];
     //写入数据
     [file writeData:data];
     //关闭文件句柄
@@ -69,7 +75,8 @@
     //获取文件大小，以便从文件尾部最佳内容
     NSInteger fileSize = [[[_fileManager attributesOfItemAtPath:filePath error:nil] objectForKey:NSFileSize] intValue];
     //设置文件偏移量
-    [file truncateFileAtOffset:fileSize];
+    [file seekToFileOffset:fileSize];
+    //[file truncateFileAtOffset:fileSize];
     //写入数据
     [file writeData:data];
     //关闭文件句柄
@@ -77,5 +84,21 @@
     return YES;
 }
 
+//- (NSData *) readFile
+//{
+//    NSData *fileData;
+//    NSFileHandle *inFile = [NSFileHandle fileHandleForReadingAtPath:_filePath];
+//    [inFile seekToFileOffset:110];
+//    fileData = [inFile readDataOfLength:READ_LENGTH];
+//    [inFile closeFile];
+//    return fileData;
+//}
 
+//- (void) writeFile: (NSData *)fileData AtOffset: (unsigned long)offset
+//{
+//    NSFileHandle *outFile = [NSFileHandle fileHandleForWritingAtPath:_filePath];
+//    [outFile seekToFileOffset:offset];
+//    [outFile writeData:fileData];
+//    [outFile closeFile];
+//}
 @end

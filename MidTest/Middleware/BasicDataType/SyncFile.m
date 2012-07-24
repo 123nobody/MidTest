@@ -11,6 +11,22 @@
 
 @implementation SyncFile
 
+- (id)initAtPath: (NSString *)filePath
+{
+    self = [super init];
+    if (self) {
+        if([SyncFile existsFileAtPath:filePath])
+        {
+            _readFileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
+            _writeFileHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
+            _position = 0;
+        } else {
+            [Toolkit MidLog:@"指向的文件不存在！" LogType:debug];
+        }
+    }
+    return self;
+}
+
 /*!
  @method
  @abstract 创建一个文件,当filePath所指路径上的文件夹不存在时，将自动生成。
@@ -53,6 +69,7 @@
 + (SyncStream *) openFileAtPath: (NSString *)filePath WithName: (NSString *)fileName
 {
     SyncStream *stream;
+    stream = [[SyncStream alloc]initAtPath:[NSString stringWithFormat:@"%@/%@", filePath, fileName]];
     return stream;
 }
 
@@ -76,20 +93,76 @@
     }
     return NO;
 }
-
+         
 /*!
- @method
- @abstract 指定的文件是否存在
- @param filePath 文件路径（所处文件夹的路径）
- @param fileName 文件名
- @result 
- */
+@method
+@abstract 指定的文件是否存在
+@param filePath 文件路径（所处文件夹的路径）
+@param fileName 文件名
+@result 
+*/
 + (BOOL) existsFileAtPath: (NSString *)filePath WithName: (NSString *)fileName
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     [fileManager changeCurrentDirectoryPath:filePath];
     return [fileManager fileExistsAtPath:fileName];
-    //return NO;
+}
+         
+         
+/*!
+@method
+@abstract 指定的文件是否存在
+@param filePath 文件路径（包含文件名）
+@result 
+*/
++ (BOOL) existsFileAtPath: (NSString *)filePath
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager changeCurrentDirectoryPath:filePath];
+    return [fileManager fileExistsAtPath:filePath];
 }
 
+
+//获取文件大小
+- (unsigned long long) fileSize
+{
+    [_readFileHandle seekToEndOfFile];
+    unsigned long long fileSize = [_readFileHandle offsetInFile];
+    [_readFileHandle seekToFileOffset:_position];
+    return fileSize;
+}
+//获取文件当前的操作位置
+- (unsigned long long) offsetInFile
+{
+    return _position;
+}
+//设置文件当前的操作位置
+- (void)seekToFileOffset:(unsigned long long)offset
+{
+    _position = offset;
+}
+//读length长的数据
+- (NSData *)readDataOfLength:(NSUInteger)length
+{
+    [_readFileHandle seekToFileOffset:_position];
+    return [_readFileHandle readDataOfLength:length];
+}
+//读数据到文件结束
+- (NSData *)readDataToEndOfFile
+{
+    [_readFileHandle seekToFileOffset:_position];
+    return [_readFileHandle readDataToEndOfFile];
+}
+//写数据
+- (void) writeData: (NSData *)data
+{
+    [_writeFileHandle seekToFileOffset:_position];
+    [_writeFileHandle writeData:data];
+}
+//关闭文件操作句柄
+- (void) close
+{
+    [_readFileHandle closeFile];
+    [_writeFileHandle closeFile];
+}
 @end

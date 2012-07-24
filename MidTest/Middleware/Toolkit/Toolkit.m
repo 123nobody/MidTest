@@ -33,4 +33,10 @@
     }
 }
 
++ (NSData *)trimData: (NSData *)data
+{
+    NSString *string = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+    string = [string stringByTrimmingCharactersInSet:[NSCharacterSet symbolCharacterSet]];
+    return [string dataUsingEncoding:NSUTF8StringEncoding];
+}
 @end

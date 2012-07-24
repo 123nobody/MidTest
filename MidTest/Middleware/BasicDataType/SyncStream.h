@@ -11,15 +11,26 @@
 
 @interface SyncStream : NSObject
 {
+    NSFileHandle *_readFileHandle;  //读文件句柄
+    NSFileHandle *_writeFileHandle;  //写文件句柄
     NSInteger _length;   //用字节表示的流长度
-    NSInteger _position; //流中的当前位置
+    long _position; //流中的当前位置
 }
 
 @property (assign, nonatomic, readonly) NSInteger length;
-@property (assign, nonatomic, readonly) NSInteger position;
+@property (assign, nonatomic) long position;
 
-//设置流的当前位置。参数lOffset表示字节偏移量；origin指示新位置的参考点。
-- (NSInteger) seekAtOrigin: (SeekOrigin)origin WithOffset: (NSInteger)offset;
+
+- (id)initAtPath: (NSString *)filePath;
+
+/*!
+ @method
+ @abstract 设置流的当前位置
+ @param Offset 字节偏移量
+ @param origin 新位置的参考点
+ @result 流中的当前位置
+ */
+- (long) seekAtOrigin: (SeekOrigin)origin WithOffset: (long)offset;
 
 //从当前流中读取一个字节，并将流的当前位置提升1。返回读到的数据，该数据要求转换成int类型，若为-1，表示已经到达流的末尾，无数据可读。
 - (int) readByte;

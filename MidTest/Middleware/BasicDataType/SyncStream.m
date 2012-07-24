@@ -12,11 +12,49 @@
 
 @synthesize length = _length;
 @synthesize position = _position;
+//@synthesize readfileHandle = _readFileHandle;
+//@synthesize writefileHandle = _writeFileHandle;
 
+- (id)initAtPath: (NSString *)filePath
+{
+    self = [super init];
+    if (self) {
+        _readFileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
+        _writeFileHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
+    }
+    return self;
+}
 
 //设置流的当前位置。参数lOffset表示字节偏移量；origin指示新位置的参考点。
-- (NSInteger) seekAtOrigin: (SeekOrigin)origin WithOffset: (NSInteger)offset
+- (long) seekAtOrigin: (SeekOrigin)origin WithOffset: (long)offset
 {
+    switch (origin) {
+        case Beginning:
+        {
+            [_readFileHandle seekToFileOffset:offset];
+            [_writeFileHandle seekToFileOffset:offset];
+        }
+            break;
+            
+        case Current:
+        {
+            long readOffset = [_readFileHandle offsetInFile] + offset;
+            long writeOffset = [_writeFileHandle offsetInFile] + offset;
+            [_readFileHandle seekToFileOffset:readOffset];
+            [_writeFileHandle seekToFileOffset:writeOffset];
+        }
+            break;
+            
+        case Ending:
+        {
+            [_readFileHandle seekToEndOfFile];
+            [_writeFileHandle seekToEndOfFile];
+        }
+            break;
+            
+        default:
+            break;
+    }
     return 0;
 }
 

@@ -23,15 +23,16 @@
     
     NSLog(@"应用程序启动！");
     
+    /*JSON操作
     SBJsonParser *parser = [[SBJsonParser alloc]init];
     
     NSString *webServiceURL = @"http://www.loc.gov/pictures/item/89709841/?fo=json";
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:webServiceURL]];
     
-    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    //NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
     
-    NSString *jsonString = [[NSString alloc]initWithData:response encoding:NSUTF8StringEncoding];
+    NSString *jsonString;// = [[NSString alloc]initWithData:response encoding:NSUTF8StringEncoding];
     
     //NSArray *jsonArray = [[NSArray alloc]initWithArray:[parser objectWithString:jsonString]];
     
@@ -57,8 +58,12 @@
     
     
     return;
+    */
     
     ClientSyncController *csc = [[ClientSyncController alloc]init];
+    [csc test];
+    return;
+    
     csc.delegate = self;
     NSLog(@"调用打包方法，将要同步的数据打包。");
     NSLog(@"调用方法，将要同步的数据打包。");

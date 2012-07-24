@@ -66,4 +66,6 @@
 - (SyncTaskDescriptionList *) getSyncTaskList;
 - (void) setStateOfTask: (NSString *)taskId taskState: (TaskState)taskState;
 
+//测试方法
+- (void) test;
 @end

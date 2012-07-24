@@ -10,6 +10,7 @@
 #import "Toolkit.h"
 #import "SyncTaskDescriptionList.h"
 #import "SyncFile.h"
+#import "SyncFileKit.h"
 
 @implementation ClientSyncController
 
@@ -44,6 +45,36 @@
 {
     [Toolkit MidLog:@"ClientSyncController.addTask:调用taskmanager.addTask..." LogType:info];
     return [_taskManager addTask:msg];
+}
+
+
+//测试方法
+- (void) test
+{
+//    if([SyncFile existsFileAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testfile.txt"])
+//        NSLog(@"exist!");
+//    return;
+    
+    [SyncFile createFileAtPath:@"" WithName:@"copyfile.txt"];
+    
+    SyncFile *file = [[SyncFile alloc]initAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testfile.txt"];
+    
+    SyncFile *copyfile = [[SyncFile alloc]initAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/copyfile.txt"];
+    
+    NSData *data;
+    while (([file offsetInFile] + 100) < [file fileSize]) {
+        data = [file readDataOfLength:100];
+        [file seekToFileOffset:([file offsetInFile] + 100)];
+        [copyfile writeData:data];
+        [copyfile seekToFileOffset:([copyfile offsetInFile] + 100)];
+    }
+    
+    data = [file readDataToEndOfFile];
+    [copyfile writeData:data];
+    
+    [file close];
+    [copyfile close];
+    NSLog(@"finish!!!!");
 }
 
 #pragma mark - 同步
