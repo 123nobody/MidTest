@@ -55,6 +55,9 @@ typedef enum {
 
 
 - (id)initWithTaskId: (NSString *)taskId taskName:(NSString *)taskName;
+- (id)initWithTaskFileName: (NSString *)taskFileName;
+//将任务状态从数字转成枚举类型
+- (TaskState) intToTaskState: (int)taskStateNumber;
 
 - (NSDictionary *) getDictionary;
 

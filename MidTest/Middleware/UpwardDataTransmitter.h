@@ -31,6 +31,6 @@
 @property (strong, nonatomic) id<UpwardDataTransmitterDelegate> delegage;
 
 - (id)initWithController: (ClientSyncController *)csc;
-- (BOOL) upload: (NSString *)msg;
+- (BOOL) upload;
 
 @end

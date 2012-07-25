@@ -39,9 +39,10 @@
     SyncStream *stream = [[SyncStream alloc]init];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [path objectAtIndex:0];
-    NSString *targetPath = [documentsDirectory stringByAppendingFormat:@"/Middleware%@", filePath];
+//    NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *documentsDirectory = [path objectAtIndex:0];
+    NSString *documentsDirectory = [Toolkit getDocumentsPathOfApp];
+    NSString *targetPath = [documentsDirectory stringByAppendingFormat:@"%@%@", MIDDLEWARE_DIR, filePath];
     [fileManager changeCurrentDirectoryPath:targetPath];
     
     if ([fileManager fileExistsAtPath:fileName]) {
@@ -88,9 +89,8 @@
 + (BOOL) deleteFileAtPath: (NSString *)filePath WithName: (NSString *)fileName
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [path objectAtIndex:0];
-    NSString *targetPath = [documentsDirectory stringByAppendingFormat:@"/Middleware%@", filePath];
+    NSString *documentsDirectory = [Toolkit getDocumentsPathOfApp];
+    NSString *targetPath = [documentsDirectory stringByAppendingFormat:@"%@%@", MIDDLEWARE_DIR, filePath];
     [fileManager changeCurrentDirectoryPath:targetPath];
     if ([fileManager removeItemAtPath:fileName error:nil]) {
         [Toolkit MidLog:[NSString stringWithFormat:@"删除文件%@%@", targetPath, fileName] LogType:info];

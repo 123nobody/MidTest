@@ -8,6 +8,9 @@
 
 #import "SyncTaskDescription.h"
 #import "SyncTaskState.h"
+#import "SyncFile.h"
+#import "Toolkit.h"
+#import "SBJson.h"
 
 @implementation SyncTaskDescription
 
@@ -39,6 +42,24 @@
     return self;
 }
 
+- (id)initWithTaskFileName: (NSString *)taskFileName
+{
+    self = [super init];
+    if (self) {
+        //用应用程序目录 + 中间价目录 + 任务文件目录 + / + 任务文件名 组成任务文件路径
+        NSString *taskFilePath = [NSString stringWithFormat:@"%@%@%@/%@", [Toolkit getDocumentsPathOfApp], MIDDLEWARE_DIR, TASKS_DIR, taskFileName];
+        SyncFile *taskFile = [[SyncFile alloc]initAtPath:taskFilePath];
+        NSData *taskFileData = [taskFile readDataToEndOfFile];
+        NSString *taskFileString = [[NSString alloc]initWithData:taskFileData encoding:NSUTF8StringEncoding];
+        NSDictionary *taskDic = [taskFileString JSONValue];
+        _taskId = [taskDic objectForKey:@"taskId"];
+        _taskName = [taskDic objectForKey:@"taskName"];
+        int taskStateNumber = [[taskDic objectForKey:@"taskState"] intValue];
+        _taskState = [self intToTaskState:taskStateNumber];
+    }
+    return self;
+}
+
 - (NSDictionary *) getDictionary
 {
     NSArray *key = [[NSArray alloc]initWithObjects:@"taskId", @"taskName", @"taskState", @"syncFileList", nil];
@@ -46,6 +67,39 @@
     NSDictionary *dic = [[NSDictionary alloc]initWithObjects:descriptionArray forKeys:key];
     
     return dic;
+}
+
+- (TaskState) intToTaskState: (int)taskStateNumber
+{
+    switch (taskStateNumber) {
+        case 0:
+            return Draft;
+            break;
+            
+        case 1:
+            return Totransmit;
+            break;
+            
+        case 2:
+            return Transmitting;
+            break;
+            
+        case 3:
+            return Pending;
+            break;
+            
+        case 4:
+            return Completion;
+            break;
+            
+        case 5:
+            return Termination;
+            break;
+            
+        default:
+            break;
+    }
+    return Termination;
 }
 
 @end

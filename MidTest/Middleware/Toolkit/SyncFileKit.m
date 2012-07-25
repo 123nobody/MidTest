@@ -7,6 +7,7 @@
 //
 
 #import "SyncFileKit.h"
+#import "Toolkit.h"
 
 @implementation SyncFileKit
 
@@ -31,8 +32,7 @@
     if (self) {
         _fileName = fileName;
         _fileManager = [NSFileManager defaultManager];
-        NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [path objectAtIndex:0];
+        NSString *documentsDirectory = [Toolkit getDocumentsPathOfApp];
         documentsDirectory = [documentsDirectory stringByAppendingString:@"/Middleware/"];
         [_fileManager changeCurrentDirectoryPath:documentsDirectory];
         _filePath = [[_fileManager currentDirectoryPath] stringByAppendingFormat:@"/%@", _fileName];

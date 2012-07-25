@@ -41,7 +41,6 @@
 		B6F8490B15B652D0000D425E /* StateController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F8490415B652D0000D425E /* StateController.m */; };
 		B6F8490C15B652D0000D425E /* TaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F8490615B652D0000D425E /* TaskManager.m */; };
 		B6F8490D15B652D0000D425E /* UpwardDataTransmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F8490815B652D0000D425E /* UpwardDataTransmitter.m */; };
-		B6F8491C15B68974000D425E /* Config.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F8491B15B68974000D425E /* Config.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -112,7 +111,6 @@
 		B6F8490715B652D0000D425E /* UpwardDataTransmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UpwardDataTransmitter.h; path = Middleware/UpwardDataTransmitter.h; sourceTree = "<group>"; };
 		B6F8490815B652D0000D425E /* UpwardDataTransmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UpwardDataTransmitter.m; path = Middleware/UpwardDataTransmitter.m; sourceTree = "<group>"; };
 		B6F8491A15B68974000D425E /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Config.h; path = Middleware/Config.h; sourceTree = "<group>"; };
-		B6F8491B15B68974000D425E /* Config.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Config.m; path = Middleware/Config.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -261,7 +259,6 @@
 				B6F8490715B652D0000D425E /* UpwardDataTransmitter.h */,
 				B6F8490815B652D0000D425E /* UpwardDataTransmitter.m */,
 				B6F8491A15B68974000D425E /* Config.h */,
-				B6F8491B15B68974000D425E /* Config.m */,
 				B6BB23A515B8F39E002F560D /* UpdateScheduler.h */,
 				B6BB23A615B8F39E002F560D /* UpdateScheduler.m */,
 			);
@@ -344,7 +341,6 @@
 				B6F8490B15B652D0000D425E /* StateController.m in Sources */,
 				B6F8490C15B652D0000D425E /* TaskManager.m in Sources */,
 				B6F8490D15B652D0000D425E /* UpwardDataTransmitter.m in Sources */,
-				B6F8491C15B68974000D425E /* Config.m in Sources */,
 				B6BB23A715B8F39E002F560D /* UpdateScheduler.m in Sources */,
 				B6BB23AB15B8F3E7002F560D /* Toolkit.m in Sources */,
 				B6BB23AE15B8FAA3002F560D /* SyncFileKit.m in Sources */,

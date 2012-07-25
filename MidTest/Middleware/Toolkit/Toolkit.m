@@ -44,6 +44,14 @@
     }
 }
 
+//获得应用程序Documents目录
++ (NSString *) getDocumentsPathOfApp
+{
+    NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [path objectAtIndex:0];
+    return documentsDirectory;
+}
+
 + (NSData *)trimData: (NSData *)data
 {
     NSString *string = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];

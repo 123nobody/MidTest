@@ -22,30 +22,43 @@
 {
     self = [super init];
     if (self) {
-        [Toolkit MidLog:@"[任务管理器]:扫描任务文件，生成任务列表。" LogType:info];
-//        SyncTaskDescription *task_1 = [[SyncTaskDescription alloc]initWithTaskId:@"T1" taskName:@"任务1"];
-//        SyncTaskDescription *task_2 = [[SyncTaskDescription alloc]initWithTaskId:@"T2" taskName:@"任务2"];
-//        SyncTaskDescription *task_3 = [[SyncTaskDescription alloc]initWithTaskId:@"T3" taskName:@"任务3"];
-//        
-//        _syncTaskList = [[SyncTaskDescriptionList alloc]init];
-//        [_syncTaskList addTaskDescription:task_1];
-//        [_syncTaskList addTaskDescription:task_2];
-//        [_syncTaskList addTaskDescription:task_3];
-        
-        
-//        NSLog(@"count1111:%d", [_syncTaskList count]);
-//        NSLog(@"%d", [_syncTasksQueue count]);
-//        for (int i = 0; i < [_syncTasksQueue count]; i++) {
-//            NSLog(@"添加第%d个任务:%@", i, [_syncTasksQueue objectAtIndex: i]);
-//        }
+        _syncTaskList = [[SyncTaskDescriptionList alloc]init];
+        [self loadTasks];
     }
     return self;
 }
 
+/*!
+ @method
+ @abstract 载入任务文件
+ @result 成功返回YES，失败返回NO。
+ */
+- (BOOL) loadTasks
+{
+    [Toolkit MidLog:@"[任务管理器]:扫描任务文件，生成任务列表。" LogType:info];
+    NSArray *taskFiles = [self scanningTaskFiles];
+    SyncTaskDescription *taskDescription;
+    NSString *taskFileName;
+    for (int i = 0; i < [taskFiles count]; i++) {
+        taskFileName = [taskFiles objectAtIndex:i];
+        //NSLog(@"%@", taskFileName);
+        taskDescription = [[SyncTaskDescription alloc]initWithTaskFileName:taskFileName];
+        [_syncTaskList addTaskDescription:taskDescription];
+    }
+    return YES;
+}
+
+/*!
+ @method
+ @abstract 添加一个任务
+ @param dataFilePath 任务需要上传的本地资源文件的路径 
+ @result 成功返回YES，失败返回NO。
+ */
 - (BOOL) addTaskWithDataFilePath: (NSString *)dataFilePath
 {
     [Toolkit MidLog:[NSString stringWithFormat:@"[任务管理器]:添加任务,datafilePath = %@", dataFilePath] LogType:info];
-    NSString *taskFileName = [NSString stringWithFormat:@"%@.midtask", [Toolkit getTimestampString]];
+    //由系统时间+后缀名构成任务文件的文件名
+    NSString *taskFileName = [NSString stringWithFormat:@"%@.%@", [Toolkit getTimestampString], TASKS_SUFFIX];
     if([SyncFile createFileAtPath:TASKS_DIR WithName:taskFileName] == nil)
     {
         [Toolkit MidLog:[NSString stringWithFormat:@"[任务管理器]:添加任务失败，%@文件已存在。", taskFileName] LogType:debug];
@@ -53,9 +66,9 @@
     }
     [Toolkit MidLog:@"[任务管理器]:添加任务,生成任务文件." LogType:info];
     
-    NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [path objectAtIndex:0];
-    NSString *targetPath = [documentsDirectory stringByAppendingFormat:@"/Middleware%@", TASKS_DIR];
+    //拿到应用程序路径
+    NSString *documentsDirectory = [Toolkit getDocumentsPathOfApp];
+    NSString *targetPath = [documentsDirectory stringByAppendingFormat:@"%@%@", MIDDLEWARE_DIR, TASKS_DIR];
     NSString *taskFilePath = [NSString stringWithFormat:@"%@/%@", targetPath, taskFileName];
     SyncFile *taskFile = [[SyncFile alloc]initAtPath:taskFilePath];
     
@@ -69,6 +82,32 @@
     [taskFile writeData:taskFileContent];
     
     return YES;
+}
+
+
+/*!
+ @method
+ @abstract 扫描任务文件
+ @result 任务文件名的数组
+ */
+- (NSArray *) scanningTaskFiles
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *taskDirPath = [NSString stringWithFormat:@"%@%@%@", [Toolkit getDocumentsPathOfApp], MIDDLEWARE_DIR, TASKS_DIR];
+    //NSLog(@"taskDir = %@", taskDirPath);
+    
+    NSDirectoryEnumerator *direnum = [fileManager enumeratorAtPath:taskDirPath];
+    
+    NSMutableArray *taskFilesNameArray = [[NSMutableArray alloc]init];
+//    id taskFile;
+    NSString *taskFileName;
+    while (taskFileName = [direnum nextObject]) {
+        if ([[taskFileName pathExtension] isEqualToString:TASKS_SUFFIX]) {
+            [taskFilesNameArray addObject:taskFileName];
+        }
+    }
+    
+    return taskFilesNameArray;
 }
 
 @end

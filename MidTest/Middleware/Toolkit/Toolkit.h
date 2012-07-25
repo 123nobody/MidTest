@@ -14,6 +14,8 @@
 + (void) MidLog: (NSString *)logInfo LogType: (LogType)logType;
 //获取系统时间戳
 + (NSString *) getTimestampString;
+//获得应用程序Documents目录
++ (NSString *) getDocumentsPathOfApp;
 
 
 + (NSData *)trimData: (NSData *)data;
