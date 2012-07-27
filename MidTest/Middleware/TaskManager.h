@@ -6,9 +6,18 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+/*!
+ @header TaskManager.h
+ @abstract 任务管理器
+ @author Wei
+ @version 1.00 2012/07/26 Creation
+ */
 #import <UIKit/UIKit.h>
 #import "SyncTaskDescriptionList.h"
-
+/*!
+ @class
+ @abstract 任务管理器
+ */
 @interface TaskManager : NSObject
 {
     SyncTaskDescriptionList *_syncTaskList;

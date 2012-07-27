@@ -6,6 +6,12 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+/*!
+ @header UpdateScheduler.h
+ @abstract 更新调度器
+ @author Wei
+ @version 1.00 2012/07/26 Creation
+ */
 #import <Foundation/Foundation.h>
 #import "SyncTaskDescriptionList.h"
 @class ClientSyncController;
@@ -17,6 +23,10 @@
 
 @end
 
+/*!
+ @class
+ @abstract 更新调度器
+ */
 @interface UpdateScheduler : NSObject
 {
     SyncTaskDescriptionList *_updateTaskList;

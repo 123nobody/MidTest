@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		B69AE84115C0DD03006FB090 /* MidDoc */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = B69AE84415C0DD03006FB090 /* Build configuration list for PBXAggregateTarget "MidDoc" */;
+			buildPhases = (
+				B69AE84615C0DD17006FB090 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = MidDoc;
+			productName = MidDoc;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		B639B90915AEA6A700B1BAC7 /* SyncTaskDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = B639B90615AEA6A700B1BAC7 /* SyncTaskDescription.m */; };
 		B639B90A15AEA6A700B1BAC7 /* SyncTaskState.m in Sources */ = {isa = PBXBuildFile; fileRef = B639B90815AEA6A700B1BAC7 /* SyncTaskState.m */; };
@@ -306,6 +320,7 @@
 			projectRoot = "";
 			targets = (
 				B6DDF08915AD4F2A00898103 /* MidTest */,
+				B69AE84115C0DD03006FB090 /* MidDoc */,
 			);
 		};
 /* End PBXProject section */
@@ -321,6 +336,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B69AE84615C0DD17006FB090 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here\n\nmkdir -p headerDoc\n\nfind ./MidTest/Middleware -name \\*.h -print | xargs headerdoc2html -o headerDoc\n\ngatherheaderdoc headerDoc\n\nexit 0";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B6DDF08615AD4F2A00898103 /* Sources */ = {
@@ -381,6 +412,20 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		B69AE84215C0DD03006FB090 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B69AE84315C0DD03006FB090 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		B6DDF0A615AD4F2A00898103 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -451,6 +496,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B69AE84415C0DD03006FB090 /* Build configuration list for PBXAggregateTarget "MidDoc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B69AE84215C0DD03006FB090 /* Debug */,
+				B69AE84315C0DD03006FB090 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		B6DDF08415AD4F2A00898103 /* Build configuration list for PBXProject "MidTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

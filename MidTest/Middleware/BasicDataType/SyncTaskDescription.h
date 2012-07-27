@@ -37,7 +37,7 @@ typedef enum {
     NSArray *_syncFileList;    //需要同步的文件列表
 }
 
-@property (strong ,nonatomic, readonly) NSString  *taskId;
+@property (strong ,nonatomic) NSString  *taskId;
 @property (strong, nonatomic) NSString  *associateId;
 @property (assign, nonatomic) NSInteger *applicationCode;
 @property (assign, nonatomic) NSInteger *auxiliary;

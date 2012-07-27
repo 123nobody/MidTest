@@ -6,6 +6,12 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+/*!
+ @header SyncStream.h
+ @abstract 关于这个源代码文件的一些基本描述
+ @author Wei
+ @version 1.00 2012/07/26 Creation
+ */
 #import <Foundation/Foundation.h>
 #import "SyncSeekOrigin.h"
 
@@ -26,8 +32,8 @@
 /*!
  @method
  @abstract 设置流的当前位置
- @param Offset 字节偏移量
  @param origin 新位置的参考点
+ @param offset 字节偏移量
  @result 流中的当前位置
  */
 - (long) seekAtOrigin: (SeekOrigin)origin WithOffset: (long)offset;

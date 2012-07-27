@@ -43,6 +43,12 @@
         taskFileName = [taskFiles objectAtIndex:i];
         //NSLog(@"%@", taskFileName);
         taskDescription = [[SyncTaskDescription alloc]initWithTaskFileName:taskFileName];
+//        taskDescription.taskId = [NSString stringWithFormat:@"%d", i];
+//        taskDescription.taskName = taskFileName;
+        //设置任务状态为待传输态
+        taskDescription.taskState = Totransmit;
+        [Toolkit MidLog:[NSString stringWithFormat:@"[任务管理器]已修改任务状态为待传输态...%i", taskDescription.taskState] LogType:debug];
+        
         [_syncTaskList addTaskDescription:taskDescription];
     }
     return YES;
@@ -74,6 +80,9 @@
     
     SyncTaskDescription *taskDescription = [[SyncTaskDescription alloc]initWithTaskId:@"01" taskName:@"任务01"];
     taskDescription.syncFileList = [[NSArray alloc]initWithObjects:dataFilePath, nil];
+    //添加任务到任务描述信息列表，并修改任务状态为待传输态
+    taskDescription.taskState = Totransmit;
+    [_syncTaskList addTaskDescription:taskDescription];
     NSDictionary *dic = [taskDescription getDictionary];
     NSString *jsonString = [dic JSONRepresentation];
     
@@ -99,7 +108,6 @@
     NSDirectoryEnumerator *direnum = [fileManager enumeratorAtPath:taskDirPath];
     
     NSMutableArray *taskFilesNameArray = [[NSMutableArray alloc]init];
-//    id taskFile;
     NSString *taskFileName;
     while (taskFileName = [direnum nextObject]) {
         if ([[taskFileName pathExtension] isEqualToString:TASKS_SUFFIX]) {

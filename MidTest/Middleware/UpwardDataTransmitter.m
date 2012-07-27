@@ -43,10 +43,10 @@
     }
     for (int i = 0; i < [syncTaskList count]; i++) {
         SyncTaskDescription *taskDescription = [syncTaskList TaskDescriptionAtIndex:i];
-        
-        //设置任务状态为待传输态
-        taskDescription.taskState = Totransmit;
-        [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]已修改任务状态为待传输态...%i", taskDescription.taskState] LogType:debug];
+//        
+//        //设置任务状态为待传输态
+//        taskDescription.taskState = Totransmit;
+//        [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]已修改任务状态为待传输态...%i", taskDescription.taskState] LogType:debug];
         
         NSString *taskId = taskDescription.taskId;
         NSString *taskName = taskDescription.taskName;

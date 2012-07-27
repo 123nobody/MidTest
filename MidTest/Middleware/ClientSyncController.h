@@ -6,6 +6,12 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+/*!
+ @header ClientSyncController.h
+ @abstract 同步控制器，协调各组件之间的关系。
+ @author Wei
+ @version 1.00 2012/07/26 Creation
+ */
 #import <UIKit/UIKit.h>
 #import "TaskManager.h"
 #import "UpwardDataTransmitter.h"
@@ -28,6 +34,10 @@
 
 @end
 
+/*!
+ @class
+ @abstract 同步控制器
+ */
 @interface ClientSyncController : NSObject <UpwardDataTransmitterDelegate, DownwardDataTransmitterDelegate>
 {
     id<ClientSyncControllerDelegate> _delegate;
