@@ -47,4 +47,21 @@
  */
 - (NSArray *) scanningTaskFiles;
 
+/*!
+ @method
+ @abstract 修改任务文件
+ @discussion 根据taskDescription中的taskName，修改对应的同名任务文件，方式为全部重写。
+ @param taskDescription 任务描述信息 
+ @result 成功返回YES，如果文件不存在或写入更新不成功，则返回NO。
+ */
+- (BOOL) updateTaskFile: (SyncTaskDescription *)taskDescription;
+
+/*!
+ @method
+ @abstract 删除指定文件名的任务文件
+ @param taskFileName 任务文件名 
+ @result 成功返回YES，失败返回NO。
+ */
+- (BOOL) deleteTaskFileByName: (NSString *)taskFileName;
+
 @end

@@ -6,9 +6,25 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+/*!
+ @header SyncTaskDescription.h
+ @abstract 任务描述信息
+ @author Wei
+ @version 1.00 2012/07/26 Creation
+ */
 #import <Foundation/Foundation.h>
 #import "SyncTaskState.h"
 
+/*!
+ @enum
+ @abstract 任务状态类型
+ @constant Draft 草稿态
+ @constant Totransmit 待传输态
+ @constant Transmitting 传输态
+ @constant Pending 待处理态
+ @constant Completion 完成态
+ @constant Termination 终止态
+ */
 typedef enum {
     Draft = 0,          //草稿态
     Totransmit = 1,     //待传输态

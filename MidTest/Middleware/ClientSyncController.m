@@ -55,6 +55,17 @@
 //}
 
 
+/*!
+ @method
+ @abstract 删除指定文件名的任务文件
+ @param taskFileName 任务文件名 
+ @result 成功返回YES，失败返回NO。
+ */
+- (BOOL) deleteTaskFileByName: (NSString *)taskFileName
+{
+    return [_taskManager deleteTaskFileByName:taskFileName];
+}
+
 //测试方法
 - (void) test
 {
@@ -128,9 +139,6 @@
     [_upwardThread setName:@"上行数据传输器线程"];
     [Toolkit MidLog:@"[同步控制器]上行数据传输器线程start" LogType:info];
     [_upwardThread start];
-    
-    //[_delegate upwardTransminThreadStoped];
-    //[Toolkit MidLog:@"上行结束..." LogType:debug];
 }
 
 - (void) startDownwardTransmitThread
@@ -139,9 +147,6 @@
     [_downwardThread setName:@"下行数据传输器线程"];
     [Toolkit MidLog:@"[同步控制器]下行数据传输器线程start" LogType:info];
     [_downwardThread start];
-    
-    [_delegate downwardTransminThreadStoped];
-    //[Toolkit MidLog:@"下行结束..." LogType:debug];
 }
 //同步开始时的验证
 - (void) check
@@ -191,6 +196,7 @@
 {
     [Toolkit MidLog:@"[同步控制器]下行开始..." LogType:debug];
     [_downwardDataTransmitter download];
+    [_delegate downwardTransminThreadStoped];
     [Toolkit MidLog:@"[同步控制器]下行结束..." LogType:debug];
 }
 

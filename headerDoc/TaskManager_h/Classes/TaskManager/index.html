@@ -220,11 +220,17 @@ function disclosure_triangle(elt) {
 <dt><tt><a href="index.html#//apple_ref/occ/instm/TaskManager/addTaskWithDataFilePath:" target="_top">-addTaskWithDataFilePath:</a></tt></dt>
 <dd><p>添加一个任务
 </dd>
+<dt><tt><a href="index.html#//apple_ref/occ/instm/TaskManager/deleteTaskFileByName:" target="_top">-deleteTaskFileByName:</a></tt></dt>
+<dd><p>删除指定文件名的任务文件
+</dd>
 <dt><tt><a href="index.html#//apple_ref/occ/instm/TaskManager/loadTasks" target="_top">-loadTasks</a></tt></dt>
 <dd><p>载入任务文件
 </dd>
 <dt><tt><a href="index.html#//apple_ref/occ/instm/TaskManager/scanningTaskFiles" target="_top">-scanningTaskFiles</a></tt></dt>
 <dd><p>扫描任务文件
+</dd>
+<dt><tt><a href="index.html#//apple_ref/occ/instm/TaskManager/updateTaskFile:" target="_top">-updateTaskFile:</a></tt></dt>
+<dd><p>修改任务文件
 </dd>
 </dl>
 <hr class="betweenAPIEntries"><!-- headerDoc=instm;  uid=//apple_ref/occ/instm/TaskManager/addTaskWithDataFilePath:;   name=TaskManager::addTaskWithDataFilePath: -->
@@ -241,6 +247,24 @@ function disclosure_triangle(elt) {
 <dt><!-- headerDoc=methodparam;  uid=//apple_ref/doc/methodparam/TaskManager/addTaskWithDataFilePath:/dataFilePath;   name=addTaskWithDataFilePath:::dataFilePath -->
 <a name="//apple_ref/doc/methodparam/TaskManager/addTaskWithDataFilePath:/dataFilePath"></a>
 <code>dataFilePath</code></dt><dd><p>任务需要上传的本地资源文件的路径</dd>
+</dl>
+</div>
+<h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Return Value</font></h5><p><!-- begin return value --><p>成功返回YES，失败返回NO。
+
+<!-- end return value --></p><hr class="betweenAPIEntries"><!-- headerDoc=instm;  uid=//apple_ref/occ/instm/TaskManager/deleteTaskFileByName:;   name=TaskManager::deleteTaskFileByName: -->
+<a name="//apple_ref/occ/instm/TaskManager/deleteTaskFileByName:"></a>
+<h3><a name="deleteTaskFileByName:">deleteTaskFileByName:</a></h3>
+<hr class="afterName"><p><!-- headerDoc=abstract;uid=//apple_ref/occ/instm/TaskManager/deleteTaskFileByName:;name=start --><!-- begin abstract --><p>删除指定文件名的任务文件
+<!-- end abstract --><!-- headerDoc=abstract;uid=//apple_ref/occ/instm/TaskManager/deleteTaskFileByName:;name=end --></p>
+<div class='declaration_indent'>
+<pre><!-- headerDoc=declaration;uid=//apple_ref/occ/instm/TaskManager/deleteTaskFileByName:;name=start -->- (<!-- a logicalPath="//apple_ref/occ/cl/BOOL //apple_ref/occ/tdef/BOOL //apple_ref/occ/tag/BOOL //apple_ref/occ/struct/BOOL //apple_ref/occ/intf/BOOL //apple_ref/doc/anysymbol/BOOL" machineGenerated="true" --><span class="type">BOOL</span><!-- /a -->) <!-- a logicalPath="//apple_ref/occ/instm/TaskManager/deleteTaskFileByName //apple_ref/occ/clm/TaskManager/deleteTaskFileByName //apple_ref/occ/intfcm/TaskManager/deleteTaskFileByName //apple_ref/occ/intfm/TaskManager/deleteTaskFileByName //apple_ref/occ/func/deleteTaskFileByName //apple_ref/occ/ftmplt/TaskManager/deleteTaskFileByName //apple_ref/occ/defn/deleteTaskFileByName //apple_ref/occ/macro/deleteTaskFileByName //apple_ref/doc/anysymbol/deleteTaskFileByName" machineGenerated="true" --><span class="function">deleteTaskFileByName</span><!-- /a -->: (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>)<!-- a logicalPath="//apple_ref/occ/econst/taskFileName //apple_ref/occ/data/TaskManager/taskFileName //apple_ref/occ/data/taskFileName //apple_ref/occ/clconst/TaskManager/taskFileName " machineGenerated="true" --><span class="var">taskFileName</span><!-- /a -->; <!-- headerDoc=declaration;uid=//apple_ref/occ/instm/TaskManager/deleteTaskFileByName:;name=end --></pre>
+</div>
+<h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Parameters</font></h5>
+<div class='param_indent'>
+<dl>
+<dt><!-- headerDoc=methodparam;  uid=//apple_ref/doc/methodparam/TaskManager/deleteTaskFileByName:/taskFileName;   name=deleteTaskFileByName:::taskFileName -->
+<a name="//apple_ref/doc/methodparam/TaskManager/deleteTaskFileByName:/taskFileName"></a>
+<code>taskFileName</code></dt><dd><p>任务文件名</dd>
 </dl>
 </div>
 <h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Return Value</font></h5><p><!-- begin return value --><p>成功返回YES，失败返回NO。
@@ -265,8 +289,29 @@ function disclosure_triangle(elt) {
 </div>
 <h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Return Value</font></h5><p><!-- begin return value --><p>任务文件路径的数组
 
-<!-- end return value --></p><p class="gapBeforeFooter">&nbsp;</p><hr class="afterFooter"><div class="hd_copyright_and_timestamp">
-<p class="hd_timestamp">Last Updated: Thursday, July 26, 2012
+<!-- end return value --></p><hr class="betweenAPIEntries"><!-- headerDoc=instm;  uid=//apple_ref/occ/instm/TaskManager/updateTaskFile:;   name=TaskManager::updateTaskFile: -->
+<a name="//apple_ref/occ/instm/TaskManager/updateTaskFile:"></a>
+<h3><a name="updateTaskFile:">updateTaskFile:</a></h3>
+<hr class="afterName"><p><!-- headerDoc=abstract;uid=//apple_ref/occ/instm/TaskManager/updateTaskFile:;name=start --><!-- begin abstract --><p>修改任务文件
+<!-- end abstract --><!-- headerDoc=abstract;uid=//apple_ref/occ/instm/TaskManager/updateTaskFile:;name=end --></p>
+<div class='declaration_indent'>
+<pre><!-- headerDoc=declaration;uid=//apple_ref/occ/instm/TaskManager/updateTaskFile:;name=start -->- (<!-- a logicalPath="//apple_ref/occ/cl/BOOL //apple_ref/occ/tdef/BOOL //apple_ref/occ/tag/BOOL //apple_ref/occ/struct/BOOL //apple_ref/occ/intf/BOOL //apple_ref/doc/anysymbol/BOOL" machineGenerated="true" --><span class="type">BOOL</span><!-- /a -->) <!-- a logicalPath="//apple_ref/occ/instm/TaskManager/updateTaskFile //apple_ref/occ/clm/TaskManager/updateTaskFile //apple_ref/occ/intfcm/TaskManager/updateTaskFile //apple_ref/occ/intfm/TaskManager/updateTaskFile //apple_ref/occ/func/updateTaskFile //apple_ref/occ/ftmplt/TaskManager/updateTaskFile //apple_ref/occ/defn/updateTaskFile //apple_ref/occ/macro/updateTaskFile //apple_ref/doc/anysymbol/updateTaskFile" machineGenerated="true" --><span class="function">updateTaskFile</span><!-- /a -->: (<!-- a logicalPath="//apple_ref/occ/cl/SyncTaskDescription //apple_ref/occ/tdef/SyncTaskDescription //apple_ref/occ/tag/SyncTaskDescription //apple_ref/occ/struct/SyncTaskDescription //apple_ref/occ/intf/SyncTaskDescription //apple_ref/doc/anysymbol/SyncTaskDescription" machineGenerated="true" --><span class="type">SyncTaskDescription</span><!-- /a --> <span class="type">*</span>)<!-- a logicalPath="//apple_ref/occ/econst/taskDescription //apple_ref/occ/data/TaskManager/taskDescription //apple_ref/occ/data/taskDescription //apple_ref/occ/clconst/TaskManager/taskDescription " machineGenerated="true" --><span class="var">taskDescription</span><!-- /a -->; <!-- headerDoc=declaration;uid=//apple_ref/occ/instm/TaskManager/updateTaskFile:;name=end --></pre>
+</div>
+<h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Parameters</font></h5>
+<div class='param_indent'>
+<dl>
+<dt><!-- headerDoc=methodparam;  uid=//apple_ref/doc/methodparam/TaskManager/updateTaskFile:/taskDescription;   name=updateTaskFile:::taskDescription -->
+<a name="//apple_ref/doc/methodparam/TaskManager/updateTaskFile:/taskDescription"></a>
+<code>taskDescription</code></dt><dd><p>任务描述信息</dd>
+</dl>
+</div>
+<h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Return Value</font></h5><p><!-- begin return value --><p>成功返回YES，如果文件不存在或写入更新不成功，则返回NO。
+
+<!-- end return value --></p><h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Discussion</font></h5>
+<!-- begin discussion --><!-- headerDoc=discussion;uid=//apple_ref/occ/instm/TaskManager/updateTaskFile:;name=start --><p>根据taskDescription中的taskName，修改对应的同名任务文件，方式为全部重写。
+<!-- headerDoc=discussion;uid=//apple_ref/occ/instm/TaskManager/updateTaskFile:;name=end --><!-- end discussion -->
+<p class="gapBeforeFooter">&nbsp;</p><hr class="afterFooter"><div class="hd_copyright_and_timestamp">
+<p class="hd_timestamp">Last Updated: Monday, July 30, 2012
 </p></div>
 </td></tr></table>
 </body></html>

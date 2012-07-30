@@ -43,10 +43,8 @@
     }
     for (int i = 0; i < [syncTaskList count]; i++) {
         SyncTaskDescription *taskDescription = [syncTaskList TaskDescriptionAtIndex:i];
-//        
-//        //设置任务状态为待传输态
-//        taskDescription.taskState = Totransmit;
-//        [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]已修改任务状态为待传输态...%i", taskDescription.taskState] LogType:debug];
+        
+        //申请上行传输令牌
         
         NSString *taskId = taskDescription.taskId;
         NSString *taskName = taskDescription.taskName;
@@ -57,6 +55,7 @@
         [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]已修改任务状态为传输态...%i", taskDescription.taskState] LogType:debug];
         //上传
         [_delegate uploadBegin];
+        //每上传成功一段数据，就更新任务描述内容并写入任务文件。
         [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]上传第%d个任务 - id:%@ name:%@ state:%d", (i + 1), taskId, taskName, taskDescription.taskState] LogType:debug];
         [_delegate uploadFinish];
         
@@ -64,6 +63,8 @@
         if (YES) {
             taskDescription.taskState = Completion;
             [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]已修改任务状态为完成态...%i", taskDescription.taskState] LogType:debug];
+            //删除已完成的上行任务文件
+            [_csc deleteTaskFileByName:taskName];
         }
     }
     

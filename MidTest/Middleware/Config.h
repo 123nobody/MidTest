@@ -6,6 +6,12 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+/*!
+ @header Config.h
+ @abstract 配置文件
+ @author Wei
+ @version 1.00 2012/07/26 Creation
+ */
 #import <Foundation/Foundation.h>
 
 //中间件目录，默认为"/Middleware"
@@ -18,7 +24,14 @@ static const NSString *TASKS_SUFFIX = @"midtask";
 
 //Log开关
 static const BOOL MidLogSwitch = YES;
-//Log类型
+//
+/*!
+ @enum
+ @abstract Log类型
+ @constant debug debug类型
+ @constant info info类型
+ @constant error error类型
+ */
 typedef enum {
     debug,
     info,

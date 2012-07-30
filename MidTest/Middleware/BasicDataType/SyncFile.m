@@ -93,7 +93,7 @@
     NSString *targetPath = [documentsDirectory stringByAppendingFormat:@"%@%@", MIDDLEWARE_DIR, filePath];
     [fileManager changeCurrentDirectoryPath:targetPath];
     if ([fileManager removeItemAtPath:fileName error:nil]) {
-        [Toolkit MidLog:[NSString stringWithFormat:@"删除文件%@%@", targetPath, fileName] LogType:info];
+        [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]删除文件%@/%@", targetPath, fileName] LogType:info];
         return YES;
     }
     return NO;

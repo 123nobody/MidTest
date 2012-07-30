@@ -78,7 +78,7 @@
     NSString *taskFilePath = [NSString stringWithFormat:@"%@/%@", targetPath, taskFileName];
     SyncFile *taskFile = [[SyncFile alloc]initAtPath:taskFilePath];
     
-    SyncTaskDescription *taskDescription = [[SyncTaskDescription alloc]initWithTaskId:@"01" taskName:@"任务01"];
+    SyncTaskDescription *taskDescription = [[SyncTaskDescription alloc]initWithTaskId:@"01" taskName:taskFileName];
     taskDescription.syncFileList = [[NSArray alloc]initWithObjects:dataFilePath, nil];
     //添加任务到任务描述信息列表，并修改任务状态为待传输态
     taskDescription.taskState = Totransmit;
@@ -116,6 +116,40 @@
     }
     
     return taskFilesNameArray;
+}
+
+/*!
+ @method
+ @abstract 修改任务文件
+ @discussion 根据taskDescription中的taskName，修改对应的同名任务文件，方式为全部重写。
+ @param taskDescription 任务描述信息 
+ @result 成功返回YES，如果文件不存在或写入更新不成功，则返回NO。
+ */
+- (BOOL) updateTaskFile: (SyncTaskDescription *)taskDescription
+{
+    NSString *taskFilePath = [NSString stringWithFormat:@"%@%@%@/%@", [Toolkit getDocumentsPathOfApp], MIDDLEWARE_DIR, TASKS_DIR, taskDescription.taskName];
+    if(![SyncFile existsFileAtPath:taskFilePath])
+    {
+        [Toolkit MidLog:@"要修改的任务文件不存在！" LogType:error];
+        return NO;
+    }
+    SyncFile *taskFile = [[SyncFile alloc]initAtPath:taskFilePath];
+    NSString *jsonString = [taskDescription JSONRepresentation];
+    NSData *taskFileContent = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    [taskFile seekToFileOffset:0];
+    [taskFile writeData:taskFileContent];
+    return YES;
+}
+
+/*!
+ @method
+ @abstract 删除指定文件名的任务文件
+ @param taskFileName 任务文件名 
+ @result 成功返回YES，失败返回NO。
+ */
+- (BOOL) deleteTaskFileByName: (NSString *)taskFileName
+{
+    return [SyncFile deleteFileAtPath:[NSString stringWithFormat:@"%@", TASKS_DIR] WithName:taskFileName];
 }
 
 @end

@@ -74,8 +74,17 @@
  */
 - (BOOL) addTaskWithFilePath: (NSString *)filePath;
 - (BOOL) synchronize;
-
+/*!
+ @method
+ @abstract 启动上行传输线程
+ @result 无
+ */
 - (void) startUpwardTransmitThread;
+/*!
+ @method
+ @abstract 启动下行传输线程
+ @result 无
+ */
 - (void) startDownwardTransmitThread;
 - (void) check;
 
@@ -84,4 +93,13 @@
 
 //测试方法
 - (void) test;
+
+/*!
+ @method
+ @abstract 删除指定文件名的任务文件
+ @param taskFileName 任务文件名 
+ @result 成功返回YES，失败返回NO。
+ */
+- (BOOL) deleteTaskFileByName: (NSString *)taskFileName;
+
 @end
