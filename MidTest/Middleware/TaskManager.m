@@ -10,7 +10,7 @@
 #import "Toolkit.h"
 #import "SyncTaskDescription.h"
 #import "SyncTaskDescriptionList.h"
-#import "SyncTaskState.h"
+//#import "SyncTaskState.h"
 #import "SyncFile.h"
 #import "SBJson.h"
 

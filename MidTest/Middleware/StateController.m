@@ -8,7 +8,7 @@
 
 #import "StateController.h"
 #import "ClientSyncController.h"
-#import "SyncTaskState.h"
+//#import "SyncTaskState.h"
 
 @implementation StateController
 

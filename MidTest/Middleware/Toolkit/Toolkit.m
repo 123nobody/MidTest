@@ -25,7 +25,8 @@
 + (void) MidLog: (NSString *)logInfo LogType: (LogType)logType;
 {
     if (!MidLogSwitch)
-        return;
+        return;    
+    
     switch (logType) {
         case debug:
             NSLog(@"[DEBUG] %@", logInfo);

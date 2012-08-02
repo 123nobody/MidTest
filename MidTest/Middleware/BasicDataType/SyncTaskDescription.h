@@ -13,7 +13,7 @@
  @version 1.00 2012/07/26 Creation
  */
 #import <Foundation/Foundation.h>
-#import "SyncTaskState.h"
+//#import "SyncTaskState.h"
 
 /*!
  @enum
@@ -26,12 +26,12 @@
  @constant Termination 终止态
  */
 typedef enum {
-    Draft = 0,          //草稿态
-    Totransmit = 1,     //待传输态
-    Transmitting = 2,   //传输态
-    Pending = 3,        //待处理态
-    Completion = 4,     //完成态
-    Termination = 5     //终止态
+    Draft           = 0,    //草稿态
+    Totransmit      = 1,    //待传输态
+    Transmitting    = 2,    //传输态
+    Pending         = 3,    //待处理态
+    Completion      = 4,    //完成态
+    Termination     = 5     //终止态
 }TaskState;
 
 @interface SyncTaskDescription : NSObject
@@ -50,10 +50,10 @@ typedef enum {
     TaskState   _taskState;         //任务状态
     
     
-    NSArray *_syncFileList;    //需要同步的文件列表
+    NSArray     *_syncFileList;     //需要同步的文件列表
 }
 
-@property (strong ,nonatomic) NSString  *taskId;
+@property (strong, nonatomic) NSString  *taskId;
 @property (strong, nonatomic) NSString  *associateId;
 @property (assign, nonatomic) NSInteger *applicationCode;
 @property (assign, nonatomic) NSInteger *auxiliary;

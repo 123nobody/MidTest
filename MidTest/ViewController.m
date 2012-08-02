@@ -23,6 +23,39 @@
     
     NSLog(@"应用程序启动！");
     
+    int num[] = {4, 8, 2, 1, 0, 6, 7, 5, 3, 9};
+    int n;
+    for (n = 0; n < 10; n++) {
+        printf("%d,", num[n]);
+    }
+    printf("\n");
+    
+    int maxNumIndex = 0;
+    for (int i = 1; i < 10; i++) {
+        int j = 0;
+        for (j = 0; j < 10 - i; j++) {
+            if (num[j] > num[maxNumIndex]) {
+                maxNumIndex = j;
+            }
+        }
+        int t = num[j];
+        num[j] = num[maxNumIndex];
+        num[maxNumIndex] = t;
+        
+        for (n = 0; n < 10; n++) {
+            printf("%d,", num[n]);
+        }
+        printf("<%d>\n", i);
+    }
+    
+    for (n = 0; n < 10; n++) {
+        printf("%d,", num[n]);
+    }
+    printf("\n");
+    
+    return;
+    
+    
     /*JSON操作
     SBJsonParser *parser = [[SBJsonParser alloc]init];
     

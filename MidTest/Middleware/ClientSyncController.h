@@ -17,7 +17,7 @@
 #import "UpwardDataTransmitter.h"
 #import "DownwardDataTransmitter.h"
 #import "StateController.h"
-#import "SyncTaskState.h"
+//#import "SyncTaskState.h"
 #import "SyncTaskDescriptionList.h"
 
 @protocol ClientSyncControllerDelegate <NSObject>

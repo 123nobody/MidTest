@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "SyncTaskState.h"
+//#import "SyncTaskState.h"
 
 @implementation SyncTaskState
 
