@@ -23,37 +23,38 @@
     
     NSLog(@"应用程序启动！");
     
-    int num[] = {4, 8, 2, 1, 0, 6, 7, 5, 3, 9};
-    int n;
-    for (n = 0; n < 10; n++) {
-        printf("%d,", num[n]);
-    }
-    printf("\n");
     
-    int maxNumIndex = 0;
-    for (int i = 1; i < 10; i++) {
-        int j = 0;
-        for (j = 0; j < 10 - i; j++) {
-            if (num[j] > num[maxNumIndex]) {
-                maxNumIndex = j;
-            }
-        }
-        int t = num[j];
-        num[j] = num[maxNumIndex];
-        num[maxNumIndex] = t;
-        
-        for (n = 0; n < 10; n++) {
-            printf("%d,", num[n]);
-        }
-        printf("<%d>\n", i);
-    }
     
-    for (n = 0; n < 10; n++) {
-        printf("%d,", num[n]);
-    }
-    printf("\n");
     
-    return;
+    
+    
+    
+//    //POST方式调用
+//    
+//    NSString *postString=@"strJsonTask=123&strJsonIdentity=999";
+//    //NSString *postString2=@"strJsonIdentity=999";
+//    //此处的URL是POST /WebServices/WeatherWebService.asmx/getWeatherbyCityName 见上！
+//    NSURL *url;
+//    url=[NSURL URLWithString:@"http://192.168.2.103:8080/webService/servlet/DownwardRequest"];
+//    
+//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+//    
+//    [request addValue:@"application/x-www-form-urlencoded"forHTTPHeaderField:@"Content-Type"];//注意是中划线
+//    [request addValue:[NSString stringWithFormat:@"%d",[postString length]] forHTTPHeaderField:@"Content-Length"];
+//    [request setHTTPMethod:@"POST"];
+//    [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
+//    //[request setHTTPBody:[postString2 dataUsingEncoding:NSUTF8StringEncoding]];
+//    
+//    //NSURLConnection *connection=[NSURLConnection connectionWithRequest:request delegate:self];
+//    
+//    //if (connection) {
+//    NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+//    NSString *s = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
+//    NSLog(@"下面是WebService数据\n%@", s);
+//    //}
+//
+//    return;
+    
     
     
     /*JSON操作
@@ -96,11 +97,11 @@
     ClientSyncController *csc = [[ClientSyncController alloc]init];
     csc.delegate = self;
     
-    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage.txt"];
-    
-    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage.txt"];
-    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage.txt"];
-    [csc startUpwardTransmitThread];
+//    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage.txt"];
+//    
+//    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage.txt"];
+//    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage.txt"];
+//    [csc startUpwardTransmitThread];
     [csc startDownwardTransmitThread];
     
     

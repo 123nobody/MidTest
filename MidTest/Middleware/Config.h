@@ -19,7 +19,8 @@ static const NSString *MIDDLEWARE_DIR = @"/Middleware";
 //任务文件存放目录，默认为"/Tasks"，上级目录为中间件目录
 static const NSString *TASKS_DIR = @"/Tasks";
 //任务文件后缀名，默认为:midtask
-static const NSString *TASKS_SUFFIX = @"midtask";
+static const NSString *TASKS_SUFFIX_U = @"midtasku";
+static const NSString *TASKS_SUFFIX_D = @"midtaskd";
 
 
 //Log开关

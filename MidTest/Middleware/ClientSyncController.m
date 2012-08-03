@@ -161,10 +161,15 @@
     return [_stateController getStateOfTaskByTaskId:taskId];
 }
 
-#pragma mark - 获取同步任务队列
-- (SyncTaskDescriptionList *) getSyncTaskList
+#pragma mark - 获取上行同步任务队列
+- (SyncTaskDescriptionList *) getUpwareTaskList
 {
-    return _taskManager.syncTaskList;
+    return _taskManager.upTaskList;
+}
+#pragma mark - 获取下行同步任务队列
+- (SyncTaskDescriptionList *) getDownwareTaskList
+{
+    return _taskManager.downTaskList;
 }
 
 - (void) setStateOfTask: (NSString *)taskId taskState: (TaskState)taskState

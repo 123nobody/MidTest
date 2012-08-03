@@ -88,7 +88,12 @@
 - (void) startDownwardTransmitThread;
 - (void) check;
 
-- (SyncTaskDescriptionList *) getSyncTaskList;
+//获取上行同步任务队列
+- (SyncTaskDescriptionList *) getUpwareTaskList;
+//获取下行同步任务队列
+- (SyncTaskDescriptionList *) getDownwareTaskList;
+
+
 - (void) setStateOfTask: (NSString *)taskId taskState: (TaskState)taskState;
 
 //测试方法

@@ -16,13 +16,15 @@
 
 @implementation TaskManager
 
-@synthesize syncTaskList = _syncTaskList;
+@synthesize upTaskList = _upTaskList;
+@synthesize downTaskList = _downTaskList;
 
 - (id)init
 {
     self = [super init];
     if (self) {
-        _syncTaskList = [[SyncTaskDescriptionList alloc]init];
+        _upTaskList = [[SyncTaskDescriptionList alloc]init];
+        _downTaskList = [[SyncTaskDescriptionList alloc]init];
         [self loadTasks];
     }
     return self;
@@ -36,27 +38,45 @@
 - (BOOL) loadTasks
 {
     [Toolkit MidLog:@"[任务管理器]:扫描任务文件，生成任务列表。" LogType:info];
-    NSArray *taskFiles = [self scanningTaskFiles];
+    NSArray *taskFiles_u = [self scanningTaskFilesBySuffix:TASKS_SUFFIX_U];
+    NSArray *taskFiles_d = [self scanningTaskFilesBySuffix:TASKS_SUFFIX_D];
+    
     SyncTaskDescription *taskDescription;
     NSString *taskFileName;
-    for (int i = 0; i < [taskFiles count]; i++) {
-        taskFileName = [taskFiles objectAtIndex:i];
+    //载入上行任务
+    for (int i = 0; i < [taskFiles_u count]; i++) {
+        taskFileName = [taskFiles_u objectAtIndex:i];
         //NSLog(@"%@", taskFileName);
         taskDescription = [[SyncTaskDescription alloc]initWithTaskFileName:taskFileName];
-//        taskDescription.taskId = [NSString stringWithFormat:@"%d", i];
-//        taskDescription.taskName = taskFileName;
+        //        taskDescription.taskId = [NSString stringWithFormat:@"%d", i];
+        //        taskDescription.taskName = taskFileName;
         //设置任务状态为待传输态
         taskDescription.taskState = Totransmit;
         [Toolkit MidLog:[NSString stringWithFormat:@"[任务管理器]已修改任务状态为待传输态...%i", taskDescription.taskState] LogType:debug];
         
-        [_syncTaskList addTaskDescription:taskDescription];
+        [_upTaskList addTaskDescription:taskDescription];
     }
+    [Toolkit MidLog:@"已载入上行任务文件" LogType:debug];
+    //载入下行任务
+    for (int i = 0; i < [taskFiles_d count]; i++) {
+        taskFileName = [taskFiles_d objectAtIndex:i];
+        //NSLog(@"%@", taskFileName);
+        taskDescription = [[SyncTaskDescription alloc]initWithTaskFileName:taskFileName];
+        //        taskDescription.taskId = [NSString stringWithFormat:@"%d", i];
+        //        taskDescription.taskName = taskFileName;
+        //设置任务状态为待传输态
+        taskDescription.taskState = Totransmit;
+        [Toolkit MidLog:[NSString stringWithFormat:@"[任务管理器]已修改任务状态为待传输态...%i", taskDescription.taskState] LogType:debug];
+        
+        [_downTaskList addTaskDescription:taskDescription];
+    }
+    [Toolkit MidLog:@"已载入下行任务文件" LogType:debug];
     return YES;
 }
 
 /*!
  @method
- @abstract 添加一个任务
+ @abstract 添加一个上行任务
  @param dataFilePath 任务需要上传的本地资源文件的路径 
  @result 成功返回YES，失败返回NO。
  */
@@ -64,7 +84,7 @@
 {
     [Toolkit MidLog:[NSString stringWithFormat:@"[任务管理器]:添加任务,datafilePath = %@", dataFilePath] LogType:info];
     //由系统时间+后缀名构成任务文件的文件名
-    NSString *taskFileName = [NSString stringWithFormat:@"%@.%@", [Toolkit getTimestampString], TASKS_SUFFIX];
+    NSString *taskFileName = [NSString stringWithFormat:@"%@.%@", [Toolkit getTimestampString], TASKS_SUFFIX_U];
     if([SyncFile createFileAtPath:TASKS_DIR WithName:taskFileName] == nil)
     {
         [Toolkit MidLog:[NSString stringWithFormat:@"[任务管理器]:添加任务失败，%@文件已存在。", taskFileName] LogType:debug];
@@ -82,7 +102,7 @@
     taskDescription.syncFileList = [[NSArray alloc]initWithObjects:dataFilePath, nil];
     //添加任务到任务描述信息列表，并修改任务状态为待传输态
     taskDescription.taskState = Totransmit;
-    [_syncTaskList addTaskDescription:taskDescription];
+    [_upTaskList addTaskDescription:taskDescription];
     NSDictionary *dic = [taskDescription getDictionary];
     NSString *jsonString = [dic JSONRepresentation];
     
@@ -99,7 +119,7 @@
  @abstract 扫描任务文件
  @result 任务文件名的数组
  */
-- (NSArray *) scanningTaskFiles
+- (NSArray *) scanningTaskFilesBySuffix: (NSString *)suffix
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *taskDirPath = [NSString stringWithFormat:@"%@%@%@", [Toolkit getDocumentsPathOfApp], MIDDLEWARE_DIR, TASKS_DIR];
@@ -110,7 +130,7 @@
     NSMutableArray *taskFilesNameArray = [[NSMutableArray alloc]init];
     NSString *taskFileName;
     while (taskFileName = [direnum nextObject]) {
-        if ([[taskFileName pathExtension] isEqualToString:TASKS_SUFFIX]) {
+        if ([[taskFileName pathExtension] isEqualToString:suffix]) {
             [taskFilesNameArray addObject:taskFileName];
         }
     }

@@ -20,10 +20,12 @@
  */
 @interface TaskManager : NSObject
 {
-    SyncTaskDescriptionList *_syncTaskList;
+    SyncTaskDescriptionList *_upTaskList;
+    SyncTaskDescriptionList *_downTaskList;
 }
 
-@property (strong, nonatomic) SyncTaskDescriptionList *syncTaskList;
+@property (strong, nonatomic) SyncTaskDescriptionList *upTaskList;
+@property (strong, nonatomic) SyncTaskDescriptionList *downTaskList;
 
 /*!
  @method
@@ -43,9 +45,10 @@
 /*!
  @method
  @abstract 扫描任务文件
+ @param suffix 任务文件后缀名 
  @result 任务文件路径的数组
  */
-- (NSArray *) scanningTaskFiles;
+- (NSArray *) scanningTaskFilesBySuffix: (NSString *)suffix;
 
 /*!
  @method

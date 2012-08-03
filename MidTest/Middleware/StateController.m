@@ -24,18 +24,18 @@
 - (TaskState) getStateOfTaskByIndex: (NSInteger)index
 {
     NSLog(@"查询任务by index:%@的状态...", index);
-    return [[_csc getSyncTaskList] TaskDescriptionAtIndex:index].taskState;
+    return [[_csc getUpwareTaskList] TaskDescriptionAtIndex:index].taskState;
 }
 
 - (TaskState) getStateOfTaskByTaskId: (NSString *)taskId
 {
     NSLog(@"查询任务%@的状态...", taskId);
-    return [[_csc getSyncTaskList] TaskDescriptionOfTaskId:taskId].taskState;
+    return [[_csc getUpwareTaskList] TaskDescriptionOfTaskId:taskId].taskState;
 }
 
 - (void) setStateOfTask: (NSString *)taskId taskState: (TaskState)taskState
 {
-    [[_csc getSyncTaskList] TaskDescriptionOfTaskId:taskId].taskState = taskState;
+    [[_csc getUpwareTaskList] TaskDescriptionOfTaskId:taskId].taskState = taskState;
 }
 
 @end
