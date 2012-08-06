@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		B639B90915AEA6A700B1BAC7 /* SyncTaskDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = B639B90615AEA6A700B1BAC7 /* SyncTaskDescription.m */; };
+		B68E650815CF57C0001B4138 /* GTMBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = B68E650715CF57C0001B4138 /* GTMBase64.m */; };
 		B696EB6B15B50124009C7D8E /* SyncSeekOrigin.m in Sources */ = {isa = PBXBuildFile; fileRef = B696EB6A15B50124009C7D8E /* SyncSeekOrigin.m */; };
 		B696EB6E15B50281009C7D8E /* SyncStream.m in Sources */ = {isa = PBXBuildFile; fileRef = B696EB6D15B50281009C7D8E /* SyncStream.m */; };
 		B696EB7115B50DF7009C7D8E /* SyncFile.m in Sources */ = {isa = PBXBuildFile; fileRef = B696EB7015B50DF7009C7D8E /* SyncFile.m */; };
@@ -59,6 +60,9 @@
 /* Begin PBXFileReference section */
 		B639B90515AEA6A700B1BAC7 /* SyncTaskDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncTaskDescription.h; path = Middleware/BasicDataType/SyncTaskDescription.h; sourceTree = "<group>"; };
 		B639B90615AEA6A700B1BAC7 /* SyncTaskDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncTaskDescription.m; path = Middleware/BasicDataType/SyncTaskDescription.m; sourceTree = "<group>"; };
+		B68E650515CF5764001B4138 /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMDefines.h; path = Middleware/GTMBase64/GTMDefines.h; sourceTree = "<group>"; };
+		B68E650615CF57A1001B4138 /* GTMBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMBase64.h; path = Middleware/GTMBase64/GTMBase64.h; sourceTree = "<group>"; };
+		B68E650715CF57C0001B4138 /* GTMBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMBase64.m; path = Middleware/GTMBase64/GTMBase64.m; sourceTree = "<group>"; };
 		B696EB6915B50124009C7D8E /* SyncSeekOrigin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncSeekOrigin.h; path = Middleware/BasicDataType/SyncSeekOrigin.h; sourceTree = "<group>"; };
 		B696EB6A15B50124009C7D8E /* SyncSeekOrigin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncSeekOrigin.m; path = Middleware/BasicDataType/SyncSeekOrigin.m; sourceTree = "<group>"; };
 		B696EB6C15B50281009C7D8E /* SyncStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncStream.h; path = Middleware/BasicDataType/SyncStream.h; sourceTree = "<group>"; };
@@ -155,9 +159,20 @@
 			name = BasicDataType;
 			sourceTree = "<group>";
 		};
+		B68E650415CF555F001B4138 /* GTMBase64 */ = {
+			isa = PBXGroup;
+			children = (
+				B68E650515CF5764001B4138 /* GTMDefines.h */,
+				B68E650615CF57A1001B4138 /* GTMBase64.h */,
+				B68E650715CF57C0001B4138 /* GTMBase64.m */,
+			);
+			name = GTMBase64;
+			sourceTree = "<group>";
+		};
 		B696EB6715B4F591009C7D8E /* Toolkit */ = {
 			isa = PBXGroup;
 			children = (
+				B68E650415CF555F001B4138 /* GTMBase64 */,
 				B6BB243C15B949F7002F560D /* SBJson */,
 				B6BB23A915B8F3E7002F560D /* Toolkit.h */,
 				B6BB23AA15B8F3E7002F560D /* Toolkit.m */,
@@ -381,6 +396,7 @@
 				B6BB245F15B949F7002F560D /* SBJsonTokeniser.m in Sources */,
 				B6BB246015B949F7002F560D /* SBJsonUTF8Stream.m in Sources */,
 				B6BB246115B949F7002F560D /* SBJsonWriter.m in Sources */,
+				B68E650815CF57C0001B4138 /* GTMBase64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

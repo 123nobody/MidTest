@@ -10,6 +10,7 @@
 #import "ClientSyncController.h"
 #import "SBJson.h"
 #import "SyncFile.h"
+#import "GTMBase64.h"
 
 @interface ViewController ()
 
@@ -25,7 +26,21 @@
     
     NSLog(@"应用程序启动！");
 
+    SyncFile *testFile = [[SyncFile alloc]initAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/zhuomian.jpg"];
+    [testFile seekToFileOffset:10000];
+    NSData *fileData = [testFile readDataToEndOfFile];
     
+    NSString* encoded = [[NSString alloc] initWithData:[GTMBase64 encodeData:fileData] encoding:NSUTF8StringEncoding]; 
+    NSLog(@"encoded:%@", encoded);
+    NSData *newFileData = [GTMBase64 decodeString:encoded];
+    //复制文件好使
+    [SyncFile createFileAtPath:@"/" WithName:@"000.jpg"];
+    SyncFile *sFile = [[SyncFile alloc]initAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/000.jpg"];
+    [sFile seekToFileOffset:10000];
+    [sFile writeData:newFileData];
+    [sFile close];
+    
+    return;
     
 //    //POST方式调用
 //    
