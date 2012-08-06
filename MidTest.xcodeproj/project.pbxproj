@@ -22,7 +22,6 @@
 
 /* Begin PBXBuildFile section */
 		B639B90915AEA6A700B1BAC7 /* SyncTaskDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = B639B90615AEA6A700B1BAC7 /* SyncTaskDescription.m */; };
-		B639B90A15AEA6A700B1BAC7 /* SyncTaskState.m in Sources */ = {isa = PBXBuildFile; fileRef = B639B90815AEA6A700B1BAC7 /* SyncTaskState.m */; };
 		B696EB6B15B50124009C7D8E /* SyncSeekOrigin.m in Sources */ = {isa = PBXBuildFile; fileRef = B696EB6A15B50124009C7D8E /* SyncSeekOrigin.m */; };
 		B696EB6E15B50281009C7D8E /* SyncStream.m in Sources */ = {isa = PBXBuildFile; fileRef = B696EB6D15B50281009C7D8E /* SyncStream.m */; };
 		B696EB7115B50DF7009C7D8E /* SyncFile.m in Sources */ = {isa = PBXBuildFile; fileRef = B696EB7015B50DF7009C7D8E /* SyncFile.m */; };
@@ -60,8 +59,6 @@
 /* Begin PBXFileReference section */
 		B639B90515AEA6A700B1BAC7 /* SyncTaskDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncTaskDescription.h; path = Middleware/BasicDataType/SyncTaskDescription.h; sourceTree = "<group>"; };
 		B639B90615AEA6A700B1BAC7 /* SyncTaskDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncTaskDescription.m; path = Middleware/BasicDataType/SyncTaskDescription.m; sourceTree = "<group>"; };
-		B639B90715AEA6A700B1BAC7 /* SyncTaskState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncTaskState.h; path = Middleware/BasicDataType/SyncTaskState.h; sourceTree = "<group>"; };
-		B639B90815AEA6A700B1BAC7 /* SyncTaskState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncTaskState.m; path = Middleware/BasicDataType/SyncTaskState.m; sourceTree = "<group>"; };
 		B696EB6915B50124009C7D8E /* SyncSeekOrigin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncSeekOrigin.h; path = Middleware/BasicDataType/SyncSeekOrigin.h; sourceTree = "<group>"; };
 		B696EB6A15B50124009C7D8E /* SyncSeekOrigin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncSeekOrigin.m; path = Middleware/BasicDataType/SyncSeekOrigin.m; sourceTree = "<group>"; };
 		B696EB6C15B50281009C7D8E /* SyncStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncStream.h; path = Middleware/BasicDataType/SyncStream.h; sourceTree = "<group>"; };
@@ -146,8 +143,6 @@
 			children = (
 				B639B90515AEA6A700B1BAC7 /* SyncTaskDescription.h */,
 				B639B90615AEA6A700B1BAC7 /* SyncTaskDescription.m */,
-				B639B90715AEA6A700B1BAC7 /* SyncTaskState.h */,
-				B639B90815AEA6A700B1BAC7 /* SyncTaskState.m */,
 				B6E077C215AEB9DB00A3E45A /* SyncTaskDescriptionList.h */,
 				B6E077C315AEB9DB00A3E45A /* SyncTaskDescriptionList.m */,
 				B696EB6915B50124009C7D8E /* SyncSeekOrigin.h */,
@@ -362,7 +357,6 @@
 				B6DDF09F15AD4F2A00898103 /* AppDelegate.m in Sources */,
 				B6DDF0A515AD4F2A00898103 /* ViewController.m in Sources */,
 				B639B90915AEA6A700B1BAC7 /* SyncTaskDescription.m in Sources */,
-				B639B90A15AEA6A700B1BAC7 /* SyncTaskState.m in Sources */,
 				B6E077C415AEB9DB00A3E45A /* SyncTaskDescriptionList.m in Sources */,
 				B696EB6B15B50124009C7D8E /* SyncSeekOrigin.m in Sources */,
 				B696EB6E15B50281009C7D8E /* SyncStream.m in Sources */,
@@ -446,7 +440,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -464,7 +458,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

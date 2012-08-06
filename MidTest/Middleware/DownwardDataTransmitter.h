@@ -57,7 +57,7 @@
  @param length 数据长度，指明要读取的字节数。 
  @result 返回本次接收的文件数据。
  */
-- (Byte *) downwardTransmitWithToken: (NSString *)token Offset: (long)offset Length: (long)length;
+- (NSData *) downwardTransmitWithToken: (NSString *)token Offset: (long)offset Length: (long)length;
 
 /*!
  @method

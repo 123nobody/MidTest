@@ -56,7 +56,7 @@
  @param buffer 数据缓冲区，存储文件段数据,要求服务端把此数据写入文件中，写入的起始位置是lOffset。
  @result 成功返回YES，失败返回NO。
  */
-- (NSString *) upwardTransmitWithToken: (NSString *)token Offset: (unsigned long long)offset Buffer: (Byte[])buffer;
+- (NSString *) upwardTransmitWithToken: (NSString *)token Offset: (long)offset Buffer: (NSData *)buffer;
 /*!
  @method
  @abstract 上行文件传输结束(一个文件)

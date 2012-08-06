@@ -11,6 +11,7 @@
 #import "ClientSyncController.h"
 #import "SyncTaskDescription.h"
 #import "SyncTaskDescriptionList.h"
+#import "SyncFile.h"
 
 @implementation UpwardDataTransmitter
 
@@ -51,6 +52,18 @@
         NSString *taskId = taskDescription.taskId;
         NSString *taskName = taskDescription.taskName;
 //        TaskState taskState = taskDescription.taskState;
+        NSArray *syncFileList = taskDescription.syncFileList;
+        
+        
+        //这里是文件路径。。。。。
+        NSString *syncFilePath = [syncFileList objectAtIndex:0];
+        NSString *syncFileName = [Toolkit getFileNameByPath:syncFilePath];
+        NSLog(@"syncFileName = %@", syncFileName);
+        //构造jsonTaskInfo
+        NSArray *taskInfoArray = [[NSArray alloc]initWithObjects:syncFileName, @"session", nil];
+        NSArray *taskInfoKey = [[NSArray alloc]initWithObjects:@"fileName", @"taskSession", nil];
+        NSDictionary *taskInfoDic = [[NSDictionary alloc]initWithObjects:taskInfoArray forKeys:taskInfoKey];
+        
         
         //设置任务状态为传输态
         taskDescription.taskState = Transmitting;
@@ -58,15 +71,46 @@
         //上传
         [_delegate uploadBegin];
         
-        NSString *resultString = [self upwardTransmitWithToken:token Offset:0 Buffer:nil];
-        NSLog(@"上传返回结果为：%@", resultString);
+//        NSString *tmp = @"zzzxxxccc";
+        
+        SyncFile *dataFile = [[SyncFile alloc]initAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/zhuomian.jpg"];
+        
+//        UIImage *image = [[UIImage alloc]initWithContentsOfFile:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/zhuomian.jpg"];
+//        NSData *tmpData = UIImageJPEGRepresentation(image, 1);
+        
+        NSData *tmpData = [dataFile readDataOfLength:100];
+        
+//        NSString *string = @"1234567890";
+//        NSData *tmpData = [string dataUsingEncoding:NSUTF8StringEncoding];
+        
+        //复制文件好使
+//        [SyncFile createFileAtPath:@"/" WithName:@"000.jpg"];
+//        SyncFile *sFile = [[SyncFile alloc]initAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/000.jpg"];
+//        [sFile writeData:tmpData];
+//        [sFile close];
+        
+//        Byte *tmpByte = (Byte *)malloc(tmpData.length);
+//        memcpy(tmpByte, [tmpData bytes], tmpData.length);
+//        Byte *tmpByte = (Byte *)[tmpData bytes];
+//        NSLog(@"upfile-tempByte:%s length = %d", tmpByte, tmpData.length);
+        
+        //[SyncFile createFileAtPath:@"/" WithName:@"000.jpg"];
+        //SyncFile *sFile = [[SyncFile alloc]initAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/000.jpg"];
+        //[sFile writeData:[NSData dataWithBytes:tmpByte length:547043]];
+        //[sFile close];
+        
+        NSString *dataString = [[NSString alloc]initWithData:tmpData encoding:NSUTF8StringEncoding];
+        NSString *resultString = [self upwardTransmitWithToken:@"session,zhuomian.jpg" Offset:0 Buffer:tmpData];
+//        NSString *resultString = [self upwardTransmitWithToken:@"session,zhuomian.jpg" Offset:35 Buffer:tmpByte];
+        NSLog(@"上传返回结果为：%@   dataString = %@  dataLength = %d", resultString, dataString, tmpData.length);
         
         //每上传成功一段数据，就更新任务描述内容并写入任务文件。
         [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]上传第%d个任务 - id:%@ name:%@ state:%d", (i + 1), taskId, taskName, taskDescription.taskState] LogType:debug];
         [_delegate uploadFinish];
         
-        NSString *finishString = [self upwardFinishWithToken:token Trash:@"ture"];
-        NSLog(@"上传结束结果为：%@", finishString);
+        //一个文件上传结束通知服务器
+//        NSString *finishString = [self upwardFinishWithToken:token Trash:@"ture"];
+//        NSLog(@"上传结束结果为：%@", finishString);
         
         //如果上传结束且成功，修改对应的任务状态为已完成。
         if (YES) {
@@ -126,7 +170,7 @@
  @param buffer 数据缓冲区，存储文件段数据,要求服务端把此数据写入文件中，写入的起始位置是lOffset。
  @result 成功返回YES，失败返回NO。
  */
-- (NSString *) upwardTransmitWithToken: (NSString *)token Offset: (unsigned long long)offset Buffer: (Byte[])buffer
+- (NSString *) upwardTransmitWithToken: (NSString *)token Offset: (long)offset Buffer: (NSData *)buffer
 {
     //POST方式调用
     
@@ -134,7 +178,12 @@
     NSURL *url;
     url=[NSURL URLWithString:@"http://192.168.2.103:8080/webService/servlet/UpwardTransmit"];
     //post参数
-    NSString *postString = [NSString stringWithFormat:@"strToken=%@&lOffset=%@&buffer=%@", token, offset, buffer];
+    NSLog(@"buffer inner %@",buffer);
+    NSString *dataString = [[NSString alloc]initWithData:buffer encoding:NSUnicodeStringEncoding];
+    NSLog(@"dataString = %@  dataStringLength = %d", dataString, dataString.length);
+    NSString *postString = [NSString stringWithFormat:@"strToken=%@&lOffset=%li&buffer=%@", token, offset, dataString];
+//    NSString *postString = [NSString stringWithFormat:@"strToken=%@&lOffset=%li&buffer=%s", token, offset, buffer];
+    NSLog(@"postString:%@", postString);
     //Requst
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     

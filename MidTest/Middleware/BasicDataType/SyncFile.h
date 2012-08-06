@@ -72,20 +72,20 @@
  @abstract 获取文件大小（单位为字节Byte）
  @result 返回文件大小（单位为字节Byte）
  */
-- (unsigned long long) fileSize;
+- (long) fileSize;
 /*!
  @method
  @abstract 获取文件当前的操作位置（单位为字节Byte）
  @result 返回文件当前的操作位置（单位为字节Byte）
  */
-- (unsigned long long) offsetInFile;
+- (long) offsetInFile;
 /*!
  @method
  @abstract 设置文件当前的操作位置（单位为字节Byte）
  @param offset 偏移量
  @result 返回文件当前的操作位置（单位为字节Byte）
  */
-- (void)seekToFileOffset:(unsigned long long)offset;
+- (void)seekToFileOffset:(long)offset;
 /*!
  @method
  @abstract 读length长的数据（单位为字节Byte）

@@ -30,7 +30,7 @@
     //设置下行传输线程开始
     _csc.downwardThreadStoped = NO;
     
-    long useLength = 100;
+    long useLength = 10000; //1000 = 1KB
     
     int n = 0;
     //一直申请，知道服务器告诉没有文件了为止
@@ -48,24 +48,53 @@
         
         NSString *fileName = [taskInfoArr valueForKey:@"fileName"];
         NSString *fileLength = [taskInfoArr valueForKey:@"fileLength"];
-        useLength = [fileLength doubleValue];
+
         [Toolkit MidLog:[NSString stringWithFormat:@"fileName:%@ fileLength:%@", fileName, fileLength] LogType:debug];
         
-        Byte *s;
-        s = [self downwardTransmitWithToken:token Offset:0 Length:useLength];
-        NSData *data = [[NSData alloc]initWithBytes:s length:useLength];
         
+        //以下是传递每一个文件
         
-        [SyncFile createFileAtPath:@"/download" WithName:fileName];
+        //如果文件不存在，就在download目录下创建一个
+        if (![SyncFile existsFileAtPath:[NSString stringWithFormat:@"%@%@/download/%@", [Toolkit getDocumentsPathOfApp], MIDDLEWARE_DIR, fileName]])
+        {
+            [SyncFile createFileAtPath:@"/download" WithName:fileName];
+        }
+        //打开文件
         SyncFile *downloadFile = [[SyncFile alloc]initAtPath:[NSString stringWithFormat:@"%@%@/download/%@", [Toolkit getDocumentsPathOfApp], MIDDLEWARE_DIR, fileName]];
-        [downloadFile writeData:data];
+        
+        //Byte *s;
+        NSData *data;
+        long offset = 0;
+        int n = 1;
+        //直到返回的长度小于申请的长度，说明是最后一段数据。
+        while (YES) {
+            NSLog(@"第%d次传输。", n++);
+//            s = [self downwardTransmitWithToken:token Offset:offset Length:useLength];
+            data = [self downwardTransmitWithToken:token Offset:offset Length:useLength];
+            
+            //NSLog(@"Byte:\n%s", s);
+//            NSData *data = [[NSData alloc]initWithBytes:<#(const void *)#> length:<#(NSUInteger)#>
+            [downloadFile writeData:data];
+            offset += useLength;
+            [downloadFile seekToFileOffset:offset];
+            if (data.length < useLength) {
+                break;
+            }
+            NSLog(@"..........................length = %d", data.length);
+        }
+        //关闭文件
+        [downloadFile close];
+        
+        //以上是传递每一个文件
         
         
-        NSLog(@"ddddddd:%@", data);
+        
+        
+        //NSLog(@"ddddddd:%@", data);
         
 //        NSString *dataString = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-        NSString *string = [[NSString alloc]initWithBytes:s length:useLength encoding:NSUTF8StringEncoding];
-        NSLog(@"返回的数据：%@", string);
+//        NSString *string = [[NSString alloc]initWithBytes:s length:useLength encoding:NSUTF8StringEncoding];
+//        NSLog(@"返回的数据：%@", string);
 //        NSLog(@"...................dataString = %@", dataString);
         
         
@@ -129,7 +158,7 @@
  @param length 数据长度，指明要读取的字节数。 
  @result 返回本次接收的文件数据。
  */
-- (Byte *) downwardTransmitWithToken: (NSString *)token Offset: (long)offset Length: (long)length
+- (NSData *) downwardTransmitWithToken: (NSString *)token Offset: (long)offset Length: (long)length
 {
     //POST方式调用
     
@@ -143,7 +172,8 @@
     url=[NSURL URLWithString:@"http://192.168.2.103:8080/webService/servlet/DownwardTransmit"];
     //post参数
     NSLog(@"fileName:%@ offset:%li length:%li", fileName, offset, length);
-    NSString *postString = [NSString stringWithFormat:@"strToken=%@&lOffset=%li&lLength=%li", fileName, offset, length];
+    NSString *postString = [NSString stringWithFormat:@"strToken=%@&lOffset=%li&lLength=%li", @"session", offset, length];
+    //NSLog(@"postString:%@", postString);
     //Requst
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
@@ -156,14 +186,15 @@
     
     //if (connection) {
     NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    NSLog(@"dataString111:%@", [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding]);
-    Byte *b = [urlData bytes];
+    //NSLog(@"dataString111:%@", [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding]);
+    //Byte *b = [urlData bytes];
 //    Byte *b = (Byte)urlData;
 //    NSString *str = [[NSString alloc]initWithBytes:b length:80 encoding:NSUTF8StringEncoding];
 //    NSLog(@"ssss = %@", str);
 //    Byte *b = (Byte *)urlData;
 
-    return b;
+//    return b;
+    return urlData;
 }
 
 /*!
@@ -174,7 +205,7 @@
  */
 - (NSString *) downwardFinishWithToken: (NSString *)token
 {
-    
+    return @"";
 }
 
 @end

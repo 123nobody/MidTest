@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "ClientSyncController.h"
 #import "SBJson.h"
+#import "SyncFile.h"
 
 @interface ViewController ()
 
@@ -16,17 +17,14 @@
 
 @implementation ViewController
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
     NSLog(@"应用程序启动！");
-    
-    
-    
-    
-    
+
     
     
 //    //POST方式调用
@@ -97,12 +95,12 @@
     ClientSyncController *csc = [[ClientSyncController alloc]init];
     csc.delegate = self;
     
-//    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage.txt"];
-//    
-//    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage.txt"];
-//    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage.txt"];
-//    [csc startUpwardTransmitThread];
-    [csc startDownwardTransmitThread];
+//    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage1.txt"];
+//    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage2.txt"];
+    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage3.txt"];
+    [csc startUpwardTransmitThread];
+    
+//    [csc startDownwardTransmitThread];
     
     
     return;

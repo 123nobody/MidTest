@@ -129,26 +129,31 @@
 
 
 //获取文件大小
-- (unsigned long long) fileSize
+- (long) fileSize
 {
     [_readFileHandle seekToEndOfFile];
-    unsigned long long fileSize = [_readFileHandle offsetInFile];
+    long fileSize = [_readFileHandle offsetInFile];
     [_readFileHandle seekToFileOffset:_position];
     return fileSize;
 }
 //获取文件当前的操作位置
-- (unsigned long long) offsetInFile
+- (long) offsetInFile
 {
     return _position;
 }
 //设置文件当前的操作位置
-- (void)seekToFileOffset:(unsigned long long)offset
+- (void)seekToFileOffset:(long)offset
 {
     _position = offset;
 }
 //读length长的数据
 - (NSData *)readDataOfLength:(NSUInteger)length
 {
+    long fileSize = [self fileSize];
+    if ((fileSize < _position + length)) {
+        [_readFileHandle seekToFileOffset:_position];
+        return [_readFileHandle readDataOfLength:fileSize];
+    }
     [_readFileHandle seekToFileOffset:_position];
     return [_readFileHandle readDataOfLength:length];
 }

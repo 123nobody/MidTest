@@ -53,6 +53,21 @@
     return documentsDirectory;
 }
 
+/*!
+ @method
+ @abstract 根据文件完整路径，获取文件名
+ @param filePath 文件完整路径，包括文件名。 
+ @result 返回文件名
+ */
++ (NSString *) getFileNameByPath: (NSString *)filePath
+{
+    NSRange range = [filePath rangeOfString:@"/" options:NSBackwardsSearch];
+    range.location += 1;
+    range.length = filePath.length - range.location;
+    NSString *fileName = [filePath substringWithRange:range];
+    return fileName;
+}
+
 + (NSData *)trimData: (NSData *)data
 {
     NSString *string = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
