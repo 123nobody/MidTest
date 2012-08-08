@@ -10,6 +10,7 @@
 #import "ClientSyncController.h"
 #import "Toolkit.h"
 #import "SBJson.h"
+#import "GTMBase64.h"
 #import "SyncFile.h"
 
 @implementation DownwardDataTransmitter
@@ -30,6 +31,7 @@
     //设置下行传输线程开始
     _csc.downwardThreadStoped = NO;
     
+    //每次请求的数据长度，记得放到配置文件中 
     long useLength = 10000; //1000 = 1KB
     
     int n = 0;
@@ -64,19 +66,23 @@
         
         //Byte *s;
         NSData *data;
+        NSString *base64String;
         long offset = 0;
         int n = 1;
         //直到返回的长度小于申请的长度，说明是最后一段数据。
         while (YES) {
             NSLog(@"第%d次传输。", n++);
-//            s = [self downwardTransmitWithToken:token Offset:offset Length:useLength];
-            data = [self downwardTransmitWithToken:token Offset:offset Length:useLength];
+            //            s = [self downwardTransmitWithToken:token Offset:offset Length:useLength];
+//            data = [self downwardTransmitWithToken:token Offset:offset Length:useLength];
+            base64String = [self downwardTransmitWithToken:token Offset:offset Length:useLength];
+            data = [GTMBase64 decodeString:base64String];
             
             //NSLog(@"Byte:\n%s", s);
 //            NSData *data = [[NSData alloc]initWithBytes:<#(const void *)#> length:<#(NSUInteger)#>
             [downloadFile writeData:data];
             offset += useLength;
             [downloadFile seekToFileOffset:offset];
+            //当返回的数据长度小于申请的数据长度时，表示这个文件已经传输结束，跳出while循环。否则继续申请数据。
             if (data.length < useLength) {
                 break;
             }
@@ -128,7 +134,7 @@
     
     //URL
     NSURL *url;
-    url=[NSURL URLWithString:@"http://192.168.2.103:8080/webService/servlet/DownwardRequest"];
+    url=[NSURL URLWithString:@"http://192.168.4.186:8080/ZySynchronous/servlet/DownwardRequest"];
     //post参数
     NSString *postString = [NSString stringWithFormat:@"strJsonTask=%@&strJsonIdentity=%@", jsonTask, jsonIdentity];
     //Requst
@@ -158,7 +164,7 @@
  @param length 数据长度，指明要读取的字节数。 
  @result 返回本次接收的文件数据。
  */
-- (NSData *) downwardTransmitWithToken: (NSString *)token Offset: (long)offset Length: (long)length
+- (NSString *) downwardTransmitWithToken: (NSString *)token Offset: (long)offset Length: (long)length
 {
     //POST方式调用
     
@@ -169,7 +175,7 @@
     
     //URL
     NSURL *url;
-    url=[NSURL URLWithString:@"http://192.168.2.103:8080/webService/servlet/DownwardTransmit"];
+    url=[NSURL URLWithString:@"http://192.168.4.186:8080/ZySynchronous/servlet/DownwardTransmit"];
     //post参数
     NSLog(@"fileName:%@ offset:%li length:%li", fileName, offset, length);
     NSString *postString = [NSString stringWithFormat:@"strToken=%@&lOffset=%li&lLength=%li", @"session", offset, length];
@@ -194,7 +200,10 @@
 //    Byte *b = (Byte *)urlData;
 
 //    return b;
-    return urlData;
+    
+    NSString *base64String = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
+    
+    return base64String;
 }
 
 /*!
