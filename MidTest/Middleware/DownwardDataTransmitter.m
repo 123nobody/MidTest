@@ -32,7 +32,7 @@
     _csc.downwardThreadStoped = NO;
     
     //每次请求的数据长度，记得放到配置文件中 
-    long useLength = 10000; //1000 = 1KB
+    long useLength = 1024 * 100; //1024 = 1KB
     
     int n = 0;
     //一直申请，知道服务器告诉没有文件了为止
@@ -86,7 +86,7 @@
             if (data.length < useLength) {
                 break;
             }
-            NSLog(@"..........................length = %d", data.length);
+//            NSLog(@"..........................length = %d", data.length);
         }
         //关闭文件
         [downloadFile close];
@@ -113,6 +113,7 @@
 //        [_delegate downloadFinish];
 //    }
     
+    [self downwardFinishWithToken:@"session"];
     
     [Toolkit MidLog:@"[下行传输器]下行数据传输线程结束!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" LogType:debug];
     //设置下行传输线程结束

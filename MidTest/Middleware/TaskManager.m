@@ -98,7 +98,7 @@
     NSString *taskFilePath = [NSString stringWithFormat:@"%@/%@", targetPath, taskFileName];
     SyncFile *taskFile = [[SyncFile alloc]initAtPath:taskFilePath];
     
-    SyncTaskDescription *taskDescription = [[SyncTaskDescription alloc]initWithTaskId:@"01" taskName:taskFileName];
+    SyncTaskDescription *taskDescription = [[SyncTaskDescription alloc]initWithTaskId:@"" taskName:taskFileName];
     taskDescription.syncFileList = [[NSArray alloc]initWithObjects:dataFilePath, nil];
     //添加任务到任务描述信息列表，并修改任务状态为待传输态
     taskDescription.taskState = Totransmit;

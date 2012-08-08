@@ -75,16 +75,45 @@
         //上传
         [_delegate uploadBegin];
         
-//        NSString *tmp = @"zzzxxxccc";
+        //以下是上传每一个文件
         
+        //获得文件完整路径
+        
+        //打开文件
         SyncFile *dataFile = [[SyncFile alloc]initAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/wei.png"];
+        long fileSize = [dataFile fileSize];
+        long offset = 0;
+        int n = 1;
+        
+        while (offset < fileSize) {
+            NSLog(@"第%d次传输！", n++);
+            //设置文件操作位置
+            [dataFile seekToFileOffset:offset];
+            //在文件中读取指定长度的数据
+            NSData *tmpData = [dataFile readDataOfLength:useLength];
+            //将读出的数据转成Base64编码的NSData，然后再转成NSString格式。
+            NSString *base64String = [[NSString alloc]initWithData:[GTMBase64 encodeData:tmpData] encoding:NSUTF8StringEncoding];
+            //将NSString中的"+"替换为"%2B"，以保证正确传输。
+            base64String = [base64String stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+            //传输一段数据
+            NSString *resultString = [self upwardTransmitWithToken:@"session,wei.png" Offset:offset Base64String:base64String];
+            NSLog(@"上传返回结果为：%@ dataLength = %d", resultString, tmpData.length);
+            if ([resultString isEqualToString:@"true"]) {
+                //每上传成功一段数据，就更新任务描述内容并写入任务文件。
+                //更新offset
+                offset += useLength;
+            }
+        }
+        
+        //通知服务器一个文件传输结束
+        [self upwardTransmitWithToken:@"session,wei.png" Offset:-1 Base64String:nil];
+        //关闭文件
+        [dataFile close];
         
 //        UIImage *image = [[UIImage alloc]initWithContentsOfFile:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/zhuomian.jpg"];
 //        NSData *tmpData = UIImageJPEGRepresentation(image, 1);
         
-        //在文件中读取指定长度的数据
-//        NSData *tmpData = [dataFile readDataOfLength:useLength];
-        NSData *tmpData = [dataFile readDataToEndOfFile];
+//        NSData *tmpData = [dataFile readDataToEndOfFile];
 //        Byte *b = [tmpData bytes];
         
         //复制文件好使
@@ -95,24 +124,21 @@
         
         
 //        NSData *base64Data = [GTMBase64 encodeBytes:b length:tmpData.length];
-        NSString *base64String = [[NSString alloc]initWithData:[GTMBase64 encodeData:tmpData] encoding:NSUTF8StringEncoding];
-        base64String = [base64String stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
-        NSString *resultString = [self upwardTransmitWithToken:@"session,wei.png" Offset:0 Base64String:base64String];
-        //通知服务器一个文件传输结束
-        [self upwardTransmitWithToken:@"session,wei.png" Offset:-1 Base64String:nil];
 //        NSString *resultString = [self upwardTransmitWithToken:@"session,zhuomian.jpg" Offset:35 Buffer:tmpByte];
 //        NSLog(@"上传返回结果为：%@   base64String = %@  dataLength = %d", resultString, base64String, tmpData.length);
-        NSLog(@"上传返回结果为：%@ dataLength = %d", resultString, tmpData.length);
+        
         
         //每上传成功一段数据，就更新任务描述内容并写入任务文件。
         [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]上传第%d个任务 - id:%@ name:%@ state:%d", (i + 1), taskId, taskName, taskDescription.taskState] LogType:debug];
+        
+        //以上是上传每一个文件
         [_delegate uploadFinish];
         
         //一个文件上传结束通知服务器
 //        NSString *finishString = [self upwardFinishWithToken:token Trash:@"ture"];
 //        NSLog(@"上传结束结果为：%@", finishString);
         
-        //如果上传结束且成功，修改对应的任务状态为已完成。
+        //如果全部文件上传结束且成功，修改对应的任务状态为已完成。
         if (YES) {
             taskDescription.taskState = Completion;
             [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]已修改任务状态为完成态...%i", taskDescription.taskState] LogType:debug];
@@ -183,7 +209,7 @@
     //这里的buffer改叫什么名了？？？？？？？？？？？？
     NSString *postString = [NSString stringWithFormat:@"strToken=%@&lOffset=%li&buffer=%@", token, offset, base64String];
 //    NSString *postString = [NSString stringWithFormat:@"strToken=%@&lOffset=%li&buffer=%s", token, offset, buffer];
-    NSLog(@"postString:%@", postString);
+    //NSLog(@"postString:%@", postString);
     //Requst
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
