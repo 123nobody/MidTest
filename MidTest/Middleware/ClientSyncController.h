@@ -69,10 +69,10 @@
 /*!
  @method
  @abstract 添加一个任务
- @param filePath 数据文件的路径，包括文件名。 
+ @param filePathArray 数据文件的路径的数组，包括文件名。 
  @result 是否添加成功, 成功返回YES，失败返回NO。
  */
-- (BOOL) addTaskWithFilePath: (NSString *)filePath;
+- (BOOL) addTaskWithFilePathArray: (NSArray *)filePathArray;
 - (BOOL) synchronize;
 /*!
  @method

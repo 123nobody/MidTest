@@ -77,12 +77,11 @@
 /*!
  @method
  @abstract 添加一个上行任务
- @param dataFilePath 任务需要上传的本地资源文件的路径 
+ @param syncFilePathArray 任务需要上传的本地资源文件的路径 
  @result 成功返回YES，失败返回NO。
  */
-- (BOOL) addTaskWithDataFilePath: (NSString *)dataFilePath
+- (BOOL) addTaskWithSyncFilePathArray: (NSArray *)syncFilePathArray
 {
-    [Toolkit MidLog:[NSString stringWithFormat:@"[任务管理器]:添加任务,datafilePath = %@", dataFilePath] LogType:info];
     //由系统时间+后缀名构成任务文件的文件名
     NSString *taskFileName = [NSString stringWithFormat:@"%@.%@", [Toolkit getTimestampString], TASKS_SUFFIX_U];
     if([SyncFile createFileAtPath:TASKS_DIR WithName:taskFileName] == nil)
@@ -90,7 +89,7 @@
         [Toolkit MidLog:[NSString stringWithFormat:@"[任务管理器]:添加任务失败，%@文件已存在。", taskFileName] LogType:debug];
         return NO;
     }
-    [Toolkit MidLog:@"[任务管理器]:添加任务,生成任务文件." LogType:info];
+    [Toolkit MidLog:@"[任务管理器]:添加任务成功,生成任务文件." LogType:debug];
     
     //拿到应用程序路径
     NSString *documentsDirectory = [Toolkit getDocumentsPathOfApp];
@@ -98,13 +97,20 @@
     NSString *taskFilePath = [NSString stringWithFormat:@"%@/%@", targetPath, taskFileName];
     SyncFile *taskFile = [[SyncFile alloc]initAtPath:taskFilePath];
     
-    SyncTaskDescription *taskDescription = [[SyncTaskDescription alloc]initWithTaskId:@"" taskName:taskFileName];
-    taskDescription.syncFileList = [[NSArray alloc]initWithObjects:dataFilePath, nil];
+//    NSLog(@"000");
+    SyncTaskDescription *taskDescription = [[SyncTaskDescription alloc]initWithTaskName:taskFileName SyncFilePathArray:syncFilePathArray];
+//    NSLog(@"777");
+//    taskDescription.syncFileList = syncFilePathArray;
+    
     //添加任务到任务描述信息列表，并修改任务状态为待传输态
     taskDescription.taskState = Totransmit;
     [_upTaskList addTaskDescription:taskDescription];
-    NSDictionary *dic = [taskDescription getDictionary];
+    
+//    NSLog(@"111111");
+    NSDictionary *dic = [taskDescription getDictionaryForClient];
+//    NSLog(@"222222");
     NSString *jsonString = [dic JSONRepresentation];
+    NSLog(@"生成任务文件的内容，json：%@", jsonString);
     
     NSData *taskFileContent = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     

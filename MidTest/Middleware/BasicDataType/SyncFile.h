@@ -13,7 +13,7 @@
  @version 1.00 2012/07/26 Creation
  */
 #import <Foundation/Foundation.h>
-#import "SyncStream.h"
+//#import "SyncStream.h"
 
 /*!
  @class
@@ -37,10 +37,10 @@
  @param fileName 文件名 
  @result 实现文件读写流接口的实例
  */
-+ (SyncStream *) createFileAtPath: (NSString *)filePath WithName: (NSString *)fileName;
++ (BOOL) createFileAtPath: (NSString *)filePath WithName: (NSString *)fileName;
 /*打开指定的文件。
  return实现文件读写流接口的实例。*/
-+ (SyncStream *) openFileAtPath: (NSString *)filePath WithName: (NSString *)fileName;
+//+ (SyncStream *) openFileAtPath: (NSString *)filePath WithName: (NSString *)fileName;
 /*!
  @method
  @abstract 删除指定的文件

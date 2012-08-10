@@ -37,10 +37,10 @@
 /*!
  @method
  @abstract 添加一个任务
- @param dataFilePath 任务需要上传的本地资源文件的路径 
+ @param syncFilePathArray 任务需要上传的本地资源文件的路径的数组
  @result 成功返回YES，失败返回NO。
  */
-- (BOOL) addTaskWithDataFilePath: (NSString *)dataFilePath;
+- (BOOL) addTaskWithSyncFilePathArray: (NSArray *)syncFilePathArray;
 
 /*!
  @method

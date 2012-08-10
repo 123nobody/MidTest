@@ -133,11 +133,13 @@
 {
     //POST方式调用
     
+    //WebService路径
+    NSString *webServicePath = [[NSString alloc]initWithFormat:@"%@", WEBSERVICE_PATH];
     //URL
     NSURL *url;
-    url=[NSURL URLWithString:@"http://192.168.4.186:8080/ZySynchronous/servlet/DownwardRequest"];
+    url=[NSURL URLWithString:webServicePath];
     //post参数
-    NSString *postString = [NSString stringWithFormat:@"strJsonTask=%@&strJsonIdentity=%@", jsonTask, jsonIdentity];
+    NSString *postString = [NSString stringWithFormat:@"requestType=DownwardRequest&strJsonTask=%@&strJsonIdentity=%@", jsonTask, jsonIdentity];
     //Requst
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
@@ -174,12 +176,14 @@
     NSString *fileName = [taskInfoArr valueForKey:@"fileName"];
     
     
+    //WebService路径
+    NSString *webServicePath = [[NSString alloc]initWithFormat:@"%@", WEBSERVICE_PATH];
     //URL
     NSURL *url;
-    url=[NSURL URLWithString:@"http://192.168.4.186:8080/ZySynchronous/servlet/DownwardTransmit"];
+    url=[NSURL URLWithString:webServicePath];
     //post参数
     NSLog(@"fileName:%@ offset:%li length:%li", fileName, offset, length);
-    NSString *postString = [NSString stringWithFormat:@"strToken=%@&lOffset=%li&lLength=%li", @"session", offset, length];
+    NSString *postString = [NSString stringWithFormat:@"requestType=DownwardTransmit&strToken=%@&lOffset=%li&lLength=%li", @"session", offset, length];
     //NSLog(@"postString:%@", postString);
     //Requst
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];

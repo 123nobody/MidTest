@@ -51,7 +51,17 @@
  @result 返回文件名
  */
 + (NSString *) getFileNameByPath: (NSString *)filePath;
+/*!
+ @method
+ @abstract 根据文件完整路径，获取文件大小。
+ @param filePath 文件完整路径，包括文件名。 
+ @result 返回文件大小。
+ */
++ (long) getFileSizeByPath: (NSString *)filePath;
 
++ (NSDate *) getDataFromString: (NSString *)dateString WithFormat: (NSString *)format;
+
++ (NSString *) getStringFromDate: (NSDate *)date WithFormat: (NSString *)format;
 
 + (NSData *)trimData: (NSData *)data;
 

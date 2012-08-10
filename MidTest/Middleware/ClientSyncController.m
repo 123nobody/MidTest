@@ -42,10 +42,10 @@
 
 #pragma mark 添加任务
 
-- (BOOL) addTaskWithFilePath: (NSString *)filePath
+- (BOOL) addTaskWithFilePathArray: (NSArray *)filePathArray;
 {
     [Toolkit MidLog:@"[同步控制器]:添加任务" LogType:info];
-    [_taskManager addTaskWithDataFilePath:filePath];
+    [_taskManager addTaskWithSyncFilePathArray:filePathArray];
     return YES;
 }
 //- (BOOL) addTask: (NSString *)msg

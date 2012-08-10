@@ -52,11 +52,12 @@
  @method
  @abstract 上行文件传输
  @param token 由UpwardRequest方法返回的上行同步令牌。
- @param Offset 文件偏移量，指明本次发送的数据在文件中的起始位置。
+ @param fileName 本次上传的文件名。
+ @param offset 文件偏移量，指明本次发送的数据在文件中的起始位置。
  @param base64String base64编码后的数据，数据缓冲区，存储文件段数据,要求服务端把此数据写入文件中，写入的起始位置是lOffset。
  @result 成功返回YES，失败返回NO。
  */
-- (NSString *) upwardTransmitWithToken: (NSString *)token Offset: (long)offset Base64String: (NSString *)base64String;
+- (NSString *) upwardTransmitWithToken: (NSString *)token FileName: (NSString *)fileName Offset: (long)offset Base64String: (NSString *)base64String;
 /*!
  @method
  @abstract 上行文件传输结束(一个文件)

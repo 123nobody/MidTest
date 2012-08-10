@@ -23,8 +23,7 @@
 /* Begin PBXBuildFile section */
 		B639B90915AEA6A700B1BAC7 /* SyncTaskDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = B639B90615AEA6A700B1BAC7 /* SyncTaskDescription.m */; };
 		B68E650815CF57C0001B4138 /* GTMBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = B68E650715CF57C0001B4138 /* GTMBase64.m */; };
-		B696EB6B15B50124009C7D8E /* SyncSeekOrigin.m in Sources */ = {isa = PBXBuildFile; fileRef = B696EB6A15B50124009C7D8E /* SyncSeekOrigin.m */; };
-		B696EB6E15B50281009C7D8E /* SyncStream.m in Sources */ = {isa = PBXBuildFile; fileRef = B696EB6D15B50281009C7D8E /* SyncStream.m */; };
+		B690CFFC15D3408900E24DCD /* SyncFileDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = B690CFFB15D3408900E24DCD /* SyncFileDescription.m */; };
 		B696EB7115B50DF7009C7D8E /* SyncFile.m in Sources */ = {isa = PBXBuildFile; fileRef = B696EB7015B50DF7009C7D8E /* SyncFile.m */; };
 		B6BB23A715B8F39E002F560D /* UpdateScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BB23A615B8F39E002F560D /* UpdateScheduler.m */; };
 		B6BB23AB15B8F3E7002F560D /* Toolkit.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BB23AA15B8F3E7002F560D /* Toolkit.m */; };
@@ -63,10 +62,8 @@
 		B68E650515CF5764001B4138 /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMDefines.h; path = Middleware/GTMBase64/GTMDefines.h; sourceTree = "<group>"; };
 		B68E650615CF57A1001B4138 /* GTMBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMBase64.h; path = Middleware/GTMBase64/GTMBase64.h; sourceTree = "<group>"; };
 		B68E650715CF57C0001B4138 /* GTMBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMBase64.m; path = Middleware/GTMBase64/GTMBase64.m; sourceTree = "<group>"; };
-		B696EB6915B50124009C7D8E /* SyncSeekOrigin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncSeekOrigin.h; path = Middleware/BasicDataType/SyncSeekOrigin.h; sourceTree = "<group>"; };
-		B696EB6A15B50124009C7D8E /* SyncSeekOrigin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncSeekOrigin.m; path = Middleware/BasicDataType/SyncSeekOrigin.m; sourceTree = "<group>"; };
-		B696EB6C15B50281009C7D8E /* SyncStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncStream.h; path = Middleware/BasicDataType/SyncStream.h; sourceTree = "<group>"; };
-		B696EB6D15B50281009C7D8E /* SyncStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncStream.m; path = Middleware/BasicDataType/SyncStream.m; sourceTree = "<group>"; };
+		B690CFFA15D3408900E24DCD /* SyncFileDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncFileDescription.h; path = Middleware/BasicDataType/SyncFileDescription.h; sourceTree = "<group>"; };
+		B690CFFB15D3408900E24DCD /* SyncFileDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncFileDescription.m; path = Middleware/BasicDataType/SyncFileDescription.m; sourceTree = "<group>"; };
 		B696EB6F15B50DF6009C7D8E /* SyncFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncFile.h; path = Middleware/BasicDataType/SyncFile.h; sourceTree = "<group>"; };
 		B696EB7015B50DF7009C7D8E /* SyncFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncFile.m; path = Middleware/BasicDataType/SyncFile.m; sourceTree = "<group>"; };
 		B6BB23A515B8F39E002F560D /* UpdateScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UpdateScheduler.h; path = Middleware/UpdateScheduler.h; sourceTree = "<group>"; };
@@ -145,14 +142,12 @@
 		B639B8FD15AEA1BD00B1BAC7 /* BasicDataType */ = {
 			isa = PBXGroup;
 			children = (
+				B690CFFA15D3408900E24DCD /* SyncFileDescription.h */,
+				B690CFFB15D3408900E24DCD /* SyncFileDescription.m */,
 				B639B90515AEA6A700B1BAC7 /* SyncTaskDescription.h */,
 				B639B90615AEA6A700B1BAC7 /* SyncTaskDescription.m */,
 				B6E077C215AEB9DB00A3E45A /* SyncTaskDescriptionList.h */,
 				B6E077C315AEB9DB00A3E45A /* SyncTaskDescriptionList.m */,
-				B696EB6915B50124009C7D8E /* SyncSeekOrigin.h */,
-				B696EB6A15B50124009C7D8E /* SyncSeekOrigin.m */,
-				B696EB6C15B50281009C7D8E /* SyncStream.h */,
-				B696EB6D15B50281009C7D8E /* SyncStream.m */,
 				B696EB6F15B50DF6009C7D8E /* SyncFile.h */,
 				B696EB7015B50DF7009C7D8E /* SyncFile.m */,
 			);
@@ -373,8 +368,6 @@
 				B6DDF0A515AD4F2A00898103 /* ViewController.m in Sources */,
 				B639B90915AEA6A700B1BAC7 /* SyncTaskDescription.m in Sources */,
 				B6E077C415AEB9DB00A3E45A /* SyncTaskDescriptionList.m in Sources */,
-				B696EB6B15B50124009C7D8E /* SyncSeekOrigin.m in Sources */,
-				B696EB6E15B50281009C7D8E /* SyncStream.m in Sources */,
 				B696EB7115B50DF7009C7D8E /* SyncFile.m in Sources */,
 				B6F8490915B652D0000D425E /* ClientSyncController.m in Sources */,
 				B6F8490A15B652D0000D425E /* DownwardDataTransmitter.m in Sources */,
@@ -397,6 +390,7 @@
 				B6BB246015B949F7002F560D /* SBJsonUTF8Stream.m in Sources */,
 				B6BB246115B949F7002F560D /* SBJsonWriter.m in Sources */,
 				B68E650815CF57C0001B4138 /* GTMBase64.m in Sources */,
+				B690CFFC15D3408900E24DCD /* SyncFileDescription.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

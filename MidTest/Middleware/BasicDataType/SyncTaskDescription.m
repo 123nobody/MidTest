@@ -7,36 +7,65 @@
 //
 
 #import "SyncTaskDescription.h"
-//#import "SyncTaskState.h"
 #import "SyncFile.h"
 #import "Toolkit.h"
 #import "SBJson.h"
+#import "SyncFileDescription.h"
 
 @implementation SyncTaskDescription
 
 @synthesize taskId          = _taskId;          //任务标识
 @synthesize associateId     = _associateId;     //关联标识
 @synthesize applicationCode = _applicationCode; //应用代码
-@synthesize auxiliary       = _auxiliary;       //辅助标记
 @synthesize taskName        = _taskName;        //任务名称
 @synthesize condition       = _condition;       //同步条件
 @synthesize createTime      = _createTime;      //创建时间
 @synthesize source          = _source;          //任务来源
-@synthesize packetSize      = _packetSize;      //数据包尺寸
-@synthesize transferSize    = _transferSize;    //已传输尺寸
-@synthesize receiveTime     = _receiveTime;     //接收时间
 @synthesize taskState       = _taskState;       //任务状态
+@synthesize syncFileList    = _syncFileList;    //需要同步的文件列表
+
+@synthesize syncFileDic     = _syncFileDic;
+
+//@synthesize auxiliary       = _auxiliary;       //辅助标记
+//@synthesize packetSize      = _packetSize;      //数据包尺寸
+//@synthesize transferSize    = _transferSize;    //已传输尺寸
+//@synthesize receiveTime     = _receiveTime;     //接收时间
 
 
-@synthesize syncFileList = _syncFileList;
 
 
-- (id)initWithTaskId: (NSString *)taskId taskName:(NSString *)taskName
+- (id)initWithTaskName:(NSString *)taskName SyncFilePathArray: (NSArray *)syncFilePathArray
 {
     self = [super init];
     if (self) {
-        _taskId = taskId;
-        _taskName = taskName;
+        _taskId             = @"";
+        _associateId        = @"";
+        _applicationCode    = 12345;
+        _taskName           = taskName;
+        _condition          = @"这里是同步条件";
+        _createTime         = [Toolkit getStringFromDate:[NSDate date] WithFormat:DEFAULT_DATE_FORMAT];
+        _source             = @"这里是任务来源";
+        
+        //临时上传文件信息字典
+        NSDictionary *tmpFileDic;
+        NSMutableArray *tmpFileArray = [[NSMutableArray alloc]init];
+        NSMutableArray *tmpFileKeys = [[NSMutableArray alloc]init];
+        SyncFileDescription *fileDescription;
+        NSString *syncFilePath;
+        //遍历文件路径数组
+        for (int i = 0; i < syncFilePathArray.count; i++) {
+            syncFilePath = [syncFilePathArray objectAtIndex:i];
+            fileDescription = [[SyncFileDescription alloc]initWithFilePath:syncFilePath];
+            [tmpFileArray addObject:[fileDescription getDictionaryForClient]];
+//            [tmpFileArray addObject:[fileDescription getDictionaryForClient]];
+            [tmpFileKeys addObject:[Toolkit getFileNameByPath:syncFilePath]];
+        }
+        
+        tmpFileDic = [[NSDictionary alloc]initWithObjects:tmpFileArray forKeys:tmpFileKeys];
+        
+//        NSLog(@"tmpFileDic:%@", [tmpFileDic JSONRepresentation]);
+        
+        _syncFileDic        = tmpFileDic;
         _taskState = Draft;
     }
     return self;
@@ -51,22 +80,129 @@
         SyncFile *taskFile = [[SyncFile alloc]initAtPath:taskFilePath];
         NSData *taskFileData = [taskFile readDataToEndOfFile];
         NSString *taskFileString = [[NSString alloc]initWithData:taskFileData encoding:NSUTF8StringEncoding];
+        
+        NSLog(@"taskFileString:\n%@", taskFileString);
+        
         NSDictionary *taskDic = [taskFileString JSONValue];
-        _taskId = [taskDic objectForKey:@"taskId"];
-        _taskName = [taskDic objectForKey:@"taskName"];
+        
+        _taskId             = [taskDic objectForKey:@"taskId"];
+        _taskName           = [taskDic objectForKey:@"taskName"];
+        _applicationCode    = [[taskDic objectForKey:@"applicationCode"] integerValue];
+        _condition          = [taskDic objectForKey:@"condition"];
+        _associateId        = [taskDic objectForKey:@"associateId"];
+        _source             = [taskDic objectForKey:@"source"];
         int taskStateNumber = [[taskDic objectForKey:@"taskState"] intValue];
-        _taskState = [self intToTaskState:taskStateNumber];
+        _taskState          = taskStateNumber;//[self intToTaskState:taskStateNumber];
+        _syncFileDic        = [taskDic objectForKey:@"syncFileDic"];
     }
     return self;
 }
-
-- (NSDictionary *) getDictionary
+//获取任务描述文件的Dic
+- (NSDictionary *) getDictionaryForClient
 {
-    NSArray *key = [[NSArray alloc]initWithObjects:@"taskId", @"taskName", @"taskState", @"syncFileList", nil];
-    NSArray *descriptionArray = [[NSArray alloc]initWithObjects:_taskId, _taskName, [NSNumber numberWithInt:_taskState], _syncFileList, nil];
-    NSDictionary *dic = [[NSDictionary alloc]initWithObjects:descriptionArray forKeys:key];
+    //    NSArray *fileInfoKey = [[NSArray alloc]initWithObjects:@"fileName", @"fileSize", @"transSize", @"auxiliary", nil];
+    //    NSArray *fileInfoArray;
+    //    NSArray *keys = [_syncFileDic allKeys];
+    //    for (int i = 0; i < keys.count; i++) {
+    //        
+    //    }
+    //    
+    //    NSLog(@"999:%@", [_syncFileDic JSONRepresentation]);
     
-    return dic;
+    //    NSDictionary    *syncFileDic = [[NSDictionary alloc]init];
+    NSArray *taskDescriptionKey = [[NSArray alloc]initWithObjects:
+                                   @"taskId", 
+                                   @"associateId", 
+                                   @"applicationCode", 
+                                   @"taskName", 
+                                   @"condition", 
+                                   @"createTime", 
+                                   @"source", 
+                                   @"taskState", 
+                                   @"syncFileDic", 
+                                   nil];
+    
+    NSArray *taskDescriptionArray = [[NSArray alloc]initWithObjects:
+                                     _taskId, 
+                                     _associateId, 
+                                     [NSNumber numberWithInteger:_applicationCode], 
+                                     _taskName, 
+                                     _condition, 
+                                     [NSString stringWithFormat:@"%@", _createTime], 
+                                     _source, 
+                                     [NSNumber numberWithUnsignedInt:_taskState], 
+                                     _syncFileDic, 
+                                     nil];
+    //    NSLog(@"33333");
+    NSDictionary *taskDescriptionDic = [[NSDictionary alloc]initWithObjects:taskDescriptionArray forKeys:taskDescriptionKey];
+    //    NSLog(@"44444");
+    
+    //    NSLog(@"任务描述信息的JsonString：\n%@", [taskDescriptionDic JSONRepresentation]);
+    
+    //    NSArray *key = [[NSArray alloc]initWithObjects:@"taskId", @"taskName", @"taskState", @"syncFileList", nil];
+    //    NSArray *descriptionArray = [[NSArray alloc]initWithObjects:_taskId, _taskName, [NSNumber numberWithInt:_taskState], _syncFileList, nil];
+    //    NSDictionary *dic = [[NSDictionary alloc]initWithObjects:descriptionArray forKeys:key];
+    
+    return taskDescriptionDic;
+}
+
+//获取任务描述文件的Dic for Server
+- (NSDictionary *) getDictionaryForServer
+{
+    //    NSArray *fileInfoKey = [[NSArray alloc]initWithObjects:@"fileName", @"fileSize", @"transSize", @"auxiliary", nil];
+    //    NSArray *fileInfoArray;
+    //    NSArray *keys = [_syncFileDic allKeys];
+    //    for (int i = 0; i < keys.count; i++) {
+    //        
+    //    }
+    //    
+    //    NSLog(@"999:%@", [_syncFileDic JSONRepresentation]);
+    
+    //通过json转换，复制出一个同步文件列表的Dic
+    NSMutableDictionary *tmpSyncFileDic = [[_syncFileDic JSONRepresentation] JSONValue];
+    //得到其中所有的对象
+    NSMutableArray *tmpSyncFileArray = [[NSMutableArray alloc]initWithArray:[tmpSyncFileDic allValues]];
+    //得到其中所有的key
+    NSArray *keys = [tmpSyncFileDic allKeys];
+    
+    NSMutableDictionary *tmpFileInfoDic = [[NSMutableDictionary alloc]init];
+    NSArray *removeKeys = [[NSArray alloc]initWithObjects:@"filePath", @"isFinished", nil];
+    
+    for (int i = 0; i < keys.count; i++) {
+        tmpFileInfoDic = [tmpSyncFileDic objectForKey:[keys objectAtIndex:i]];
+        [tmpFileInfoDic removeObjectsForKeys:removeKeys];
+        [tmpSyncFileArray replaceObjectAtIndex:i withObject:tmpFileInfoDic];
+    }
+    NSDictionary *syncFileDic = [[NSDictionary alloc]initWithObjects:tmpSyncFileArray forKeys:keys];
+    
+    
+    NSArray *taskDescriptionKey = [[NSArray alloc]initWithObjects:
+                                   @"taskId", 
+                                   @"associateId", 
+                                   @"applicationCode", 
+                                   @"taskName", 
+                                   @"condition", 
+                                   @"createTime", 
+                                   @"source", 
+                                   @"taskState", 
+                                   @"syncFileDic", 
+                                   nil];
+    
+    NSArray *taskDescriptionArray = [[NSArray alloc]initWithObjects:
+                                     _taskId, 
+                                     _associateId, 
+                                     [NSNumber numberWithInteger:_applicationCode], 
+                                     _taskName, 
+                                     _condition, 
+                                     [NSString stringWithFormat:@"%@", _createTime], 
+                                     _source, 
+                                     [NSNumber numberWithUnsignedInt:_taskState], 
+                                     syncFileDic, 
+                                     nil];
+    
+    NSDictionary *taskDescriptionDic = [[NSDictionary alloc]initWithObjects:taskDescriptionArray forKeys:taskDescriptionKey];
+    
+    return taskDescriptionDic;
 }
 
 - (TaskState) intToTaskState: (int)taskStateNumber

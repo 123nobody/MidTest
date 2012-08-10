@@ -68,6 +68,37 @@
     return fileName;
 }
 
+/*!
+ @method
+ @abstract 根据文件完整路径，获取文件大小。
+ @param filePath 文件完整路径，包括文件名。 
+ @result 返回文件大小。
+ */
++ (long) getFileSizeByPath: (NSString *)filePath
+{
+    NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
+    long position = [fileHandle offsetInFile];
+    [fileHandle seekToEndOfFile];
+    long fileSize = [fileHandle offsetInFile];
+    [fileHandle seekToFileOffset:position];
+    [fileHandle closeFile];
+    return fileSize;
+}
+
++ (NSDate *) getDataFromString: (NSString *)dateString WithFormat: (NSString *)format
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:format];
+    return [formatter dateFromString:dateString];
+}
+
++ (NSString *) getStringFromDate: (NSDate *)date WithFormat: (NSString *)format
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:format];
+    return [formatter stringFromDate:date];
+}
+
 + (NSData *)trimData: (NSData *)data
 {
     NSString *string = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];

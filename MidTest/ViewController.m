@@ -8,9 +8,11 @@
 
 #import "ViewController.h"
 #import "ClientSyncController.h"
+#import "Toolkit.h"
 #import "SBJson.h"
 #import "SyncFile.h"
-#import "GTMBase64.h"
+#import "SyncFileDescription.h"
+#import "SyncTaskDescription.h"
 
 @interface ViewController ()
 
@@ -25,51 +27,69 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     NSLog(@"应用程序启动！");
+    
+//    NSDate *nowDate = [NSDate date];
+//    NSLog(@"%@", [Toolkit getStringFromDate:nowDate WithFormat:DEFAULT_DATE_FORMAT]);
+//    return;
+    
+//    NSDictionary    *syncFileDic;
+//    
+//    SyncFileDescription *file1 = [[SyncFileDescription alloc]initWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage1.txt"];
+//    SyncFileDescription *file2 = [[SyncFileDescription alloc]initWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage2.txt"];
+//    SyncFileDescription *file3 = [[SyncFileDescription alloc]initWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage3.txt"];
+//    
+//    NSArray *infoArray_1 = [[NSArray alloc]initWithObjects:file1.fileName, [NSNumber numberWithLong:file1.fileSize], [NSNumber numberWithLong:file1.transSize], file1.auxiliary, nil];
+//    NSArray *infoArray_2 = [[NSArray alloc]initWithObjects:file2.fileName, [NSNumber numberWithLong:file2.fileSize], [NSNumber numberWithLong:file2.transSize], file2.auxiliary, nil];
+//    NSArray *infoArray_3 = [[NSArray alloc]initWithObjects:file3.fileName, [NSNumber numberWithLong:file3.fileSize], [NSNumber numberWithLong:file3.transSize], file3.auxiliary, nil];
+//    
+//    NSArray *infoKey = [[NSArray alloc]initWithObjects:@"fileName", @"fileSize", @"transSize", @"auxiliary", nil];
+//    
+//    NSDictionary *infoDic_1 = [[NSDictionary alloc]initWithObjects:infoArray_1 forKeys:infoKey];
+//    NSDictionary *infoDic_2 = [[NSDictionary alloc]initWithObjects:infoArray_2 forKeys:infoKey];
+//    NSDictionary *infoDic_3 = [[NSDictionary alloc]initWithObjects:infoArray_3 forKeys:infoKey];
+//    
+//    
+//    NSArray *fileArray = [[NSArray alloc]initWithObjects:infoDic_1, infoDic_2, infoDic_3, nil];
+//    NSArray *fileNameArray = [[NSArray alloc]initWithObjects:file1.fileName, file2.fileName, file3.fileName, nil];
+//    
+//    syncFileDic = [[NSDictionary alloc]initWithObjects:fileArray forKeys:fileNameArray];
+//    
+//    SyncTaskDescription *taskDescription = [[SyncTaskDescription alloc]initWithTaskName:@"" SyncFilePathArray:nil];
+//    taskDescription.syncFileDic = syncFileDic;
+//    
+//    NSArray *taskDescriptionKey = [[NSArray alloc]initWithObjects:
+//                                   @"taskId", 
+//                                   @"associateId", 
+//                                   @"applicationCode", 
+//                                   @"taskName", 
+//                                   @"condition", 
+//                                   @"createTime", 
+//                                   @"source", 
+//                                   @"taskState", 
+//                                   @"syncFileDic", 
+//                                   nil];
+//    NSArray *taskDescriptionArray = [[NSArray alloc]initWithObjects:
+//                                   taskDescription.taskId, 
+//                                   taskDescription.associateId, 
+//                                   [NSNumber numberWithInteger:taskDescription.applicationCode], 
+//                                   taskDescription.taskName, 
+//                                   taskDescription.condition, 
+//                                   [NSString stringWithFormat:@"%@", taskDescription.createTime], 
+//                                   taskDescription.source, 
+//                                   [NSNumber numberWithUnsignedInt:taskDescription.taskState], 
+//                                   syncFileDic, 
+//                                   nil];
+//    
+//    NSDictionary *taskDescriptionDic = [[NSDictionary alloc]initWithObjects:taskDescriptionArray forKeys:taskDescriptionKey];
+//    
+//    
+//    NSString *jsonString = [taskDescriptionDic JSONRepresentation];
+////    NSString *jsonString = [infoDic_1 JSONRepresentation];
+//    NSLog(@"%@", jsonString);
+//    
+//    return;
 
-    //base64
-//    SyncFile *testFile = [[SyncFile alloc]initAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/zhuomian.jpg"];
-//    [testFile seekToFileOffset:10000];
-//    NSData *fileData = [testFile readDataToEndOfFile];
-//    
-//    NSString* encoded = [[NSString alloc] initWithData:[GTMBase64 encodeData:fileData] encoding:NSUTF8StringEncoding]; 
-//    NSLog(@"encoded:%@", encoded);
-//    NSData *newFileData = [GTMBase64 decodeString:encoded];
-//    //复制文件好使
-//    [SyncFile createFileAtPath:@"/" WithName:@"000.jpg"];
-//    SyncFile *sFile = [[SyncFile alloc]initAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/000.jpg"];
-//    [sFile seekToFileOffset:10000];
-//    [sFile writeData:newFileData];
-//    [sFile close];
-//    
-//    return;
-    
-//    //POST方式调用
-//    
-//    NSString *postString=@"strJsonTask=123&strJsonIdentity=999";
-//    //NSString *postString2=@"strJsonIdentity=999";
-//    //此处的URL是POST /WebServices/WeatherWebService.asmx/getWeatherbyCityName 见上！
-//    NSURL *url;
-//    url=[NSURL URLWithString:@"http://192.168.2.103:8080/webService/servlet/DownwardRequest"];
-//    
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-//    
-//    [request addValue:@"application/x-www-form-urlencoded"forHTTPHeaderField:@"Content-Type"];//注意是中划线
-//    [request addValue:[NSString stringWithFormat:@"%d",[postString length]] forHTTPHeaderField:@"Content-Length"];
-//    [request setHTTPMethod:@"POST"];
-//    [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
-//    //[request setHTTPBody:[postString2 dataUsingEncoding:NSUTF8StringEncoding]];
-//    
-//    //NSURLConnection *connection=[NSURLConnection connectionWithRequest:request delegate:self];
-//    
-//    //if (connection) {
-//    NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-//    NSString *s = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
-//    NSLog(@"下面是WebService数据\n%@", s);
-//    //}
-//
-//    return;
-    
-    
+//    -----------------------------------------------------
     
     /*JSON操作
     SBJsonParser *parser = [[SBJsonParser alloc]init];
@@ -102,9 +122,6 @@
     
     NSLog(@"%@", [[jsonDic objectForKey:@"asdf3"] objectAtIndex:2]);
     
-    
-    
-    
     return;
     */
     
@@ -113,7 +130,13 @@
     
 //    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage1.txt"];
 //    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage2.txt"];
-    [csc addTaskWithFilePath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/wei.png"];
+    
+    NSArray *filePathArray = [[NSArray alloc]initWithObjects:
+                              @"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage1.txt", 
+                              @"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage2.txt", 
+                              @"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage3.txt", nil];
+    
+    [csc addTaskWithFilePathArray:filePathArray];
     [csc startUpwardTransmitThread];
     
 //    [csc startDownwardTransmitThread];

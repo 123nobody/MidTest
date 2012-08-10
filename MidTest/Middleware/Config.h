@@ -14,6 +14,8 @@
  */
 #import <Foundation/Foundation.h>
 
+//WebService方法地址
+static const NSString *WEBSERVICE_PATH = @"http://192.168.4.186:8080/ZySynchronous/servlet/ServletEntrance";
 //中间件目录，默认为"/Middleware"
 static const NSString *MIDDLEWARE_DIR = @"/Middleware";
 //任务文件存放目录，默认为"/Tasks"，上级目录为中间件目录
@@ -21,6 +23,8 @@ static const NSString *TASKS_DIR = @"/Tasks";
 //任务文件后缀名，默认为:midtask
 static const NSString *TASKS_SUFFIX_U = @"midtasku";
 static const NSString *TASKS_SUFFIX_D = @"midtaskd";
+
+static const NSString *DEFAULT_DATE_FORMAT = @"yyyy-MM-dd HH:mm:ss";
 
 
 //Log开关

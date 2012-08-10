@@ -34,9 +34,9 @@
  @param fileName 文件名
  @result 实现文件读写流接口的实例
  */
-+ (SyncStream *) createFileAtPath: (NSString *)filePath WithName: (NSString *)fileName
++ (BOOL) createFileAtPath: (NSString *)filePath WithName: (NSString *)fileName
 {
-    SyncStream *stream = [[SyncStream alloc]init];
+//    SyncStream *stream = [[SyncStream alloc]init];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
 //    NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -60,9 +60,10 @@
     }
     if (![fileManager createFileAtPath:fileName contents:nil attributes:nil]) {
         [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]文件创建失败!\n path = %@\n name = %@", filePath, fileName] LogType:error];
+        return NO;
         //NSLog(@"文件创建失败!\n path = %@\n name = %@", filePath, fileName);
     }
-    return stream;
+    return YES;
 }
 
 /*!
@@ -72,12 +73,12 @@
  @param fileName 文件名
  @result 实现文件读写流接口的实例
  */
-+ (SyncStream *) openFileAtPath: (NSString *)filePath WithName: (NSString *)fileName
-{
-    SyncStream *stream;
-    stream = [[SyncStream alloc]initAtPath:[NSString stringWithFormat:@"%@/%@", filePath, fileName]];
-    return stream;
-}
+//+ (SyncStream *) openFileAtPath: (NSString *)filePath WithName: (NSString *)fileName
+//{
+//    SyncStream *stream;
+//    stream = [[SyncStream alloc]initAtPath:[NSString stringWithFormat:@"%@/%@", filePath, fileName]];
+//    return stream;
+//}
 
 /*!
  @method
