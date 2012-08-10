@@ -47,7 +47,7 @@
     
     if ([fileManager fileExistsAtPath:fileName]) {
         [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]文件已存在:%@", fileName] LogType:debug];
-        return nil;
+        return NO;
     }
     
     if (![fileManager fileExistsAtPath:targetPath]) {

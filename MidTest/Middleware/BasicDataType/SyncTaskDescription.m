@@ -44,6 +44,7 @@
         _taskName           = taskName;
         _condition          = @"这里是同步条件";
         _createTime         = [Toolkit getStringFromDate:[NSDate date] WithFormat:DEFAULT_DATE_FORMAT];
+        NSLog(@".......CreateTime:%@", _createTime);
         _source             = @"这里是任务来源";
         
         //临时上传文件信息字典
@@ -81,7 +82,7 @@
         NSData *taskFileData = [taskFile readDataToEndOfFile];
         NSString *taskFileString = [[NSString alloc]initWithData:taskFileData encoding:NSUTF8StringEncoding];
         
-        NSLog(@"taskFileString:\n%@", taskFileString);
+//        NSLog(@"taskFileString:\n%@", taskFileString);
         
         NSDictionary *taskDic = [taskFileString JSONValue];
         
@@ -90,6 +91,7 @@
         _applicationCode    = [[taskDic objectForKey:@"applicationCode"] integerValue];
         _condition          = [taskDic objectForKey:@"condition"];
         _associateId        = [taskDic objectForKey:@"associateId"];
+        _createTime        = [taskDic objectForKey:@"createTime"];
         _source             = [taskDic objectForKey:@"source"];
         int taskStateNumber = [[taskDic objectForKey:@"taskState"] intValue];
         _taskState          = taskStateNumber;//[self intToTaskState:taskStateNumber];
@@ -97,6 +99,21 @@
     }
     return self;
 }
+
+//更新任务文件
+- (BOOL) writeToTaskFile
+{
+    NSString *taskFileContentString = [[self getDictionaryForClient] JSONRepresentation];
+    NSData *taskFileContentData = [taskFileContentString dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *taskFilePath = [[NSString alloc]initWithFormat:@"%@%@%@/%@", [Toolkit getDocumentsPathOfApp], MIDDLEWARE_DIR, TASKS_DIR, _taskName];
+    NSLog(@"更新任务文件，路径为：%@", taskFilePath);
+//    NSLog(@"更新任务文件，内容为：%@", taskFileContentString);
+    SyncFile *taskFile = [[SyncFile alloc]initAtPath:taskFilePath];
+    [taskFile writeData:taskFileContentData];
+    [taskFile close];
+    return YES;
+}
+
 //获取任务描述文件的Dic
 - (NSDictionary *) getDictionaryForClient
 {

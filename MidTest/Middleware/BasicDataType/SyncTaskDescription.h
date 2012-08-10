@@ -78,6 +78,10 @@ typedef enum {
 
 - (id)initWithTaskName:(NSString *)taskName SyncFilePathArray: (NSArray *)syncFilePathArray;
 - (id)initWithTaskFileName: (NSString *)taskFileName;
+
+//更新任务文件
+- (BOOL) writeToTaskFile;
+
 //将任务状态从数字转成枚举类型
 - (TaskState) intToTaskState: (int)taskStateNumber;
 

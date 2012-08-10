@@ -84,7 +84,7 @@
 {
     //由系统时间+后缀名构成任务文件的文件名
     NSString *taskFileName = [NSString stringWithFormat:@"%@.%@", [Toolkit getTimestampString], TASKS_SUFFIX_U];
-    if([SyncFile createFileAtPath:TASKS_DIR WithName:taskFileName] == nil)
+    if([SyncFile createFileAtPath:TASKS_DIR WithName:taskFileName] == NO)
     {
         [Toolkit MidLog:[NSString stringWithFormat:@"[任务管理器]:添加任务失败，%@文件已存在。", taskFileName] LogType:debug];
         return NO;

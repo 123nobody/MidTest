@@ -192,7 +192,11 @@
 - (void) doUpload
 {
     [Toolkit MidLog:@"[同步控制器]上行开始..." LogType:debug];
-    [_upwardDataTransmitter upload];
+    if ([_upwardDataTransmitter upload]) {
+        [Toolkit MidLog:@"上行传输正常结束！" LogType:info];
+    } else {
+        [Toolkit MidLog:@"上行传输中断！" LogType:info];
+    }
     [_delegate upwardTransminThreadStoped];
     [Toolkit MidLog:@"[同步控制器]上行结束..." LogType:debug];
 }

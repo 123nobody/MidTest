@@ -30,7 +30,22 @@
         _auxiliary = @"";
         
         _filePath = filePath;
-        _isFinished = NO;
+        _isFinished = @"false";
+    }
+    return self;
+}
+
+- (id)initWithDictionary: (NSDictionary *)dictionary
+{
+    self = [super init];
+    if (self) {
+        _fileName = [dictionary objectForKey:@"fileName"];
+        _fileSize = [[dictionary objectForKey:@"fileSize"] longValue];
+        _transSize = [[dictionary objectForKey:@"transSize"] longValue];
+        _auxiliary = [dictionary objectForKey:@"auxiliary"];
+        
+        _filePath = [dictionary objectForKey:@"filePath"];
+        _isFinished = [dictionary objectForKey:@"isFinished"];
     }
     return self;
 }
@@ -46,7 +61,7 @@
 - (NSDictionary *) getDictionaryForClient
 {
     NSArray *keys = [[NSArray alloc]initWithObjects:@"fileName", @"fileSize", @"transSize", @"auxiliary", @"filePath", @"isFinished", nil];
-    NSArray *array = [[NSArray alloc]initWithObjects:_fileName, [NSNumber numberWithLong:_fileSize], [NSNumber numberWithLong:_transSize], _auxiliary, _filePath, [NSNumber numberWithBool:_isFinished], nil];
+    NSArray *array = [[NSArray alloc]initWithObjects:_fileName, [NSNumber numberWithLong:_fileSize], [NSNumber numberWithLong:_transSize], _auxiliary, _filePath, _isFinished, nil];
     NSDictionary *dic = [[NSDictionary alloc]initWithObjects:array forKeys:keys];
     return dic;
 }

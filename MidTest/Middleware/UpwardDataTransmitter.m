@@ -35,7 +35,7 @@
 - (BOOL) upload
 {
     //每次上传的数据长度，记得放到配置文件中 
-    long useLength = 1000; //1000 = 1KB
+    long useLength = 1000 * 100; //1000 = 1KB
     
     //设置上行传输线程开始
     _csc.upwardThreadStoped = NO;
@@ -54,11 +54,6 @@
     //遍历每一个任务
     for (int i = 0; i < [syncTaskList count]; i++) {
         SyncTaskDescription *taskDescription = [syncTaskList TaskDescriptionAtIndex:i];
-        
-        
-//        SyncFile *tmpFile = [[SyncFile alloc]initAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testPackage3.txt"];
-//        NSData *tmpData = [tmpFile readDataToEndOfFile];
-//        NSString *tmpString = [[NSString alloc]initWithData:tmpData encoding:NSUTF8StringEncoding];
         
         NSString *jsonTaskDescriptionString = [[taskDescription getDictionaryForServer] JSONRepresentation];
         NSLog(@"post的json串:%@", jsonTaskDescriptionString);
@@ -82,17 +77,17 @@
         taskDescription.taskState = Transmitting;
         [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]已修改任务状态为传输态...%i", taskDescription.taskState] LogType:debug];
         
-        
+        //将token以";"分割为两部分，前半部分作为taskId
         NSRange range = [token rangeOfString:@";"];
-        NSString *taskId = [token substringToIndex:range.location];//此处taskId应为token取";"前的子串。
-        taskDescription.taskId = taskId;//写入任务描述文件
+        NSString *taskId = [token substringToIndex:range.location];
+        taskDescription.taskId = taskId;
+        //将任务的当前状态写入任务描述文件
+        [taskDescription writeToTaskFile];
         
-        NSString *taskName = @"任务名称";
-//        TaskState taskState = taskDescription.taskState;
-//        NSArray *syncFileList = taskDescription.syncFileList;
+        NSString *taskName = taskDescription.taskName;
         
-        
-        NSDictionary *syncFileDic = taskDescription.syncFileDic;
+        //从任务描述对象中，取到需要同步的文件Dic
+        NSMutableDictionary *syncFileDic = [[NSMutableDictionary alloc]initWithDictionary:taskDescription.syncFileDic];
         NSArray *keys = [syncFileDic allKeys];
         SyncFileDescription *fileDescription;
         
@@ -100,14 +95,13 @@
         long         fileSize;//文件大小
         long         transSize;//已传输大小
         NSString    *filePath;//文件路径
-//        BOOL         isFinished;//文件传输完成标识
         
         //遍历当前任务下每一个同步文件描述SyncFileDescription
         for (int i = 0; i < keys.count; i++) {
-            fileDescription = [syncFileDic objectForKey:[keys objectAtIndex:i]];
-//            isFinished = fileDescription.isFinished;
+            fileDescription = [[SyncFileDescription alloc]initWithDictionary:[syncFileDic objectForKey:[keys objectAtIndex:i]]];
+            
             //如果当前文件已传输完成，则继续下一个文件。
-            if (fileDescription.isFinished) {
+            if ([fileDescription.isFinished isEqualToString:@"true"]) {
                 continue;
             }
             fileName    = fileDescription.fileName;
@@ -116,16 +110,14 @@
             filePath    = fileDescription.filePath;
             
             //以下是上传每一个文件
-            
-            //获得文件完整路径
-            
             //打开文件
             SyncFile *dataFile = [[SyncFile alloc]initAtPath:filePath];
-            //long fileSize = [dataFile fileSize];
+            
             //设置偏移量为已传输大小
             long offset = transSize;
             int n = 1;
             
+            //开始循环传输文件
             while (offset < fileSize) {
                 NSLog(@"第%d次传输！", n++);
                 //设置文件操作位置
@@ -138,30 +130,50 @@
                 base64String = [base64String stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
                 //传输一段数据
                 NSString *resultString = [self upwardTransmitWithToken:token FileName:fileName Offset:offset Base64String:base64String];
-                NSLog(@"上传返回结果为：%@ dataLength = %d", resultString, tmpData.length);
-                if ([resultString isEqualToString:@"true"]) {
-                    //每上传成功一段数据，就更新任务描述内容并写入任务文件。
-                    //更新offset
-                    offset += useLength;
+                NSLog(@"上传返回结果为：%@ dataLength = %d  fileName = %@", resultString, tmpData.length, fileName);
+                
+                switch ([resultString intValue]) {
+                    case 1:
+                    {
+                        //更新offset
+                        offset += useLength;
+                        //每上传成功一段数据，就更新任务描述内容并写入任务文件。
+                        fileDescription.transSize = offset;
+                        
+                        NSDictionary *tmpDic = [fileDescription getDictionaryForClient];
+                        //将单个文件的Dic写入文件列表Dic
+                        [syncFileDic setObject:tmpDic forKey:[keys objectAtIndex:i]];
+                        //更新任务描述对象的同步文件Dic，并写入对应的任务文件
+                        taskDescription.syncFileDic = syncFileDic;
+                        [taskDescription writeToTaskFile];
+                        
+                        break;
+                    }
+                    case -1:
+                    {
+                        //session失败
+                        [Toolkit MidLog:@"session失效" LogType:error];
+                        return NO;
+                        break;
+                    }
+                    default:
+                        break;
                 }
-            }
+                
+            }//结束循环传输文件
             
             //通知服务器当前文件传输结束。是否得到返回值，来判断服务器已经知道文件传输完成？？？
             [self upwardTransmitWithToken:token FileName:fileName Offset:-1 Base64String:nil];
             //关闭当前传输文件
-            [dataFile close];            
-            
-            //每上传成功一段数据，就更新任务描述内容并写入任务文件。
-//            [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]上传第%d个任务 - id:%@ name:%@ state:%d", (i + 1), taskId, taskName, taskDescription.taskState] LogType:debug];
-            
+            [dataFile close];
             //以上是上传每一个文件
-            //设置当前文件的传输完成标识为已完成。
-            fileDescription.isFinished = YES;
             
-            //写入任务描述信息，记录状态。
+            //设置当前文件的传输完成标识为已完成。
+            fileDescription.isFinished = @"true";
+            
+            //写入任务描述信息，记录状态。！！！！！！！
             
         }//结束遍历当前任务下每一个同步文件描述SyncFileDescription
-        
         
         //如果全部文件上传结束且成功，修改对应的任务状态为已完成。
         if (YES) {
@@ -190,16 +202,12 @@
  */
 - (NSString *) upwardRequestWithJsonTask: (NSString *)jsonTask JsonIdentity: (NSString *)jsonIdentity
 {
-    //POST方式调用
-    
     //WebService路径
     NSString *webServicePath = [[NSString alloc]initWithFormat:@"%@", WEBSERVICE_PATH];
     //URL
-    NSURL *url;
-    url=[NSURL URLWithString:webServicePath];
+    NSURL *url = [NSURL URLWithString:webServicePath];
     //post参数
     NSString *postString = [NSString stringWithFormat:@"requestType=UpwardRequest&strJsonTask=%@&strJsonIdentity=%@", jsonTask, jsonIdentity];
-    
     //Requst
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
@@ -230,20 +238,12 @@
  */
 - (NSString *) upwardTransmitWithToken: (NSString *)token FileName: (NSString *)fileName Offset: (long)offset Base64String: (NSString *)base64String
 {
-    //POST方式调用
-    
     //WebService路径
     NSString *webServicePath = [[NSString alloc]initWithFormat:@"%@", WEBSERVICE_PATH];
     //URL
-    NSURL *url;
-    url=[NSURL URLWithString:webServicePath];
+    NSURL *url = [NSURL URLWithString:webServicePath];
     //post参数
-    //NSString *dataString = [[NSString alloc]initWithData:buffer encoding:NSUnicodeStringEncoding];
-    
-    //这里的buffer改叫什么名了？？？？？？？？？？？？
     NSString *postString = [NSString stringWithFormat:@"requestType=UpwardTransmit&strToken=%@&fileName=%@&lOffset=%li&buffer=%@", token, fileName, offset, base64String];
-//    NSString *postString = [NSString stringWithFormat:@"strToken=%@&lOffset=%li&buffer=%s", token, offset, buffer];
-    //NSLog(@"postString:%@", postString);
     //Requst
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
@@ -257,13 +257,10 @@
     //if (connection) {
     NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
     NSString *resultString = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
-    NSLog(@"上行传输返回结果为%@", resultString);
+    NSLog(@"[上行传输器]上行传输返回结果为%@", resultString);
     //}
-    
-    if ([resultString isEqualToString:@"true"]) {
-        return @"true";
-    }
-    return @"false";
+
+    return resultString;
 }
 
 /*!
@@ -275,13 +272,10 @@
  */
 - (NSString *) upwardFinishWithToken: (NSString *)token Trash: (NSString *)trash
 {
-    //POST方式调用
-    
     //WebService路径
     NSString *webServicePath = [[NSString alloc]initWithFormat:@"%@", WEBSERVICE_PATH];
     //URL
-    NSURL *url;
-    url=[NSURL URLWithString:webServicePath];
+    NSURL *url = [NSURL URLWithString:webServicePath];
     //post参数
     NSString *postString = [NSString stringWithFormat:@"requestType=UpwardFinish&strToken=%@&bTrash=%@", token, trash];
     //Requst
@@ -300,10 +294,7 @@
     NSLog(@"上行结束返回结果为%@", resultString);
     //}
     
-    if ([resultString isEqualToString:@"true"]) {
-        return @"true";
-    }
-    return @"false";
+    return resultString;
 }
 
 @end
