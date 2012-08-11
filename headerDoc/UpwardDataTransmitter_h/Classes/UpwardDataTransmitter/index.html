@@ -214,8 +214,94 @@ function disclosure_triangle(elt) {
 <h2>Introduction</h2>
 <p><!-- headerDoc=abstract;uid=//apple_ref/occ/cl/UpwardDataTransmitter;name=start --><!-- begin abstract --><p>上行传输管理器
 <!-- end abstract --><!-- headerDoc=abstract;uid=//apple_ref/occ/cl/UpwardDataTransmitter;name=end --></p>
-<p class="gapBeforeFooter">&nbsp;</p><hr class="afterFooter"><div class="hd_copyright_and_timestamp">
-<p class="hd_timestamp">Last Updated: Tuesday, July 31, 2012
+<hr class="afterClassOrHeaderInfo"><br><a name="HeaderDoc_methods"></a>
+<h2 class="h2tight">Methods</h2>
+<dl>
+<dt><tt><a href="index.html#//apple_ref/occ/instm/UpwardDataTransmitter/upwardFinishWithToken:Trash:" target="_top">-upwardFinishWithToken:Trash:</a></tt></dt>
+<dd><p>上行文件传输结束(一个文件)
+</dd>
+<dt><tt><a href="index.html#//apple_ref/occ/instm/UpwardDataTransmitter/upwardRequestWithJsonTask:JsonIdentity:" target="_top">-upwardRequestWithJsonTask:JsonIdentity:</a></tt></dt>
+<dd><p>上行同步申请
+</dd>
+<dt><tt><a href="index.html#//apple_ref/occ/instm/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:" target="_top">-upwardTransmitWithToken:FileName:Offset:Base64String:</a></tt></dt>
+<dd><p>上行文件传输
+</dd>
+</dl>
+<hr class="betweenAPIEntries"><!-- headerDoc=instm;  uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardFinishWithToken:Trash:;   name=UpwardDataTransmitter::upwardFinishWithToken:Trash: -->
+<a name="//apple_ref/occ/instm/UpwardDataTransmitter/upwardFinishWithToken:Trash:"></a>
+<h3><a name="upwardFinishWithToken:Trash:">upwardFinishWithToken:Trash:</a></h3>
+<hr class="afterName"><p><!-- headerDoc=abstract;uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardFinishWithToken:Trash:;name=start --><!-- begin abstract --><p>上行文件传输结束(一个文件)
+<!-- end abstract --><!-- headerDoc=abstract;uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardFinishWithToken:Trash:;name=end --></p>
+<div class='declaration_indent'>
+<pre><!-- headerDoc=declaration;uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardFinishWithToken:Trash:;name=start -->- (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>) <!-- a logicalPath="//apple_ref/occ/instm/UpwardDataTransmitter/upwardFinishWithToken //apple_ref/occ/clm/UpwardDataTransmitter/upwardFinishWithToken //apple_ref/occ/intfcm/UpwardDataTransmitter/upwardFinishWithToken //apple_ref/occ/intfm/UpwardDataTransmitter/upwardFinishWithToken //apple_ref/occ/func/upwardFinishWithToken //apple_ref/occ/ftmplt/UpwardDataTransmitter/upwardFinishWithToken //apple_ref/occ/defn/upwardFinishWithToken //apple_ref/occ/macro/upwardFinishWithToken //apple_ref/doc/anysymbol/upwardFinishWithToken" machineGenerated="true" --><span class="function">upwardFinishWithToken</span><!-- /a -->: (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>)<span class="param">token</span> 
+        <!-- a logicalPath="//apple_ref/occ/instm/UpwardDataTransmitter/Trash //apple_ref/occ/clm/UpwardDataTransmitter/Trash //apple_ref/occ/intfcm/UpwardDataTransmitter/Trash //apple_ref/occ/intfm/UpwardDataTransmitter/Trash //apple_ref/occ/func/Trash //apple_ref/occ/ftmplt/UpwardDataTransmitter/Trash //apple_ref/occ/defn/Trash //apple_ref/occ/macro/Trash //apple_ref/doc/anysymbol/Trash" machineGenerated="true" --><span class="function">Trash</span><!-- /a -->: (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>)<!-- a logicalPath="//apple_ref/occ/econst/trash //apple_ref/occ/data/UpwardDataTransmitter/trash //apple_ref/occ/data/trash //apple_ref/occ/clconst/UpwardDataTransmitter/trash " machineGenerated="true" --><span class="var">trash</span><!-- /a -->; <!-- headerDoc=declaration;uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardFinishWithToken:Trash:;name=end --></pre>
+</div>
+<h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Parameters</font></h5>
+<div class='param_indent'>
+<dl>
+<dt><!-- headerDoc=methodparam;  uid=//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardFinishWithToken:Trash:/token;   name=upwardFinishWithToken:Trash:::token -->
+<a name="//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardFinishWithToken:Trash:/token"></a>
+<code>token</code></dt><dd><p>由UpwardRequest方法返回的上行同步令牌。</dd>
+<dt><!-- headerDoc=methodparam;  uid=//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardFinishWithToken:Trash:/trash;   name=upwardFinishWithToken:Trash:::trash -->
+<a name="//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardFinishWithToken:Trash:/trash"></a>
+<code>trash</code></dt><dd><p>指示是否废弃当前任务。false标识正常结束；true标识非正常结束，如客户端在传输任务过程中，用户要求删除该任务或者撤销任务，就需要向服务端发送一条废弃当前任务的结束命令。</dd>
+</dl>
+</div>
+<h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Return Value</font></h5><p><!-- begin return value --><p>成功返回YES，失败返回NO。
+
+<!-- end return value --></p><hr class="betweenAPIEntries"><!-- headerDoc=instm;  uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardRequestWithJsonTask:JsonIdentity:;   name=UpwardDataTransmitter::upwardRequestWithJsonTask:JsonIdentity: -->
+<a name="//apple_ref/occ/instm/UpwardDataTransmitter/upwardRequestWithJsonTask:JsonIdentity:"></a>
+<h3><a name="upwardRequestWithJsonTask:JsonIdentity:">upwardRequestWithJsonTask:JsonIdentity:</a></h3>
+<hr class="afterName"><p><!-- headerDoc=abstract;uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardRequestWithJsonTask:JsonIdentity:;name=start --><!-- begin abstract --><p>上行同步申请
+<!-- end abstract --><!-- headerDoc=abstract;uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardRequestWithJsonTask:JsonIdentity:;name=end --></p>
+<div class='declaration_indent'>
+<pre><!-- headerDoc=declaration;uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardRequestWithJsonTask:JsonIdentity:;name=start -->- (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>) <!-- a logicalPath="//apple_ref/occ/instm/UpwardDataTransmitter/upwardRequestWithJsonTask //apple_ref/occ/clm/UpwardDataTransmitter/upwardRequestWithJsonTask //apple_ref/occ/intfcm/UpwardDataTransmitter/upwardRequestWithJsonTask //apple_ref/occ/intfm/UpwardDataTransmitter/upwardRequestWithJsonTask //apple_ref/occ/func/upwardRequestWithJsonTask //apple_ref/occ/ftmplt/UpwardDataTransmitter/upwardRequestWithJsonTask //apple_ref/occ/defn/upwardRequestWithJsonTask //apple_ref/occ/macro/upwardRequestWithJsonTask //apple_ref/doc/anysymbol/upwardRequestWithJsonTask" machineGenerated="true" --><span class="function">upwardRequestWithJsonTask</span><!-- /a -->: (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>)<span class="param">jsonTask</span> 
+        <!-- a logicalPath="//apple_ref/occ/instm/UpwardDataTransmitter/JsonIdentity //apple_ref/occ/clm/UpwardDataTransmitter/JsonIdentity //apple_ref/occ/intfcm/UpwardDataTransmitter/JsonIdentity //apple_ref/occ/intfm/UpwardDataTransmitter/JsonIdentity //apple_ref/occ/func/JsonIdentity //apple_ref/occ/ftmplt/UpwardDataTransmitter/JsonIdentity //apple_ref/occ/defn/JsonIdentity //apple_ref/occ/macro/JsonIdentity //apple_ref/doc/anysymbol/JsonIdentity" machineGenerated="true" --><span class="function">JsonIdentity</span><!-- /a -->: (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>)<!-- a logicalPath="//apple_ref/occ/econst/jsonIdentity //apple_ref/occ/data/UpwardDataTransmitter/jsonIdentity //apple_ref/occ/data/jsonIdentity //apple_ref/occ/clconst/UpwardDataTransmitter/jsonIdentity " machineGenerated="true" --><span class="var">jsonIdentity</span><!-- /a -->; <!-- headerDoc=declaration;uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardRequestWithJsonTask:JsonIdentity:;name=end --></pre>
+</div>
+<h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Parameters</font></h5>
+<div class='param_indent'>
+<dl>
+<dt><!-- headerDoc=methodparam;  uid=//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardRequestWithJsonTask:JsonIdentity:/jsonTask;   name=upwardRequestWithJsonTask:JsonIdentity:::jsonTask -->
+<a name="//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardRequestWithJsonTask:JsonIdentity:/jsonTask"></a>
+<code>jsonTask</code></dt><dd><p>JSON字符串结构的任务信息，包括任务标识、应用代码、辅助标记、任务名称、同步条件、创建时间、任务来源、数据包尺寸等内容。</dd>
+<dt><!-- headerDoc=methodparam;  uid=//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardRequestWithJsonTask:JsonIdentity:/jsonIdentity;   name=upwardRequestWithJsonTask:JsonIdentity:::jsonIdentity -->
+<a name="//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardRequestWithJsonTask:JsonIdentity:/jsonIdentity"></a>
+<code>jsonIdentity</code></dt><dd><p>经讨论，修改为类Session形式的校验值。//JSON字符串结构的用户身份信息，如：用户名、密码等等，根据应用需要来定义。</dd>
+</dl>
+</div>
+<h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Return Value</font></h5><p><!-- begin return value --><p>返回上行同步令牌，其内容实际上就是在服务端针对客户端任务信息而所建任务的标识。
+
+<!-- end return value --></p><hr class="betweenAPIEntries"><!-- headerDoc=instm;  uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:;   name=UpwardDataTransmitter::upwardTransmitWithToken:FileName:Offset:Base64String: -->
+<a name="//apple_ref/occ/instm/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:"></a>
+<h3><a name="upwardTransmitWithToken:FileName:Offset:Base64String:">upwardTransmitWithToken:FileName:Offset:Base64String:</a></h3>
+<hr class="afterName"><p><!-- headerDoc=abstract;uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:;name=start --><!-- begin abstract --><p>上行文件传输
+<!-- end abstract --><!-- headerDoc=abstract;uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:;name=end --></p>
+<div class='declaration_indent'>
+<pre><!-- headerDoc=declaration;uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:;name=start -->- (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>) <!-- a logicalPath="//apple_ref/occ/instm/UpwardDataTransmitter/upwardTransmitWithToken //apple_ref/occ/clm/UpwardDataTransmitter/upwardTransmitWithToken //apple_ref/occ/intfcm/UpwardDataTransmitter/upwardTransmitWithToken //apple_ref/occ/intfm/UpwardDataTransmitter/upwardTransmitWithToken //apple_ref/occ/func/upwardTransmitWithToken //apple_ref/occ/ftmplt/UpwardDataTransmitter/upwardTransmitWithToken //apple_ref/occ/defn/upwardTransmitWithToken //apple_ref/occ/macro/upwardTransmitWithToken //apple_ref/doc/anysymbol/upwardTransmitWithToken" machineGenerated="true" --><span class="function">upwardTransmitWithToken</span><!-- /a -->: (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>)<span class="param">token</span> 
+        <!-- a logicalPath="//apple_ref/occ/instm/UpwardDataTransmitter/FileName //apple_ref/occ/clm/UpwardDataTransmitter/FileName //apple_ref/occ/intfcm/UpwardDataTransmitter/FileName //apple_ref/occ/intfm/UpwardDataTransmitter/FileName //apple_ref/occ/func/FileName //apple_ref/occ/ftmplt/UpwardDataTransmitter/FileName //apple_ref/occ/defn/FileName //apple_ref/occ/macro/FileName //apple_ref/doc/anysymbol/FileName" machineGenerated="true" --><span class="function">FileName</span><!-- /a -->: (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>)<span class="param">fileName</span> <!-- a logicalPath="//apple_ref/occ/instm/UpwardDataTransmitter/Offset //apple_ref/occ/clm/UpwardDataTransmitter/Offset //apple_ref/occ/intfcm/UpwardDataTransmitter/Offset //apple_ref/occ/intfm/UpwardDataTransmitter/Offset //apple_ref/occ/func/Offset //apple_ref/occ/ftmplt/UpwardDataTransmitter/Offset //apple_ref/occ/defn/Offset //apple_ref/occ/macro/Offset //apple_ref/doc/anysymbol/Offset" machineGenerated="true" --><span class="function">Offset</span><!-- /a -->: (<!-- a logicalPath="//apple_ref/occ/cl/long //apple_ref/occ/tdef/long //apple_ref/occ/tag/long //apple_ref/occ/struct/long //apple_ref/occ/intf/long //apple_ref/doc/anysymbol/long" machineGenerated="true" --><span class="type">long</span><!-- /a -->)<span class="param">offset</span> 
+        <!-- a logicalPath="//apple_ref/occ/instm/UpwardDataTransmitter/Base64String //apple_ref/occ/clm/UpwardDataTransmitter/Base64String //apple_ref/occ/intfcm/UpwardDataTransmitter/Base64String //apple_ref/occ/intfm/UpwardDataTransmitter/Base64String //apple_ref/occ/func/Base64String //apple_ref/occ/ftmplt/UpwardDataTransmitter/Base64String //apple_ref/occ/defn/Base64String //apple_ref/occ/macro/Base64String //apple_ref/doc/anysymbol/Base64String" machineGenerated="true" --><span class="function">Base64String</span><!-- /a -->: (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>)<!-- a logicalPath="//apple_ref/occ/econst/base64String //apple_ref/occ/data/UpwardDataTransmitter/base64String //apple_ref/occ/data/base64String //apple_ref/occ/clconst/UpwardDataTransmitter/base64String " machineGenerated="true" --><span class="var">base64String</span><!-- /a -->; <!-- headerDoc=declaration;uid=//apple_ref/occ/instm/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:;name=end --></pre>
+</div>
+<h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Parameters</font></h5>
+<div class='param_indent'>
+<dl>
+<dt><!-- headerDoc=methodparam;  uid=//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:/token;   name=upwardTransmitWithToken:FileName:Offset:Base64String:::token -->
+<a name="//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:/token"></a>
+<code>token</code></dt><dd><p>由UpwardRequest方法返回的上行同步令牌。</dd>
+<dt><!-- headerDoc=methodparam;  uid=//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:/fileName;   name=upwardTransmitWithToken:FileName:Offset:Base64String:::fileName -->
+<a name="//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:/fileName"></a>
+<code>fileName</code></dt><dd><p>本次上传的文件名。</dd>
+<dt><!-- headerDoc=methodparam;  uid=//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:/offset;   name=upwardTransmitWithToken:FileName:Offset:Base64String:::offset -->
+<a name="//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:/offset"></a>
+<code>offset</code></dt><dd><p>文件偏移量，指明本次发送的数据在文件中的起始位置。</dd>
+<dt><!-- headerDoc=methodparam;  uid=//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:/base64String;   name=upwardTransmitWithToken:FileName:Offset:Base64String:::base64String -->
+<a name="//apple_ref/doc/methodparam/UpwardDataTransmitter/upwardTransmitWithToken:FileName:Offset:Base64String:/base64String"></a>
+<code>base64String</code></dt><dd><p>base64编码后的数据，数据缓冲区，存储文件段数据,要求服务端把此数据写入文件中，写入的起始位置是lOffset。</dd>
+</dl>
+</div>
+<h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Return Value</font></h5><p><!-- begin return value --><p>成功返回YES，失败返回NO。
+
+<!-- end return value --></p><p class="gapBeforeFooter">&nbsp;</p><hr class="afterFooter"><div class="hd_copyright_and_timestamp">
+<p class="hd_timestamp">Last Updated: Saturday, August 11, 2012
 </p></div>
 </td></tr></table>
 </body></html>

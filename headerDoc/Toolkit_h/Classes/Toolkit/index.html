@@ -220,6 +220,12 @@ function disclosure_triangle(elt) {
 <dt><tt><a href="index.html#//apple_ref/occ/clm/Toolkit/getDocumentsPathOfApp" target="_top">+getDocumentsPathOfApp</a></tt></dt>
 <dd><p>获得应用程序Documents目录
 </dd>
+<dt><tt><a href="index.html#//apple_ref/occ/clm/Toolkit/getFileNameByPath:" target="_top">+getFileNameByPath:</a></tt></dt>
+<dd><p>根据文件完整路径，获取文件名
+</dd>
+<dt><tt><a href="index.html#//apple_ref/occ/clm/Toolkit/getFileSizeByPath:" target="_top">+getFileSizeByPath:</a></tt></dt>
+<dd><p>根据文件完整路径，获取文件大小。
+</dd>
 <dt><tt><a href="index.html#//apple_ref/occ/clm/Toolkit/getTimestampString" target="_top">+getTimestampString</a></tt></dt>
 <dd><p>获取系统时间戳
 </dd>
@@ -236,6 +242,42 @@ function disclosure_triangle(elt) {
 <pre><!-- headerDoc=declaration;uid=//apple_ref/occ/clm/Toolkit/getDocumentsPathOfApp;name=start -->+ (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>) <!-- a logicalPath="//apple_ref/occ/econst/getDocumentsPathOfApp //apple_ref/occ/data/Toolkit/getDocumentsPathOfApp //apple_ref/occ/data/getDocumentsPathOfApp //apple_ref/occ/clconst/Toolkit/getDocumentsPathOfApp " machineGenerated="true" --><span class="var">getDocumentsPathOfApp</span><!-- /a -->; <!-- headerDoc=declaration;uid=//apple_ref/occ/clm/Toolkit/getDocumentsPathOfApp;name=end --></pre>
 </div>
 <h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Return Value</font></h5><p><!-- begin return value --><p>返回应用程序Documents目录，NSString类型。
+
+<!-- end return value --></p><hr class="betweenAPIEntries"><!-- headerDoc=clm;  uid=//apple_ref/occ/clm/Toolkit/getFileNameByPath:;   name=Toolkit::getFileNameByPath: -->
+<a name="//apple_ref/occ/clm/Toolkit/getFileNameByPath:"></a>
+<h3><a name="getFileNameByPath:">getFileNameByPath:</a></h3>
+<hr class="afterName"><p><!-- headerDoc=abstract;uid=//apple_ref/occ/clm/Toolkit/getFileNameByPath:;name=start --><!-- begin abstract --><p>根据文件完整路径，获取文件名
+<!-- end abstract --><!-- headerDoc=abstract;uid=//apple_ref/occ/clm/Toolkit/getFileNameByPath:;name=end --></p>
+<div class='declaration_indent'>
+<pre><!-- headerDoc=declaration;uid=//apple_ref/occ/clm/Toolkit/getFileNameByPath:;name=start -->+ (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>) <!-- a logicalPath="//apple_ref/occ/instm/Toolkit/getFileNameByPath //apple_ref/occ/clm/Toolkit/getFileNameByPath //apple_ref/occ/intfcm/Toolkit/getFileNameByPath //apple_ref/occ/intfm/Toolkit/getFileNameByPath //apple_ref/occ/func/getFileNameByPath //apple_ref/occ/ftmplt/Toolkit/getFileNameByPath //apple_ref/occ/defn/getFileNameByPath //apple_ref/occ/macro/getFileNameByPath //apple_ref/doc/anysymbol/getFileNameByPath" machineGenerated="true" --><span class="function">getFileNameByPath</span><!-- /a -->: (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>)<!-- a logicalPath="//apple_ref/occ/econst/filePath //apple_ref/occ/data/Toolkit/filePath //apple_ref/occ/data/filePath //apple_ref/occ/clconst/Toolkit/filePath " machineGenerated="true" --><span class="var">filePath</span><!-- /a -->; <!-- headerDoc=declaration;uid=//apple_ref/occ/clm/Toolkit/getFileNameByPath:;name=end --></pre>
+</div>
+<h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Parameters</font></h5>
+<div class='param_indent'>
+<dl>
+<dt><!-- headerDoc=methodparam;  uid=//apple_ref/doc/methodparam/Toolkit/getFileNameByPath:/filePath;   name=getFileNameByPath:::filePath -->
+<a name="//apple_ref/doc/methodparam/Toolkit/getFileNameByPath:/filePath"></a>
+<code>filePath</code></dt><dd><p>文件完整路径，包括文件名。</dd>
+</dl>
+</div>
+<h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Return Value</font></h5><p><!-- begin return value --><p>返回文件名
+
+<!-- end return value --></p><hr class="betweenAPIEntries"><!-- headerDoc=clm;  uid=//apple_ref/occ/clm/Toolkit/getFileSizeByPath:;   name=Toolkit::getFileSizeByPath: -->
+<a name="//apple_ref/occ/clm/Toolkit/getFileSizeByPath:"></a>
+<h3><a name="getFileSizeByPath:">getFileSizeByPath:</a></h3>
+<hr class="afterName"><p><!-- headerDoc=abstract;uid=//apple_ref/occ/clm/Toolkit/getFileSizeByPath:;name=start --><!-- begin abstract --><p>根据文件完整路径，获取文件大小。
+<!-- end abstract --><!-- headerDoc=abstract;uid=//apple_ref/occ/clm/Toolkit/getFileSizeByPath:;name=end --></p>
+<div class='declaration_indent'>
+<pre><!-- headerDoc=declaration;uid=//apple_ref/occ/clm/Toolkit/getFileSizeByPath:;name=start -->+ (<!-- a logicalPath="//apple_ref/occ/cl/long //apple_ref/occ/tdef/long //apple_ref/occ/tag/long //apple_ref/occ/struct/long //apple_ref/occ/intf/long //apple_ref/doc/anysymbol/long" machineGenerated="true" --><span class="type">long</span><!-- /a -->) <!-- a logicalPath="//apple_ref/occ/instm/Toolkit/getFileSizeByPath //apple_ref/occ/clm/Toolkit/getFileSizeByPath //apple_ref/occ/intfcm/Toolkit/getFileSizeByPath //apple_ref/occ/intfm/Toolkit/getFileSizeByPath //apple_ref/occ/func/getFileSizeByPath //apple_ref/occ/ftmplt/Toolkit/getFileSizeByPath //apple_ref/occ/defn/getFileSizeByPath //apple_ref/occ/macro/getFileSizeByPath //apple_ref/doc/anysymbol/getFileSizeByPath" machineGenerated="true" --><span class="function">getFileSizeByPath</span><!-- /a -->: (<!-- a logicalPath="//apple_ref/occ/cl/NSString //apple_ref/occ/tdef/NSString //apple_ref/occ/tag/NSString //apple_ref/occ/struct/NSString //apple_ref/occ/intf/NSString //apple_ref/doc/anysymbol/NSString" machineGenerated="true" --><span class="type">NSString</span><!-- /a --> <span class="type">*</span>)<!-- a logicalPath="//apple_ref/occ/econst/filePath //apple_ref/occ/data/Toolkit/filePath //apple_ref/occ/data/filePath //apple_ref/occ/clconst/Toolkit/filePath " machineGenerated="true" --><span class="var">filePath</span><!-- /a -->; <!-- headerDoc=declaration;uid=//apple_ref/occ/clm/Toolkit/getFileSizeByPath:;name=end --></pre>
+</div>
+<h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Parameters</font></h5>
+<div class='param_indent'>
+<dl>
+<dt><!-- headerDoc=methodparam;  uid=//apple_ref/doc/methodparam/Toolkit/getFileSizeByPath:/filePath;   name=getFileSizeByPath:::filePath -->
+<a name="//apple_ref/doc/methodparam/Toolkit/getFileSizeByPath:/filePath"></a>
+<code>filePath</code></dt><dd><p>文件完整路径，包括文件名。</dd>
+</dl>
+</div>
+<h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Return Value</font></h5><p><!-- begin return value --><p>返回文件大小。
 
 <!-- end return value --></p><hr class="betweenAPIEntries"><!-- headerDoc=clm;  uid=//apple_ref/occ/clm/Toolkit/getTimestampString;   name=Toolkit::getTimestampString -->
 <a name="//apple_ref/occ/clm/Toolkit/getTimestampString"></a>
@@ -269,7 +311,7 @@ function disclosure_triangle(elt) {
 <h5 class="tight"><font face="Lucida Grande,Helvetica,Arial">Return Value</font></h5><p><!-- begin return value --><p>无
 
 <!-- end return value --></p><p class="gapBeforeFooter">&nbsp;</p><hr class="afterFooter"><div class="hd_copyright_and_timestamp">
-<p class="hd_timestamp">Last Updated: Tuesday, July 31, 2012
+<p class="hd_timestamp">Last Updated: Saturday, August 11, 2012
 </p></div>
 </td></tr></table>
 </body></html>
