@@ -97,18 +97,14 @@
     NSString *taskFilePath = [NSString stringWithFormat:@"%@/%@", targetPath, taskFileName];
     SyncFile *taskFile = [[SyncFile alloc]initAtPath:taskFilePath];
     
-//    NSLog(@"000");
     SyncTaskDescription *taskDescription = [[SyncTaskDescription alloc]initWithTaskName:taskFileName SyncFilePathArray:syncFilePathArray];
-//    NSLog(@"777");
 //    taskDescription.syncFileList = syncFilePathArray;
     
     //添加任务到任务描述信息列表，并修改任务状态为待传输态
     taskDescription.taskState = Totransmit;
     [_upTaskList addTaskDescription:taskDescription];
     
-//    NSLog(@"111111");
     NSDictionary *dic = [taskDescription getDictionaryForClient];
-//    NSLog(@"222222");
     NSString *jsonString = [dic JSONRepresentation];
     NSLog(@"生成任务文件的内容，json：%@", jsonString);
     

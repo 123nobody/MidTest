@@ -35,7 +35,7 @@
 - (BOOL) upload
 {
     //每次上传的数据长度，记得放到配置文件中 
-    long useLength = 1000 * 100; //1000 = 1KB
+    long useLength = 1024 * 100; //1024 = 1KB
     
     //设置上行传输线程开始
     _csc.upwardThreadStoped = NO;
@@ -77,9 +77,10 @@
         taskDescription.taskState = Transmitting;
         [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]已修改任务状态为传输态...%i", taskDescription.taskState] LogType:debug];
         
-        //将token以";"分割为两部分，前半部分作为taskId
-        NSRange range = [token rangeOfString:@";"];
+        //将token以默认"*#06#"为分割符分为两部分，前半部分作为taskId
+        NSRange range = [token rangeOfString:SEPARATOR];
         NSString *taskId = [token substringToIndex:range.location];
+        NSLog(@"taskId:%@", taskId);
         taskDescription.taskId = taskId;
         //将任务的当前状态写入任务描述文件
         [taskDescription writeToTaskFile];
@@ -126,14 +127,16 @@
                 NSData *tmpData = [dataFile readDataOfLength:useLength];
                 //将读出的数据转成Base64编码的NSData，然后再转成NSString格式。
                 NSString *base64String = [[NSString alloc]initWithData:[GTMBase64 encodeData:tmpData] encoding:NSUTF8StringEncoding];
+//                NSLog(@"第%d部分的编码\n%@", n, base64String);
+                
                 //将NSString中的"+"替换为"%2B"，以保证正确传输。
                 base64String = [base64String stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
                 //传输一段数据
                 NSString *resultString = [self upwardTransmitWithToken:token FileName:fileName Offset:offset Base64String:base64String];
-                NSLog(@"上传返回结果为：%@ dataLength = %d  fileName = %@", resultString, tmpData.length, fileName);
+                NSLog(@"上传返回结果为：%@ offset = %li dataLength = %d  fileName = %@", resultString, offset, tmpData.length, fileName);
                 
                 switch ([resultString intValue]) {
-                    case 1:
+                    case 1://服务器接收成功
                     {
                         //更新offset
                         offset += useLength;
@@ -149,15 +152,24 @@
                         
                         break;
                     }
-                    case -1:
+                    case -1://session过期
                     {
-                        //session失败
                         [Toolkit MidLog:@"session失效" LogType:error];
                         return NO;
                         break;
                     }
-                    default:
+                    case -2://单次初始化失败
+                    {
+                        [Toolkit MidLog:@"单次初始化失败" LogType:error];
+                        return NO;
                         break;
+                    }
+                    default:
+                    {
+                        [Toolkit MidLog:@"未知的服务器错误！" LogType:error];
+                        return NO;
+                        break;
+                    }
                 }
                 
             }//结束循环传输文件
@@ -172,11 +184,15 @@
             fileDescription.isFinished = @"true";
             
             //写入任务描述信息，记录状态。！！！！！！！
+            [taskDescription writeToTaskFile];
             
         }//结束遍历当前任务下每一个同步文件描述SyncFileDescription
         
+        //通知服务器上行传输完成
+        NSString *finishFlag = [self upwardFinishWithToken:token Trash:@"false"];
+        
         //如果全部文件上传结束且成功，修改对应的任务状态为已完成。
-        if (YES) {
+        if ([finishFlag isEqualToString:@"1"]) {
             taskDescription.taskState = Completion;
             [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]已修改任务状态为完成态...%i", taskDescription.taskState] LogType:debug];
             //删除已完成的上行任务文件
@@ -209,20 +225,23 @@
     //post参数
     NSString *postString = [NSString stringWithFormat:@"requestType=UpwardRequest&strJsonTask=%@&strJsonIdentity=%@", jsonTask, jsonIdentity];
     //Requst
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2.0];
     
     [request addValue:@"application/x-www-form-urlencoded"forHTTPHeaderField:@"Content-Type"];//注意是中划线
     [request addValue:[NSString stringWithFormat:@"%d",[postString length]] forHTTPHeaderField:@"Content-Length"];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
     
-    //NSURLConnection *connection=[NSURLConnection connectionWithRequest:request delegate:self];
+    NSURLConnection *connection=[NSURLConnection connectionWithRequest:request delegate:self];
     
-    //if (connection) {
-    NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    NSString *token = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
-    //NSLog(@"下面是WebService数据(token)\n%@", token);
-    //}
+    NSString *token;
+    if (connection) {
+        NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+        token = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
+    } else {
+        [Toolkit MidLog:@"网络申请初始化失败!" LogType:error];
+        return @"";
+    }
 
     return token;
 }
@@ -252,13 +271,16 @@
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
     
-    //NSURLConnection *connection=[NSURLConnection connectionWithRequest:request delegate:self];
-    
-    //if (connection) {
-    NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    NSString *resultString = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
-    NSLog(@"[上行传输器]上行传输返回结果为%@", resultString);
-    //}
+    NSURLConnection *connection=[NSURLConnection connectionWithRequest:request delegate:self];
+    NSString *resultString;
+    if (connection) {
+        NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+        resultString = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
+        NSLog(@"[上行传输器]上行传输返回结果为%@", resultString);
+    } else {
+        [Toolkit MidLog:@"[上行传输器]单次传输初始化失败！" LogType:error];
+        return @"-2";
+    }
 
     return resultString;
 }

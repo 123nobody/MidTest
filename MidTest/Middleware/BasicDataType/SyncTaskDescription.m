@@ -106,7 +106,7 @@
     NSString *taskFileContentString = [[self getDictionaryForClient] JSONRepresentation];
     NSData *taskFileContentData = [taskFileContentString dataUsingEncoding:NSUTF8StringEncoding];
     NSString *taskFilePath = [[NSString alloc]initWithFormat:@"%@%@%@/%@", [Toolkit getDocumentsPathOfApp], MIDDLEWARE_DIR, TASKS_DIR, _taskName];
-    NSLog(@"更新任务文件，路径为：%@", taskFilePath);
+//    NSLog(@"更新任务文件，路径为：%@", taskFilePath);
 //    NSLog(@"更新任务文件，内容为：%@", taskFileContentString);
     SyncFile *taskFile = [[SyncFile alloc]initAtPath:taskFilePath];
     [taskFile writeData:taskFileContentData];

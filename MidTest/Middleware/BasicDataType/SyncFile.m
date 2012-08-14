@@ -21,7 +21,7 @@
             _writeFileHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
             _position = 0;
         } else {
-            [Toolkit MidLog:@"指向的文件不存在！" LogType:debug];
+            [Toolkit MidLog:[NSString stringWithFormat:@"指向的文件不存在！ 路径:%@", filePath] LogType:debug];
         }
     }
     return self;
