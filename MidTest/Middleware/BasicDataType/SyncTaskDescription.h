@@ -78,6 +78,7 @@ typedef enum {
 
 - (id)initWithTaskName:(NSString *)taskName SyncFilePathArray: (NSArray *)syncFilePathArray;
 - (id)initWithTaskFileName: (NSString *)taskFileName;
+- (id)initWithDictionary: (NSDictionary *)taskDescriptionDictionary;
 
 //更新任务文件
 - (BOOL) writeToTaskFile;

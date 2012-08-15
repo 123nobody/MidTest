@@ -17,7 +17,6 @@
 #import "UpwardDataTransmitter.h"
 #import "DownwardDataTransmitter.h"
 #import "StateController.h"
-//#import "SyncTaskState.h"
 #import "SyncTaskDescriptionList.h"
 
 @protocol ClientSyncControllerDelegate <NSObject>
@@ -68,11 +67,18 @@
 
 /*!
  @method
- @abstract 添加一个任务
+ @abstract 添加一个上行任务
  @param filePathArray 数据文件的路径的数组，包括文件名。 
  @result 是否添加成功, 成功返回YES，失败返回NO。
  */
 - (BOOL) addTaskWithFilePathArray: (NSArray *)filePathArray;
+/*!
+ @method
+ @abstract 添加一个下行任务
+ @param condition 同步条件 
+ @result 是否添加成功, 成功返回YES，失败返回NO。
+ */
+- (BOOL) addTaskWithCondition: (NSString *)condition;
 - (BOOL) synchronize;
 /*!
  @method

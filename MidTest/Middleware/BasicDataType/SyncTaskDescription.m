@@ -45,7 +45,12 @@
         _condition          = @"这里是同步条件";
         _createTime         = [Toolkit getStringFromDate:[NSDate date] WithFormat:DEFAULT_DATE_FORMAT];
         NSLog(@".......CreateTime:%@", _createTime);
-        _source             = @"这里是任务来源";
+        _source             = @"This is source.";
+        _taskState = Draft;
+        
+        if (syncFilePathArray == nil) {
+            syncFilePathArray = [[NSArray alloc]init];
+        }
         
         //临时上传文件信息字典
         NSDictionary *tmpFileDic;
@@ -58,16 +63,12 @@
             syncFilePath = [syncFilePathArray objectAtIndex:i];
             fileDescription = [[SyncFileDescription alloc]initWithFilePath:syncFilePath];
             [tmpFileArray addObject:[fileDescription getDictionaryForClient]];
-//            [tmpFileArray addObject:[fileDescription getDictionaryForClient]];
             [tmpFileKeys addObject:[Toolkit getFileNameByPath:syncFilePath]];
         }
         
         tmpFileDic = [[NSDictionary alloc]initWithObjects:tmpFileArray forKeys:tmpFileKeys];
         
-//        NSLog(@"tmpFileDic:%@", [tmpFileDic JSONRepresentation]);
-        
         _syncFileDic        = tmpFileDic;
-        _taskState = Draft;
     }
     return self;
 }
@@ -95,7 +96,29 @@
         _source             = [taskDic objectForKey:@"source"];
         int taskStateNumber = [[taskDic objectForKey:@"taskState"] intValue];
         _taskState          = taskStateNumber;//[self intToTaskState:taskStateNumber];
-        _syncFileDic        = [taskDic objectForKey:@"syncFileDic"];
+//        _syncFileDic        = [taskDic objectForKey:@"syncFileDic"];
+        _syncFileDic        = [taskDic objectForKey:@"fileInfo"];
+    }
+    return self;
+}
+
+- (id)initWithDictionary:(NSDictionary *)taskDescriptionDictionary
+{
+    self = [super init];
+    if (self) {
+        NSDictionary *taskDic = taskDescriptionDictionary;
+        
+        _taskId             = [taskDic objectForKey:@"taskId"];
+        _taskName           = [taskDic objectForKey:@"taskName"];
+        _applicationCode    = [[taskDic objectForKey:@"applicationCode"] integerValue];
+        _condition          = [taskDic objectForKey:@"condition"];
+        _associateId        = [taskDic objectForKey:@"associateId"];
+        _createTime        = [taskDic objectForKey:@"createTime"];
+        _source             = [taskDic objectForKey:@"source"];
+        int taskStateNumber = [[taskDic objectForKey:@"taskState"] intValue];
+        _taskState          = taskStateNumber;//[self intToTaskState:taskStateNumber];
+//        _syncFileDic        = [taskDic objectForKey:@"syncFileDic"];
+        _syncFileDic        = [taskDic objectForKey:@"fileInfo"];
     }
     return self;
 }
@@ -109,6 +132,8 @@
 //    NSLog(@"更新任务文件，路径为：%@", taskFilePath);
 //    NSLog(@"更新任务文件，内容为：%@", taskFileContentString);
     SyncFile *taskFile = [[SyncFile alloc]initAtPath:taskFilePath];
+    //先清空原来的文件内容
+    [taskFile clearData];
     [taskFile writeData:taskFileContentData];
     [taskFile close];
     return YES;
@@ -136,7 +161,8 @@
                                    @"createTime", 
                                    @"source", 
                                    @"taskState", 
-                                   @"syncFileDic", 
+                                   @"fileInfo", 
+//                                   @"syncFileDic", 
                                    nil];
     
     NSArray *taskDescriptionArray = [[NSArray alloc]initWithObjects:
@@ -202,7 +228,8 @@
                                    @"createTime", 
                                    @"source", 
                                    @"taskState", 
-                                   @"syncFileDic", 
+//                                   @"syncFileDic", 
+                                   @"fileInfo", 
                                    nil];
     
     NSArray *taskDescriptionArray = [[NSArray alloc]initWithObjects:

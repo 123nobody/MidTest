@@ -170,6 +170,11 @@
     [_writeFileHandle seekToFileOffset:_position];
     [_writeFileHandle writeData:data];
 }
+//清空文件数据
+- (void) clearData
+{
+    [_writeFileHandle truncateFileAtOffset:0];
+}
 //关闭文件操作句柄
 - (void) close
 {

@@ -44,10 +44,24 @@
 
 - (BOOL) addTaskWithFilePathArray: (NSArray *)filePathArray;
 {
-    [Toolkit MidLog:@"[同步控制器]:添加任务" LogType:info];
+    [Toolkit MidLog:@"[同步控制器]:添加上行任务" LogType:info];
     [_taskManager addTaskWithSyncFilePathArray:filePathArray];
     return YES;
 }
+
+/*!
+ @method
+ @abstract 添加一个下行任务
+ @param condition 同步条件 
+ @result 是否添加成功, 成功返回YES，失败返回NO。
+ */
+- (BOOL) addTaskWithCondition: (NSString *)condition
+{
+    [Toolkit MidLog:@"[同步控制器]:添加下行任务" LogType:info];
+    [_taskManager addTaskWithCondition:condition];
+    return YES;
+}
+
 //- (BOOL) addTask: (NSString *)msg
 //{
 //    [Toolkit MidLog:@"ClientSyncController.addTask:调用taskmanager.addTask..." LogType:info];

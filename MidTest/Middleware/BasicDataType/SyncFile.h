@@ -107,6 +107,8 @@
  @result 无
  */
 - (void) writeData: (NSData *)data;
+//清空文件数据
+- (void) clearData;
 //关闭文件操作句柄
 - (void) close;
 @end

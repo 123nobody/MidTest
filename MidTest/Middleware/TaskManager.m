@@ -115,6 +115,46 @@
     return YES;
 }
 
+/*!
+ @method
+ @abstract 添加下行任务
+ @param condition 同步条件
+ @result 成功返回YES，失败返回NO。
+ */
+- (BOOL) addTaskWithCondition: (NSString *)condition
+{
+    //由系统时间+后缀名构成任务文件的文件名
+    NSString *taskFileName = [NSString stringWithFormat:@"%@.%@", [Toolkit getTimestampString], TASKS_SUFFIX_D];
+    if([SyncFile createFileAtPath:TASKS_DIR WithName:taskFileName] == NO)
+    {
+        [Toolkit MidLog:[NSString stringWithFormat:@"[任务管理器]:添加任务失败，%@文件已存在。", taskFileName] LogType:debug];
+        return NO;
+    }
+    [Toolkit MidLog:@"[任务管理器]:添加任务成功,生成任务文件." LogType:debug];
+    
+    //拿到应用程序路径
+    NSString *documentsDirectory = [Toolkit getDocumentsPathOfApp];
+    NSString *targetPath = [documentsDirectory stringByAppendingFormat:@"%@%@", MIDDLEWARE_DIR, TASKS_DIR];
+    NSString *taskFilePath = [NSString stringWithFormat:@"%@/%@", targetPath, taskFileName];
+    SyncFile *taskFile = [[SyncFile alloc]initAtPath:taskFilePath];
+    
+    SyncTaskDescription *taskDescription = [[SyncTaskDescription alloc]initWithTaskName:taskFileName SyncFilePathArray:nil];
+    taskDescription.condition = condition;
+    
+    //添加任务到任务描述信息列表，并修改任务状态为待传输态
+    taskDescription.taskState = Totransmit;
+    [_downTaskList addTaskDescription:taskDescription];
+    
+    NSDictionary *dic = [taskDescription getDictionaryForClient];
+    NSString *jsonString = [dic JSONRepresentation];
+    NSLog(@"生成任务文件的内容，json：%@", jsonString);
+    
+    NSData *taskFileContent = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [taskFile writeData:taskFileContent];
+    
+    return YES;
+}
 
 /*!
  @method

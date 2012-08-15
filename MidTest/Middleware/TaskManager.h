@@ -36,11 +36,19 @@
 
 /*!
  @method
- @abstract 添加一个任务
+ @abstract 添加一个上行任务
  @param syncFilePathArray 任务需要上传的本地资源文件的路径的数组
  @result 成功返回YES，失败返回NO。
  */
 - (BOOL) addTaskWithSyncFilePathArray: (NSArray *)syncFilePathArray;
+
+/*!
+ @method
+ @abstract 添加下行任务
+ @param condition 同步条件
+ @result 成功返回YES，失败返回NO。
+ */
+- (BOOL) addTaskWithCondition: (NSString *)condition;
 
 /*!
  @method

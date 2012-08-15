@@ -42,10 +42,17 @@
         _fileName = [dictionary objectForKey:@"fileName"];
         _fileSize = [[dictionary objectForKey:@"fileSize"] longValue];
         _transSize = [[dictionary objectForKey:@"transSize"] longValue];
-        _auxiliary = [dictionary objectForKey:@"auxiliary"];
+//        _auxiliary = [dictionary objectForKey:@"auxiliary"];
+        _auxiliary = @"";
         
         _filePath = [dictionary objectForKey:@"filePath"];
+        if (_filePath == nil) {
+            _filePath = @"";
+        }
         _isFinished = [dictionary objectForKey:@"isFinished"];
+        if (_isFinished == nil) {
+            _isFinished = @"false";
+        }
     }
     return self;
 }

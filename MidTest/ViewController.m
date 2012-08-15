@@ -140,13 +140,23 @@
     NSArray *filePathArray = [[NSArray alloc]initWithObjects:
                               @"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/test 副本.JPG", nil];
     
-    [csc addTaskWithFilePathArray:filePathArray];
-    [csc startUpwardTransmitThread];
+//    [csc addTaskWithFilePathArray:filePathArray];
+//    [csc startUpwardTransmitThread];
     
-//    [csc startDownwardTransmitThread];
+    
+    [csc addTaskWithCondition:@"This is condition."];
+    [csc startDownwardTransmitThread];
     
     
     return;
+    
+    
+    
+    
+    
+    
+    
+    
     
     NSLog(@"调用打包方法，将要同步的数据打包。");
     NSLog(@"调用方法，将要同步的数据打包。");

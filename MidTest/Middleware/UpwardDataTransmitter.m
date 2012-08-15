@@ -127,7 +127,6 @@
                 NSData *tmpData = [dataFile readDataOfLength:useLength];
                 //将读出的数据转成Base64编码的NSData，然后再转成NSString格式。
                 NSString *base64String = [[NSString alloc]initWithData:[GTMBase64 encodeData:tmpData] encoding:NSUTF8StringEncoding];
-//                NSLog(@"第%d部分的编码\n%@", n, base64String);
                 
                 //将NSString中的"+"替换为"%2B"，以保证正确传输。
                 base64String = [base64String stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];

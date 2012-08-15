@@ -28,7 +28,7 @@ static const NSString *DEFAULT_DATE_FORMAT = @"yyyy-MM-dd HH:mm:ss";
 
 
 //分隔符,用于分割Requst返回的字符串
-static const NSString *SEPARATOR = @"*#06#";
+static const NSString *SEPARATOR = @"!@#";
 
 //Log开关
 static const BOOL MidLogSwitch = YES;
