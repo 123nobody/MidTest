@@ -22,7 +22,9 @@
 
 /* Begin PBXBuildFile section */
 		B639B90915AEA6A700B1BAC7 /* SyncTaskDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = B639B90615AEA6A700B1BAC7 /* SyncTaskDescription.m */; };
-		B68E650815CF57C0001B4138 /* GTMBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = B68E650715CF57C0001B4138 /* GTMBase64.m */; };
+		B66FE9C815DB78B500C89D04 /* GTMBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = B66FE9C615DB78B500C89D04 /* GTMBase64.m */; };
+		B66FE9CB15DB78C400C89D04 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B66FE9CA15DB78C400C89D04 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		B66FE9CD15DB78EE00C89D04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B66FE9CC15DB78EE00C89D04 /* SystemConfiguration.framework */; };
 		B690CFFC15D3408900E24DCD /* SyncFileDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = B690CFFB15D3408900E24DCD /* SyncFileDescription.m */; };
 		B696EB7115B50DF7009C7D8E /* SyncFile.m in Sources */ = {isa = PBXBuildFile; fileRef = B696EB7015B50DF7009C7D8E /* SyncFile.m */; };
 		B6BB23A715B8F39E002F560D /* UpdateScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BB23A615B8F39E002F560D /* UpdateScheduler.m */; };
@@ -59,9 +61,12 @@
 /* Begin PBXFileReference section */
 		B639B90515AEA6A700B1BAC7 /* SyncTaskDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncTaskDescription.h; path = Middleware/BasicDataType/SyncTaskDescription.h; sourceTree = "<group>"; };
 		B639B90615AEA6A700B1BAC7 /* SyncTaskDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncTaskDescription.m; path = Middleware/BasicDataType/SyncTaskDescription.m; sourceTree = "<group>"; };
-		B68E650515CF5764001B4138 /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMDefines.h; path = Middleware/GTMBase64/GTMDefines.h; sourceTree = "<group>"; };
-		B68E650615CF57A1001B4138 /* GTMBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMBase64.h; path = Middleware/GTMBase64/GTMBase64.h; sourceTree = "<group>"; };
-		B68E650715CF57C0001B4138 /* GTMBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMBase64.m; path = Middleware/GTMBase64/GTMBase64.m; sourceTree = "<group>"; };
+		B66FE9C515DB78B500C89D04 /* GTMBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMBase64.h; path = Middleware/Toolkit/GTMBase64/GTMBase64.h; sourceTree = "<group>"; };
+		B66FE9C615DB78B500C89D04 /* GTMBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMBase64.m; path = Middleware/Toolkit/GTMBase64/GTMBase64.m; sourceTree = "<group>"; };
+		B66FE9C715DB78B500C89D04 /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMDefines.h; path = Middleware/Toolkit/GTMBase64/GTMDefines.h; sourceTree = "<group>"; };
+		B66FE9C915DB78C400C89D04 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Middleware/Toolkit/Reachability/Reachability.h; sourceTree = "<group>"; };
+		B66FE9CA15DB78C400C89D04 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Middleware/Toolkit/Reachability/Reachability.m; sourceTree = "<group>"; };
+		B66FE9CC15DB78EE00C89D04 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		B690CFFA15D3408900E24DCD /* SyncFileDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncFileDescription.h; path = Middleware/BasicDataType/SyncFileDescription.h; sourceTree = "<group>"; };
 		B690CFFB15D3408900E24DCD /* SyncFileDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SyncFileDescription.m; path = Middleware/BasicDataType/SyncFileDescription.m; sourceTree = "<group>"; };
 		B696EB6F15B50DF6009C7D8E /* SyncFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyncFile.h; path = Middleware/BasicDataType/SyncFile.h; sourceTree = "<group>"; };
@@ -130,6 +135,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B66FE9CD15DB78EE00C89D04 /* SystemConfiguration.framework in Frameworks */,
 				B6DDF08F15AD4F2A00898103 /* UIKit.framework in Frameworks */,
 				B6DDF09115AD4F2A00898103 /* Foundation.framework in Frameworks */,
 				B6DDF09315AD4F2A00898103 /* CoreGraphics.framework in Frameworks */,
@@ -154,12 +160,21 @@
 			name = BasicDataType;
 			sourceTree = "<group>";
 		};
-		B68E650415CF555F001B4138 /* GTMBase64 */ = {
+		B66FE9C215DB740800C89D04 /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
-				B68E650515CF5764001B4138 /* GTMDefines.h */,
-				B68E650615CF57A1001B4138 /* GTMBase64.h */,
-				B68E650715CF57C0001B4138 /* GTMBase64.m */,
+				B66FE9C915DB78C400C89D04 /* Reachability.h */,
+				B66FE9CA15DB78C400C89D04 /* Reachability.m */,
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
+		B66FE9C415DB789B00C89D04 /* GTMBase64 */ = {
+			isa = PBXGroup;
+			children = (
+				B66FE9C515DB78B500C89D04 /* GTMBase64.h */,
+				B66FE9C615DB78B500C89D04 /* GTMBase64.m */,
+				B66FE9C715DB78B500C89D04 /* GTMDefines.h */,
 			);
 			name = GTMBase64;
 			sourceTree = "<group>";
@@ -167,7 +182,8 @@
 		B696EB6715B4F591009C7D8E /* Toolkit */ = {
 			isa = PBXGroup;
 			children = (
-				B68E650415CF555F001B4138 /* GTMBase64 */,
+				B66FE9C415DB789B00C89D04 /* GTMBase64 */,
+				B66FE9C215DB740800C89D04 /* Reachability */,
 				B6BB243C15B949F7002F560D /* SBJson */,
 				B6BB23A915B8F3E7002F560D /* Toolkit.h */,
 				B6BB23AA15B8F3E7002F560D /* Toolkit.m */,
@@ -230,6 +246,7 @@
 		B6DDF08D15AD4F2A00898103 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B66FE9CC15DB78EE00C89D04 /* SystemConfiguration.framework */,
 				B6DDF08E15AD4F2A00898103 /* UIKit.framework */,
 				B6DDF09015AD4F2A00898103 /* Foundation.framework */,
 				B6DDF09215AD4F2A00898103 /* CoreGraphics.framework */,
@@ -389,8 +406,9 @@
 				B6BB245F15B949F7002F560D /* SBJsonTokeniser.m in Sources */,
 				B6BB246015B949F7002F560D /* SBJsonUTF8Stream.m in Sources */,
 				B6BB246115B949F7002F560D /* SBJsonWriter.m in Sources */,
-				B68E650815CF57C0001B4138 /* GTMBase64.m in Sources */,
 				B690CFFC15D3408900E24DCD /* SyncFileDescription.m in Sources */,
+				B66FE9C815DB78B500C89D04 /* GTMBase64.m in Sources */,
+				B66FE9CB15DB78C400C89D04 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -33,7 +33,7 @@
 
 
 - (BOOL) upload
-{
+{    
     //每次上传的数据长度，记得放到配置文件中 
     long useLength = 1024 * 100; //1024 = 1KB
     
@@ -56,7 +56,7 @@
         SyncTaskDescription *taskDescription = [syncTaskList TaskDescriptionAtIndex:i];
         
         NSString *jsonTaskDescriptionString = [[taskDescription getDictionaryForServer] JSONRepresentation];
-        NSLog(@"post的json串:%@", jsonTaskDescriptionString);
+//        NSLog(@"post的json串:%@", jsonTaskDescriptionString);
         
         //申请上行传输令牌
         NSString *token = [self upwardRequestWithJsonTask:jsonTaskDescriptionString JsonIdentity:@"Wei"];
@@ -65,7 +65,7 @@
         
         //在这里判断token是否为空，如为空，则表示申请没有通过。给应用反馈。
         if ([token isEqualToString:@""] || token == nil) {
-            [Toolkit MidLog:@"token为空!" LogType:error];
+            [Toolkit MidLog:@"token为空!连接存在问题！" LogType:error];
             return NO;
         }
         if ([[token substringToIndex:1] isEqualToString:@"<"]) {
@@ -78,7 +78,7 @@
         [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]已修改任务状态为传输态...%i", taskDescription.taskState] LogType:debug];
         
         //将token以默认"*#06#"为分割符分为两部分，前半部分作为taskId
-        NSRange range = [token rangeOfString:SEPARATOR];
+        NSRange range = [token rangeOfString:(NSString *)SEPARATOR];
         NSString *taskId = [token substringToIndex:range.location];
         NSLog(@"taskId:%@", taskId);
         taskDescription.taskId = taskId;
@@ -120,7 +120,7 @@
             
             //开始循环传输文件
             while (offset < fileSize) {
-                NSLog(@"第%d次传输！", n++);
+                NSLog(@"第%d次上行传输！", n++);
                 //设置文件操作位置
                 [dataFile seekToFileOffset:offset];
                 //在文件中读取指定长度的数据

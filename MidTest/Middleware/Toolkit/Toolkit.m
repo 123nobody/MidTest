@@ -85,6 +85,13 @@
     return fileSize;
 }
 
+/*!
+ @method
+ @abstract 字符串转日期。
+ @param dateString 日期的字符串形式。
+ @param format 日期的格式化格式。
+ @result 返回NSDate类型的日期。
+ */
 + (NSDate *) getDataFromString: (NSString *)dateString WithFormat: (NSString *)format
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
@@ -92,6 +99,13 @@
     return [formatter dateFromString:dateString];
 }
 
+/*!
+ @method
+ @abstract 日期转字符串。
+ @param date NSDate类型的日期。
+ @param format 日期的格式化格式。
+ @result 返回日期的字符串形式。
+ */
 + (NSString *) getStringFromDate: (NSDate *)date WithFormat: (NSString *)format
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];

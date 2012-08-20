@@ -44,11 +44,7 @@
     NSString *documentsDirectory = [Toolkit getDocumentsPathOfApp];
     NSString *targetPath = [documentsDirectory stringByAppendingFormat:@"%@%@", MIDDLEWARE_DIR, filePath];
     [fileManager changeCurrentDirectoryPath:targetPath];
-    
-    if ([fileManager fileExistsAtPath:fileName]) {
-        [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]文件已存在:%@", fileName] LogType:debug];
-        return NO;
-    }
+    NSLog(@"targetPath = %@", targetPath);
     
     if (![fileManager fileExistsAtPath:targetPath]) {
         //NSLog(@"创建文件夹%@", targetPath);
@@ -57,6 +53,11 @@
             [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]创建文件夹%@", targetPath] LogType:info];
         }
         [fileManager changeCurrentDirectoryPath:targetPath];
+    }
+    if ([fileManager fileExistsAtPath:fileName]) {
+        [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]文件已存在:%@", fileName] LogType:debug];
+        NSLog(@"path:%@", [fileManager currentDirectoryPath]);
+        return NO;
     }
     if (![fileManager createFileAtPath:fileName contents:nil attributes:nil]) {
         [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]文件创建失败!\n path = %@\n name = %@", filePath, fileName] LogType:error];

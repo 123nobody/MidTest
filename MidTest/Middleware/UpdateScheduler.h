@@ -16,7 +16,7 @@
 #import "SyncTaskDescriptionList.h"
 @class ClientSyncController;
 
-@protocol UpwardDataTransmitterDelegate <NSObject>
+@protocol UpdateSchedulerDelegate <NSObject>
 
 @optional
 
@@ -29,9 +29,19 @@
  */
 @interface UpdateScheduler : NSObject
 {
+    UpdateScheduler *_instance;
+    ClientSyncController *_csc; 
     SyncTaskDescriptionList *_updateTaskList;
 }
 
 @property (strong, nonatomic) SyncTaskDescriptionList *updateTaskList;
+
+
+- (id)initWithController: (ClientSyncController *)csc;
+
+//添加一个任务到更新队列
+- (void) addTaskWithDescription: (SyncTaskDescription *)taskDescription;
+
+- (void) doUpdate;
 
 @end

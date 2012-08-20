@@ -38,8 +38,8 @@
 - (BOOL) loadTasks
 {
     [Toolkit MidLog:@"[任务管理器]:扫描任务文件，生成任务列表。" LogType:info];
-    NSArray *taskFiles_u = [self scanningTaskFilesBySuffix:TASKS_SUFFIX_U];
-    NSArray *taskFiles_d = [self scanningTaskFilesBySuffix:TASKS_SUFFIX_D];
+    NSArray *taskFiles_u = [self scanningTaskFilesBySuffix:(NSString *)TASKS_SUFFIX_U];
+    NSArray *taskFiles_d = [self scanningTaskFilesBySuffix:(NSString *)TASKS_SUFFIX_D];
     
     SyncTaskDescription *taskDescription;
     NSString *taskFileName;
@@ -84,7 +84,7 @@
 {
     //由系统时间+后缀名构成任务文件的文件名
     NSString *taskFileName = [NSString stringWithFormat:@"%@.%@", [Toolkit getTimestampString], TASKS_SUFFIX_U];
-    if([SyncFile createFileAtPath:TASKS_DIR WithName:taskFileName] == NO)
+    if([SyncFile createFileAtPath:(NSString *)TASKS_DIR WithName:taskFileName] == NO)
     {
         [Toolkit MidLog:[NSString stringWithFormat:@"[任务管理器]:添加任务失败，%@文件已存在。", taskFileName] LogType:debug];
         return NO;
@@ -125,7 +125,7 @@
 {
     //由系统时间+后缀名构成任务文件的文件名
     NSString *taskFileName = [NSString stringWithFormat:@"%@.%@", [Toolkit getTimestampString], TASKS_SUFFIX_D];
-    if([SyncFile createFileAtPath:TASKS_DIR WithName:taskFileName] == NO)
+    if([SyncFile createFileAtPath:(NSString *)TASKS_DIR WithName:taskFileName] == NO)
     {
         [Toolkit MidLog:[NSString stringWithFormat:@"[任务管理器]:添加任务失败，%@文件已存在。", taskFileName] LogType:debug];
         return NO;

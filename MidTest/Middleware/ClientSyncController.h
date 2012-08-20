@@ -16,6 +16,7 @@
 #import "TaskManager.h"
 #import "UpwardDataTransmitter.h"
 #import "DownwardDataTransmitter.h"
+#import "UpdateScheduler.h"
 #import "StateController.h"
 #import "SyncTaskDescriptionList.h"
 
@@ -31,6 +32,9 @@
 - (void) upwardTransminThreadStoped;
 - (void) downwardTransminThreadStoped;
 
+//下行数据更新
+- (BOOL)doUpdateWithTaskId:(NSString *)taskId DownloadFileNameArray:(NSArray *)downloadFileNameArray;
+
 @end
 
 /*!
@@ -44,6 +48,7 @@
     TaskManager *_taskManager;
     UpwardDataTransmitter *_upwardDataTransmitter;
     DownwardDataTransmitter *_downwardDataTransmitter;
+    UpdateScheduler *_updateScheduler;
     StateController *_stateController;
     
     //上行传输线程标记
@@ -57,6 +62,7 @@
     NSThread *_dataUpdaterThread;
     NSThread *_upwardThread;
     NSThread *_downwardThread;
+    NSThread *_updateThread;
     NSThread *_stateThread;
 }
 
@@ -92,7 +98,18 @@
  @result 无
  */
 - (void) startDownwardTransmitThread;
+/*!
+ @method
+ @abstract 启动数据更新线程
+ @result 无
+ */
+- (void) startUpdateThread;
+
 - (void) check;
+
+//添加一个任务到更新队列
+- (void) addTaskToUpdateSchedulerWithDescription: (SyncTaskDescription *)taskDescription;
+
 
 //获取上行同步任务队列
 - (SyncTaskDescriptionList *) getUpwareTaskList;

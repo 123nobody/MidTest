@@ -50,7 +50,7 @@
         SyncTaskDescription *taskDescription = [syncTaskList TaskDescriptionAtIndex:i];
         
         NSString *jsonTaskDescriptionString = [[taskDescription getDictionaryForServer] JSONRepresentation];
-        NSLog(@"post的json串:%@", jsonTaskDescriptionString);
+//        NSLog(@"post的json串:%@", jsonTaskDescriptionString);
         
         //申请下行传输令牌
         NSString *requestString = [self downwardRequestWithJsonTask:jsonTaskDescriptionString JsonIdentity:@"Wei"];
@@ -59,7 +59,7 @@
         
         //在这里判断token是否为空，如为空，则表示申请没有通过。给应用反馈。
         if ([requestString isEqualToString:@""] || requestString == nil) {
-            [Toolkit MidLog:@"token为空!" LogType:error];
+            [Toolkit MidLog:@"token为空!连接存在问题！" LogType:error];
             return NO;
         }
         if ([[requestString substringToIndex:1] isEqualToString:@"<"]) {
@@ -67,8 +67,8 @@
             return NO;
         }
         
-        //将requestString以默认"*#06#"为分割符分为三部分，前两部分作为token，最后一部分为任务描述文件的内容。
-        NSArray *subStringArray = [requestString componentsSeparatedByString:SEPARATOR];
+        //将requestString以默认"!@#"为分割符分为三部分，前两部分作为token，最后一部分为任务描述文件的内容。
+        NSArray *subStringArray = [requestString componentsSeparatedByString:(NSString *)SEPARATOR];
         //第一部分+分隔符+第二部分 组成token
         NSString *token = [NSString stringWithFormat:@"%@%@%@", [subStringArray objectAtIndex:0], SEPARATOR, [subStringArray objectAtIndex:1]];
         //将第三部分赋值给任务文件的Json描述串
@@ -77,19 +77,14 @@
         NSLog(@"收到的token:%@", token);
         NSLog(@"收到的jsonTaskDescriptionString:%@", jsonTaskDescriptionString);
         
-//        NSLog(@"dicdicdicdic = %@", [jsonTaskDescriptionString JSONValue]);
-        
         //如果jsonTaskDescriptionString不为空，则更新任务描述对现象
         if (![jsonTaskDescriptionString isEqualToString:@""]) {
             taskDescription = [[SyncTaskDescription alloc]initWithDictionary:[jsonTaskDescriptionString JSONValue]];
         }
         
-        
         //设置任务状态为传输态
         taskDescription.taskState = Transmitting;
         [Toolkit MidLog:[NSString stringWithFormat:@"[下行传输器]已修改任务状态为传输态...%i", taskDescription.taskState] LogType:debug];
-        
-//        NSLog(@"xxxxxxxxxxxxxxxxdic = %@", [[taskDescription getDictionaryForClient] JSONRepresentation]);
         
         //将任务的当前状态写入任务描述文件
         [taskDescription writeToTaskFile];
@@ -118,10 +113,11 @@
             fileSize    = fileDescription.fileSize;
             transSize   = fileDescription.transSize;
             filePath    = fileDescription.auxiliary;//服务器采用辅助标记来记录文件路径
-            NSLog(@"fileDescription11111 = %@", fileDescription.auxiliary);
             
             //以下是下载每一个文件
             
+            
+            NSLog(@"...............................taskId目录：%@", taskId);
             //如果文件不存在，就在download目录对应的taskId文件夹下创建一个
             if (![SyncFile existsFileAtPath:[NSString stringWithFormat:@"%@%@/download/%@/%@", [Toolkit getDocumentsPathOfApp], MIDDLEWARE_DIR, taskId, fileName]])
             {
@@ -136,7 +132,7 @@
             int n = 1;
             //直到返回的长度小于申请的长度，说明是最后一段数据。
             while (YES) {
-                NSLog(@"第%d次传输。", n++);
+                NSLog(@"第%d次下行传输。", n++);
                 base64String = [self downwardTransmitWithToken:token FileName:fileName Offset:offset Length:useLength];
                 data = [GTMBase64 decodeString:base64String];
                 
@@ -157,8 +153,6 @@
                 taskDescription.syncFileDic = syncFileDic;
                 [taskDescription writeToTaskFile];
                 
-                
-                
                 //当返回的数据长度小于申请的数据长度时，表示这个文件已经传输结束，跳出while循环。否则继续申请数据。
                 if (data.length < useLength) {
                     [Toolkit MidLog:@"[下行传输器]收到的数据小于申请的数据长度，文件结束。" LogType:debug];
@@ -175,67 +169,33 @@
         //通知服务器下行传输结束
         NSString *finishFlag = [self downwardFinishWithToken:token];
         
-        //如果全部文件上传结束且成功，修改对应的任务状态为已完成。
+        //如果全部文件下载结束且成功，修改对应的任务状态为待处理。
         if ([finishFlag isEqualToString:@"1"] || YES) {
-            taskDescription.taskState = Completion;
-            [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]已修改任务状态为完成态...%i", taskDescription.taskState] LogType:debug];
-            //删除已完成的上行任务文件
-            [_csc deleteTaskFileByName:taskDescription.taskName];
+            taskDescription.taskState = Pending;
+            [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]已修改任务状态为待处理态...%i", taskDescription.taskState] LogType:debug];
         }
+        
+        //向更新管理器添加更新任务
+        NSLog(@"添加一个更新任务，taskId：%@", taskDescription.taskId);
+        [_csc addTaskToUpdateSchedulerWithDescription:taskDescription];
+//        [_csc startUpdateThread];
+        
+//        //执行更新方法，处理下载的文件。
+//        if ([_csc doUpdateWithTaskId:taskId DownloadFileNameArray:keys]) {
+//            //如果更新成功，删除已完成的下行任务文件
+//            taskDescription.taskState = Completion;
+//            [_csc deleteTaskFileByName:taskDescription.taskName];
+//        }
         
     }//结束遍历每一个任务
 
+    [_csc startUpdateThread];
     
-    
-    [Toolkit MidLog:@"[下行传输器]下行数据传输线程结束!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" LogType:debug];
+    [Toolkit MidLog:@"[下行传输器]下行数据传输线程结束!" LogType:debug];
     //设置下行传输线程结束
     _csc.downwardThreadStoped = YES;
     
-    return YES;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    [Toolkit MidLog:@"[下行传输器]调用WebService方法，获取下行同步令牌..." LogType:debug];
-    //获取下行同步令牌
-    NSString *token = [self downwardRequestWithJsonTask:@"jsonTask" JsonIdentity:@"session"];
-    [Toolkit MidLog:token LogType:debug];
-    //将Json写入任务描述文件
-    
-    
-    
-    NSDictionary *tokenDic = [token JSONValue];
-    
-    
-    
-    //一直申请，直到服务器告诉没有文件了为止
-    while (YES) {
-        NSArray *taskInfoArr = [tokenDic objectForKey:@"taskInfo"];
-        
-        NSString *fileName = [taskInfoArr valueForKey:@"fileName"];
-        NSString *fileLength = [taskInfoArr valueForKey:@"fileLength"];
-
-        [Toolkit MidLog:[NSString stringWithFormat:@"fileName:%@ fileLength:%@", fileName, fileLength] LogType:debug];
-        
-        
-        
-        
-        break;
-    }
-    
+    return YES;    
     
 }
 
@@ -270,7 +230,6 @@
     //if (connection) {
     NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
     NSString *token = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
-    //NSLog(@"下面是WebService数据(token)\n%@", token);
     //}
     
     return token;
@@ -287,11 +246,6 @@
 - (NSString *) downwardTransmitWithToken: (NSString *)token FileName: (NSString *)fileName Offset: (long)offset Length: (long)length
 {
     //POST方式调用
-    
-//    NSDictionary *tokenDic = [token JSONValue];
-//    NSArray *taskInfoArr = [tokenDic objectForKey:@"taskInfo"];
-//    NSString *fileName = [taskInfoArr valueForKey:@"fileName"];
-    
     
     //WebService路径
     NSString *webServicePath = [[NSString alloc]initWithFormat:@"%@", WEBSERVICE_PATH];
@@ -314,15 +268,6 @@
     
     //if (connection) {
     NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    //NSLog(@"dataString111:%@", [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding]);
-    //Byte *b = [urlData bytes];
-//    Byte *b = (Byte)urlData;
-//    NSString *str = [[NSString alloc]initWithBytes:b length:80 encoding:NSUTF8StringEncoding];
-//    NSLog(@"ssss = %@", str);
-//    Byte *b = (Byte *)urlData;
-
-//    return b;
-    
     NSString *base64String = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
     
     return base64String;

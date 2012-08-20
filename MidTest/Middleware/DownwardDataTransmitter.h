@@ -19,6 +19,7 @@
 
 - (void) downloadBegin;
 - (void) downloadFinish;
+- (BOOL) doUpdateWithTaskId: (NSString *)taskId DownloadFileNameArray: (NSArray *)downloadFileNameArray;
 
 @end
 

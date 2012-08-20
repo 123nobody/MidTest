@@ -43,7 +43,7 @@
         _applicationCode    = 12345;
         _taskName           = taskName;
         _condition          = @"这里是同步条件";
-        _createTime         = [Toolkit getStringFromDate:[NSDate date] WithFormat:DEFAULT_DATE_FORMAT];
+        _createTime         = [Toolkit getStringFromDate:[NSDate date] WithFormat:(NSString *)DEFAULT_DATE_FORMAT];
         NSLog(@".......CreateTime:%@", _createTime);
         _source             = @"This is source.";
         _taskState = Draft;

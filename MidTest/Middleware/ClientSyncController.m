@@ -29,6 +29,8 @@
         _stateController = [[StateController alloc]initWithController:self];
         _upwardDataTransmitter = [[UpwardDataTransmitter alloc]initWithController:self];
         _downwardDataTransmitter = [[DownwardDataTransmitter alloc]initWithController:self];
+        _updateScheduler = [[UpdateScheduler alloc]initWithController:self];
+//        [self startUpdateThread];
         
         _upwardDataTransmitter.delegage = self;
         _downwardDataTransmitter.delegate = self;
@@ -60,6 +62,13 @@
     [Toolkit MidLog:@"[同步控制器]:添加下行任务" LogType:info];
     [_taskManager addTaskWithCondition:condition];
     return YES;
+}
+
+
+//添加一个任务到更新队列
+- (void) addTaskToUpdateSchedulerWithDescription: (SyncTaskDescription *)taskDescription;
+{
+    [_updateScheduler addTaskWithDescription:taskDescription];
 }
 
 //- (BOOL) addTask: (NSString *)msg
@@ -162,6 +171,18 @@
     [Toolkit MidLog:@"[同步控制器]下行数据传输器线程start" LogType:info];
     [_downwardThread start];
 }
+
+- (void) startUpdateThread
+{
+    if (!_updateThreadStoped) {
+        return;
+    }
+    
+    _updateThread = [[NSThread alloc]initWithTarget:self selector:@selector(doUpdate) object:nil];
+    [_updateThread setName:@"更新调度器线程"];
+    [Toolkit MidLog:@"[同步控制器]更新调度器线程start" LogType:info];
+    [_updateThread start];
+}
 //同步开始时的验证
 - (void) check
 {
@@ -191,18 +212,6 @@
     [_stateController setStateOfTask:taskId taskState:taskState];
 }
 #pragma mark - 多线程方法
-- (void) doUpdate
-{
-    _updateThreadStoped = NO;
-    for (int i = 0; i < 10; i++) {
-        NSLog(@"doUpdate线程:%d", i);
-        //NSLog(@"--------------------------------------------------------------------");
-        //pause();
-    }
-    [Toolkit MidLog:@"更新线程结束!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" LogType:debug];
-    _updateThreadStoped = YES;
-}
-
 - (void) doUpload
 {
     [Toolkit MidLog:@"[同步控制器]上行开始..." LogType:debug];
@@ -221,6 +230,13 @@
     [_downwardDataTransmitter download];
     [_delegate downwardTransminThreadStoped];
     [Toolkit MidLog:@"[同步控制器]下行结束..." LogType:debug];
+}
+
+- (void) doUpdate
+{
+    [Toolkit MidLog:@"[同步控制器]更新开始..." LogType:debug];
+    [_updateScheduler doUpdate];
+    [Toolkit MidLog:@"[同步控制器]更新结束..." LogType:debug];
 }
 
 #pragma mark - UpwardDataTransmitter代理方法
@@ -248,6 +264,12 @@
     //[_dataUpdaterThread start];
     [Toolkit MidLog:@"[同步控制器]结束了一个下行任务" LogType:info];
     [_delegate downloadFinish];
+}
+
+- (BOOL)doUpdateWithTaskId:(NSString *)taskId DownloadFileNameArray:(NSArray *)downloadFileNameArray
+{
+    [Toolkit MidLog:@"[同步控制器]开始执行下行更新" LogType:info];
+    return [_delegate doUpdateWithTaskId:taskId DownloadFileNameArray:downloadFileNameArray];
 }
 
 #pragma mark - DownwardDataTransmitter代理方法
