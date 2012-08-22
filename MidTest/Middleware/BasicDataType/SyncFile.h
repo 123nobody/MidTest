@@ -52,6 +52,15 @@
 + (BOOL) deleteFileAtPath: (NSString *)filePath WithName: (NSString *)fileName;
 /*!
  @method
+ @abstract 删除指定的文件夹
+ @discussion 只能删除中间件目录下的文件夹。
+ @param folderPath 文件夹路径，相对中间件目录，比如"/Tasks",则实际操作目录为"应用的Documents目录/中间件目录/Tasks" 
+ @param folderName 文件夹名 
+ @result 成功返回YES，失败返回NO。
+ */
++ (BOOL) deleteFolderAtPath: (NSString *)folderPath WithName: (NSString *)folderName;
+/*!
+ @method
  @abstract 检查指定的文件是否存在
  @discussion 只能检查中间件目录下的文件。
  @param filePath 文件路径，不只限于中间件目录。 

@@ -8,6 +8,7 @@
 
 #import "Toolkit.h"
 #import "Config.h"
+#import "Reachability.h"
 
 @implementation Toolkit
 
@@ -111,6 +112,35 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setDateFormat:format];
     return [formatter stringFromDate:date];
+}
+
++ (BOOL) netTest
+{
+    Reachability *r = [Reachability reachabilityWithHostName:@"www.apple.com"];  
+    switch ([r currentReachabilityStatus]) {  
+        case NotReachable:  
+        {
+            // 没有网络连接  
+            NSLog(@"没有网络连接");
+            return NO;
+            break;  
+        }
+        case ReachableViaWWAN:  
+        {
+            // 使用3G网络  
+            NSLog(@"使用3G网络");
+            return YES;
+            break;  
+        }
+        case ReachableViaWiFi:  
+        {
+            // 使用WiFi网络  
+            NSLog(@"使用WiFi网络");
+            return YES;
+            break;  
+        }
+    }
+    return NO;
 }
 
 + (NSData *)trimData: (NSData *)data

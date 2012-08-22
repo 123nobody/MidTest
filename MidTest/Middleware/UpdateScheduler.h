@@ -19,6 +19,7 @@
 @protocol UpdateSchedulerDelegate <NSObject>
 
 @optional
+- (BOOL)doUpdateWithTaskId:(NSString *)taskId DownloadFileNameArray:(NSArray *)downloadFileNameArray;
 
 
 @end
@@ -29,12 +30,14 @@
  */
 @interface UpdateScheduler : NSObject
 {
+    id<UpdateSchedulerDelegate> _delegate;
     UpdateScheduler *_instance;
     ClientSyncController *_csc; 
     SyncTaskDescriptionList *_updateTaskList;
 }
 
 @property (strong, nonatomic) SyncTaskDescriptionList *updateTaskList;
+@property (strong, nonatomic) id<UpdateSchedulerDelegate> delegage;
 
 
 - (id)initWithController: (ClientSyncController *)csc;

@@ -29,6 +29,9 @@
 - (void) downloadFinish;
 - (BOOL) doUpdateOfTask: (SyncTaskDescription *)taskDescription WithDataPackage: (NSString *) dataPackage;
 
+//网络状态类委托
+- (void) networkException;
+
 - (void) upwardTransminThreadStoped;
 - (void) downwardTransminThreadStoped;
 
@@ -41,7 +44,7 @@
  @class
  @abstract 同步控制器
  */
-@interface ClientSyncController : NSObject <UpwardDataTransmitterDelegate, DownwardDataTransmitterDelegate>
+@interface ClientSyncController : NSObject <UpwardDataTransmitterDelegate, DownwardDataTransmitterDelegate, UpdateSchedulerDelegate>
 {
     id<ClientSyncControllerDelegate> _delegate;
     

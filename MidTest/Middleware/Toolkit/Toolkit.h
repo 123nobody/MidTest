@@ -78,6 +78,8 @@
  */
 + (NSString *) getStringFromDate: (NSDate *)date WithFormat: (NSString *)format;
 
++ (BOOL) netTest;
+
 + (NSData *)trimData: (NSData *)data;
 
 @end

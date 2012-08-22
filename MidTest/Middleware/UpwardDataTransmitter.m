@@ -34,6 +34,10 @@
 
 - (BOOL) upload
 {    
+    //网络测试
+    if (![Toolkit netTest])
+        return NO;
+    
     //每次上传的数据长度，记得放到配置文件中 
     long useLength = 1024 * 100; //1024 = 1KB
     
@@ -65,7 +69,7 @@
         
         //在这里判断token是否为空，如为空，则表示申请没有通过。给应用反馈。
         if ([token isEqualToString:@""] || token == nil) {
-            [Toolkit MidLog:@"token为空!连接存在问题！" LogType:error];
+            [Toolkit MidLog:@"token为空!连接存在问题！服务器不可达！s" LogType:error];
             return NO;
         }
         if ([[token substringToIndex:1] isEqualToString:@"<"]) {

@@ -29,6 +29,12 @@
 
 - (BOOL) download
 {
+    //网络测试
+    if(![Toolkit netTest]){
+        [_delegate networkException];
+        return NO;
+    }
+    
     //每次请求的数据长度，记得放到配置文件中 
     long useLength = 1024 * 100; //1024 = 1KB
     
@@ -59,7 +65,7 @@
         
         //在这里判断token是否为空，如为空，则表示申请没有通过。给应用反馈。
         if ([requestString isEqualToString:@""] || requestString == nil) {
-            [Toolkit MidLog:@"token为空!连接存在问题！" LogType:error];
+            [Toolkit MidLog:@"token为空!连接存在问题！服务器不可达！" LogType:error];
             return NO;
         }
         if ([[requestString substringToIndex:1] isEqualToString:@"<"]) {

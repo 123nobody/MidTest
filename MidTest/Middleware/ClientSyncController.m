@@ -34,6 +34,7 @@
         
         _upwardDataTransmitter.delegage = self;
         _downwardDataTransmitter.delegate = self;
+        _updateScheduler.delegage = self;
         
         _upwardThreadStoped = YES;
         _downwardThreadStoped = YES;
@@ -270,6 +271,11 @@
 {
     [Toolkit MidLog:@"[同步控制器]开始执行下行更新" LogType:info];
     return [_delegate doUpdateWithTaskId:taskId DownloadFileNameArray:downloadFileNameArray];
+}
+
+- (void) networkException
+{
+    [_delegate networkException];
 }
 
 #pragma mark - DownwardDataTransmitter代理方法

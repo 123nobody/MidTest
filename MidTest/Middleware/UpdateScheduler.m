@@ -14,6 +14,7 @@
 @implementation UpdateScheduler
 
 @synthesize updateTaskList = _updateTaskList;
+@synthesize delegage = _delegate;
 
 
 - (id)initWithController: (ClientSyncController *)csc
@@ -39,32 +40,26 @@
 
 - (void) doUpdate
 {
-    
-//    [NSThread sleepForTimeInterval:2];
-//    while (_updateTaskList.count <= 0) {
-//        [Toolkit MidLog:@"[更新调度器]更新队列为空,等待添加待更新任务!" LogType:debug];
-//        return;
-//    }
-    
     _csc.updateThreadStoped = NO;
     int n = 0;
     
-    
-    do {
+    NSString *taskId;
+    NSArray *downloadFileNameArray;
+    for (int i = 0; i < _updateTaskList.count; i++) {
         NSLog(@"这是第%d个更新任务！！！", (n + 1));
+        taskId = [_updateTaskList TaskDescriptionAtIndex:i].taskId;
+        downloadFileNameArray = [[_updateTaskList TaskDescriptionAtIndex:i].syncFileDic allKeys];
         //耗时的更新操作
-        for (int i = 0; i < 3; i++) {
-            NSLog(@"延时%d秒。", i);
-            [NSThread sleepForTimeInterval:1];
-        }
-        
+        [_delegate doUpdateWithTaskId:taskId DownloadFileNameArray:downloadFileNameArray];
         //更新成功后，删除当前的更新任务
-//        [_updateTaskList removeTaskDescriptionWithTaskId:@""];
         NSLog(@"更新成功后，删除当前的更新任务");
         [_csc deleteTaskFileByName:[_updateTaskList TaskDescriptionAtIndex:n].taskName];
-        n++;
-        
-    } while (_updateTaskList.count > n);
+        //更新成功后，删除当前更新任务的文件及文件夹
+        for (int j = 0; j < downloadFileNameArray.count; j++) {
+            [SyncFile deleteFileAtPath:[NSString stringWithFormat:@"/download/%@", taskId] WithName:[downloadFileNameArray objectAtIndex:j]];
+        }
+        [SyncFile deleteFolderAtPath:@"/download" WithName:taskId];
+    }
     
     _csc.updateThreadStoped = YES;
 }

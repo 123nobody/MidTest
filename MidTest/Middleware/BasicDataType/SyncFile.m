@@ -44,7 +44,7 @@
     NSString *documentsDirectory = [Toolkit getDocumentsPathOfApp];
     NSString *targetPath = [documentsDirectory stringByAppendingFormat:@"%@%@", MIDDLEWARE_DIR, filePath];
     [fileManager changeCurrentDirectoryPath:targetPath];
-    NSLog(@"targetPath = %@", targetPath);
+    //NSLog(@"targetPath = %@", targetPath);
     
     if (![fileManager fileExistsAtPath:targetPath]) {
         //NSLog(@"创建文件夹%@", targetPath);
@@ -98,6 +98,29 @@
         [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]删除文件%@/%@", targetPath, fileName] LogType:info];
         return YES;
     }
+    [Toolkit MidLog:@"删除文件失败！" LogType:error];
+    return NO;
+}
+
+/*!
+ @method
+ @abstract 删除指定的文件夹
+ @discussion 只能删除中间件目录下的文件夹。
+ @param filePath 文件夹路径，相对中间件目录，比如"/Tasks",则实际操作目录为"应用的Documents目录/中间件目录/Tasks" 
+ @param fileName 文件名 
+ @result 成功返回YES，失败返回NO。
+ */
++ (BOOL) deleteFolderAtPath: (NSString *)folderPath WithName: (NSString *)folderName
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *documentsDirectory = [Toolkit getDocumentsPathOfApp];
+    NSString *targetPath = [documentsDirectory stringByAppendingFormat:@"%@%@", MIDDLEWARE_DIR, folderPath];
+    [fileManager changeCurrentDirectoryPath:targetPath];
+    if ([fileManager removeItemAtPath:folderName error:nil]) {
+        [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]删除文件夹%@/%@", targetPath, folderName] LogType:info];
+        return YES;
+    }
+    [Toolkit MidLog:@"删除文件夹失败！" LogType:error];
     return NO;
 }
          

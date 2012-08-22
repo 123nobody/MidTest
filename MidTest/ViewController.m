@@ -40,12 +40,12 @@
     
 //    NSArray *filePathArray = [[NSArray alloc]initWithObjects:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/test 副本.JPG", nil];
     
-//    [csc addTaskWithFilePathArray:filePathArray];
-//    [csc startUpwardTransmitThread];
+    [csc addTaskWithFilePathArray:filePathArray];
+    [csc startUpwardTransmitThread];
     
     [csc addTaskWithCondition:@"This is condition."];
-    [csc addTaskWithCondition:@"This is condition.123"];
-    [csc addTaskWithCondition:@"This is condition.456"];
+//    [csc addTaskWithCondition:@"This is condition.123"];
+//    [csc addTaskWithCondition:@"This is condition.456"];
     [csc startDownwardTransmitThread];
     
     
@@ -85,15 +85,21 @@
 
 -(BOOL)doUpdateWithTaskId:(NSString *)taskId DownloadFileNameArray:(NSArray *)downloadFileNameArray
 {
-    NSLog(@"这里是应用程序控制的下行更新操作！");
+    NSLog(@"这里是应用程序控制的下行更新操作！ -- 开始");
     NSLog(@"taskId:%@", taskId);
     NSLog(@"downloadFileNameArray:\n%@", downloadFileNameArray);
+    NSLog(@"这里是应用程序控制的下行更新操作！ -- 结束");
     return YES;
 }
 
 - (BOOL)doUpdateOfTask:(SyncTaskDescription *)taskDescription WithDataPackage:(NSString *)dataPackage
 {
     return YES;
+}
+
+- (void)networkException
+{
+    NSLog(@"这里是应用程序控制的网络异常（没有连接）。");
 }
 
 #pragma mark 

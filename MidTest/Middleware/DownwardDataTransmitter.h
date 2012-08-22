@@ -21,6 +21,9 @@
 - (void) downloadFinish;
 - (BOOL) doUpdateWithTaskId: (NSString *)taskId DownloadFileNameArray: (NSArray *)downloadFileNameArray;
 
+//网络状态类委托
+- (void) networkException;
+
 @end
 
 /*!
