@@ -30,7 +30,7 @@
  @class
  @abstract 下行传输管理器
  */
-@interface DownwardDataTransmitter : NSObject
+@interface DownwardDataTransmitter : NSObject <NSURLConnectionDelegate,NSURLConnectionDataDelegate>
 {
     id<DownwardDataTransmitterDelegate> _delegate;
     

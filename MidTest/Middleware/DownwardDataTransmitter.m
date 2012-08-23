@@ -13,6 +13,7 @@
 #import "GTMBase64.h"
 #import "SyncFile.h"
 #import "SyncFileDescription.h"
+#import "ASIFormDataRequest.h"
 
 @implementation DownwardDataTransmitter
 
@@ -138,7 +139,7 @@
             int n = 1;
             //直到返回的长度小于申请的长度，说明是最后一段数据。
             while (YES) {
-                NSLog(@"第%d次下行传输。", n++);
+                //NSLog(@"第%d次下行传输。", n++);
                 base64String = [self downwardTransmitWithToken:token FileName:fileName Offset:offset Length:useLength];
                 data = [GTMBase64 decodeString:base64String];
                 
@@ -147,18 +148,20 @@
                 //写入文件
                 [downloadFile writeData:data];
                 //更新offset
-                offset += useLength;
+                offset += data.length;
                 [downloadFile seekToFileOffset:offset];
                 //每下载成功一段数据，就更新任务描述内容并写入任务文件。
                 fileDescription.transSize = offset;
-                
-                NSDictionary *tmpDic = [fileDescription getDictionaryForServer];
+                if (data.length < useLength) {
+                    fileDescription.isFinished = @"true";
+                }
+                NSDictionary *tmpDic = [fileDescription getDictionaryForClient];
                 //将单个文件的Dic写入文件列表Dic
                 [syncFileDic setObject:tmpDic forKey:[keys objectAtIndex:i]];
                 //更新任务描述对象的同步文件Dic，并写入对应的任务文件
                 taskDescription.syncFileDic = syncFileDic;
                 [taskDescription writeToTaskFile];
-                
+                NSLog(@"进度%.2f%@", [[NSNumber numberWithDouble:((double)offset * 100.0/fileSize)] doubleValue], @"%");
                 //当返回的数据长度小于申请的数据长度时，表示这个文件已经传输结束，跳出while循环。否则继续申请数据。
                 if (data.length < useLength) {
                     [Toolkit MidLog:@"[下行传输器]收到的数据小于申请的数据长度，文件结束。" LogType:debug];
@@ -221,24 +224,26 @@
     //URL
     NSURL *url;
     url=[NSURL URLWithString:webServicePath];
-    //post参数
-    NSString *postString = [NSString stringWithFormat:@"requestType=DownwardRequest&strJsonTask=%@&strJsonIdentity=%@", jsonTask, jsonIdentity];
     //Requst
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request setRequestMethod:@"POST"];
+    [request setPostValue:@"DownwardRequest" forKey:@"requestType"];
+    [request setPostValue:jsonTask forKey:@"strJsonTask"];
+    [request setPostValue:jsonIdentity forKey:@"strJsonIdentity"];
+    //设置超时
+    [request setTimeOutSeconds:30];
+    [request startSynchronous];
+    NSError *error = [request error];
+    NSData *urlData;
+    NSString *token;
+    if (!error) {
+        urlData = [request responseData];
+        token = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
+        return token;
+    }
+    [self didFailWithError:error];
     
-    [request addValue:@"application/x-www-form-urlencoded"forHTTPHeaderField:@"Content-Type"];//注意是中划线
-    [request addValue:[NSString stringWithFormat:@"%d",[postString length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    //NSURLConnection *connection=[NSURLConnection connectionWithRequest:request delegate:self];
-    
-    //if (connection) {
-    NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    NSString *token = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
-    //}
-    
-    return token;
+    return @"";
 }
 
 /*!
@@ -258,23 +263,25 @@
     //URL
     NSURL *url;
     url=[NSURL URLWithString:webServicePath];
-    //post参数
-    //NSLog(@"post参数 token:%@ fileName:%@ offset:%li length:%li", token, fileName, offset, length);
-    NSString *postString = [NSString stringWithFormat:@"requestType=DownwardTransmit&fileName=%@&strToken=%@&lOffset=%li&lLength=%li", fileName, token, offset, length];
-    //NSLog(@"postString:%@", postString);
-    //Requst
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
-    [request addValue:@"application/x-www-form-urlencoded"forHTTPHeaderField:@"Content-Type"];//注意是中划线
-    [request addValue:[NSString stringWithFormat:@"%d",[postString length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    //NSURLConnection *connection=[NSURLConnection connectionWithRequest:request delegate:self];
-    
-    //if (connection) {
-    NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    NSString *base64String = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request setRequestMethod:@"POST"];
+    [request setPostValue:@"DownwardTransmit" forKey:@"requestType"];
+    [request setPostValue:fileName forKey:@"fileName"];
+    [request setPostValue:token forKey:@"strToken"];
+    [request setPostValue:[NSNumber numberWithLong:offset] forKey:@"lOffset"];
+    [request setPostValue:[NSNumber numberWithLong:length] forKey:@"lLength"];
+    [request setTimeOutSeconds:30];
+    [request startSynchronous];
+    NSError *error = [request error];
+    NSData *urlData;
+    NSString *base64String;
+    if (!error) {
+        urlData = [request responseData];
+        base64String = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
+        return base64String;
+    }
+    [self didFailWithError:error];
     
     return base64String;
 }
@@ -291,26 +298,58 @@
     NSString *webServicePath = [[NSString alloc]initWithFormat:@"%@", WEBSERVICE_PATH];
     //URL
     NSURL *url = [NSURL URLWithString:webServicePath];
-    //post参数
-    NSString *postString = [NSString stringWithFormat:@"requestType=DownwardFinish&strToken=%@", token];
-    //Requst
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
-    [request addValue:@"application/x-www-form-urlencoded"forHTTPHeaderField:@"Content-Type"];//注意是中划线
-    [request addValue:[NSString stringWithFormat:@"%d",[postString length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    //NSURLConnection *connection=[NSURLConnection connectionWithRequest:request delegate:self];
-    
-    //if (connection) {
-    NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    NSString *resultString = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request setRequestMethod:@"POST"];
+    [request setPostValue:@"DownwardTransmit" forKey:@"requestType"];
+    [request setPostValue:token forKey:@"strToken"];
+    [request setTimeOutSeconds:30];
+    [request startSynchronous];
+    NSError *error = [request error];
+    NSData *urlData;
+    NSString *resultString;
+    if (!error) {
+        urlData = [request responseData];
+        resultString = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
+        NSLog(@"下行结束返回结果为%@", resultString);
+        return resultString;
+    }
+    [self didFailWithError:error];
     NSLog(@"下行结束返回结果为%@", resultString);
-    //}
     
     return resultString;
 
+}
+
+- (int) didFailWithError: (NSError *)error
+{
+    switch (error.code) {
+        case 0:
+        {
+            NSLog(@"网络连接正常！");
+            break;
+        }
+            
+        case ASIConnectionFailureErrorType:
+        {
+            NSLog(@"网络错误(%d) 无法连接到服务器！", error.code);
+            break;
+        }
+            
+        case ASIRequestTimedOutErrorType:
+        {
+            NSLog(@"网络错误(%d) 连接超时！", error.code);
+            break;
+        }
+            
+        default:
+        {
+            NSLog(@"网络错误(%d) 未定义的错误！", error.code);
+            break;
+        }
+    }
+    
+    return 0;
 }
 
 @end

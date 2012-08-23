@@ -15,6 +15,7 @@
 #import "SyncTaskDescriptionList.h"
 #import "SyncFile.h"
 #import "GTMBase64.h"
+#import "ASIFormDataRequest.h"
 
 @implementation UpwardDataTransmitter
 
@@ -225,28 +226,26 @@
     NSString *webServicePath = [[NSString alloc]initWithFormat:@"%@", WEBSERVICE_PATH];
     //URL
     NSURL *url = [NSURL URLWithString:webServicePath];
-    //post参数
-    NSString *postString = [NSString stringWithFormat:@"requestType=UpwardRequest&strJsonTask=%@&strJsonIdentity=%@", jsonTask, jsonIdentity];
     //Requst
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2.0];
-    
-    [request addValue:@"application/x-www-form-urlencoded"forHTTPHeaderField:@"Content-Type"];//注意是中划线
-    [request addValue:[NSString stringWithFormat:@"%d",[postString length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSURLConnection *connection=[NSURLConnection connectionWithRequest:request delegate:self];
-    
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request setRequestMethod:@"POST"];
+    [request setPostValue:@"UpwardRequest" forKey:@"requestType"];
+    [request setPostValue:jsonTask forKey:@"strJsonTask"];
+    [request setPostValue:jsonIdentity forKey:@"strJsonIdentity"];
+    //设置超时
+    [request setTimeOutSeconds:30];
+    [request startSynchronous];
+    NSError *error = [request error];
+    NSData *urlData;
     NSString *token;
-    if (connection) {
-        NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    if (!error) {
+        urlData = [request responseData];
         token = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
-    } else {
-        [Toolkit MidLog:@"网络申请初始化失败!" LogType:error];
-        return @"";
+        return token;
     }
-
-    return token;
+    [self didFailWithError:error];
+    
+    return @"";
 }
 
 /*!
@@ -264,27 +263,28 @@
     NSString *webServicePath = [[NSString alloc]initWithFormat:@"%@", WEBSERVICE_PATH];
     //URL
     NSURL *url = [NSURL URLWithString:webServicePath];
-    //post参数
-    NSString *postString = [NSString stringWithFormat:@"requestType=UpwardTransmit&strToken=%@&fileName=%@&lOffset=%li&buffer=%@", token, fileName, offset, base64String];
     //Requst
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    
-    [request addValue:@"application/x-www-form-urlencoded"forHTTPHeaderField:@"Content-Type"];//注意是中划线
-    [request addValue:[NSString stringWithFormat:@"%d",[postString length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSURLConnection *connection=[NSURLConnection connectionWithRequest:request delegate:self];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request setRequestMethod:@"POST"];
+    [request setPostValue:@"UpwardTransmit" forKey:@"requestType"];
+    [request setPostValue:token forKey:@"strToken"];
+    [request setPostValue:fileName forKey:@"fileName"];
+    [request setPostValue:[NSNumber numberWithLong:offset] forKey:@"lOffset"];
+    [request setPostValue:base64String forKey:@"buffer"];
+    //设置超时
+    [request setTimeOutSeconds:30];
+    [request startSynchronous];
+    NSError *error = [request error];
+    NSData *urlData;
     NSString *resultString;
-    if (connection) {
-        NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    if (!error) {
+        urlData = [request responseData];
         resultString = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
         NSLog(@"[上行传输器]上行传输返回结果为%@", resultString);
-    } else {
-        [Toolkit MidLog:@"[上行传输器]单次传输初始化失败！" LogType:error];
-        return @"-2";
+        return resultString;
     }
-
+    [self didFailWithError:error];
+    NSLog(@"[上行传输器]上行传输返回结果为%@", resultString);
     return resultString;
 }
 
@@ -301,25 +301,57 @@
     NSString *webServicePath = [[NSString alloc]initWithFormat:@"%@", WEBSERVICE_PATH];
     //URL
     NSURL *url = [NSURL URLWithString:webServicePath];
-    //post参数
-    NSString *postString = [NSString stringWithFormat:@"requestType=UpwardFinish&strToken=%@&bTrash=%@", token, trash];
     //Requst
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    
-    [request addValue:@"application/x-www-form-urlencoded"forHTTPHeaderField:@"Content-Type"];//注意是中划线
-    [request addValue:[NSString stringWithFormat:@"%d",[postString length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    //NSURLConnection *connection=[NSURLConnection connectionWithRequest:request delegate:self];
-    
-    //if (connection) {
-    NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    NSString *resultString = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
-    NSLog(@"上行结束返回结果为%@", resultString);
-    //}
-    
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request setRequestMethod:@"POST"];
+    [request setPostValue:@"UpwardFinish" forKey:@"requestType"];
+    [request setPostValue:token forKey:@"strToken"];
+    [request setPostValue:trash forKey:@"bTrash"];
+    //设置超时
+    [request setTimeOutSeconds:30];
+    [request startSynchronous];
+    NSError *error = [request error];
+    NSData *urlData;
+    NSString *resultString;
+    if (!error) {
+        urlData = [request responseData];
+        resultString = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
+        NSLog(@"[上行传输器]上行结束返回结果为%@", resultString);
+        return resultString;
+    }
+    [self didFailWithError:error];
+    NSLog(@"[上行传输器]上行结束返回结果为%@", resultString);
     return resultString;
+}
+- (int) didFailWithError: (NSError *)error
+{
+    switch (error.code) {
+        case 0:
+        {
+            NSLog(@"网络连接正常！");
+            break;
+        }
+            
+        case ASIConnectionFailureErrorType:
+        {
+            NSLog(@"网络错误(%d) 无法连接到服务器！", error.code);
+            break;
+        }
+            
+        case ASIRequestTimedOutErrorType:
+        {
+            NSLog(@"网络错误(%d) 连接超时！", error.code);
+            break;
+        }
+            
+        default:
+        {
+            NSLog(@"网络错误(%d) 未定义的错误！", error.code);
+            break;
+        }
+    }
+    
+    return 0;
 }
 
 @end

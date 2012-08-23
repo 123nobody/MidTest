@@ -99,6 +99,7 @@
         return YES;
     }
     [Toolkit MidLog:@"删除文件失败！" LogType:error];
+    NSLog(@"filePath = %@/%@", filePath, fileName);
     return NO;
 }
 
