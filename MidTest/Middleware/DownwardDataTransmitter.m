@@ -66,11 +66,11 @@
         
         //在这里判断token是否为空，如为空，则表示申请没有通过。给应用反馈。
         if ([requestString isEqualToString:@""] || requestString == nil) {
-            [Toolkit MidLog:@"token为空!连接存在问题！服务器不可达！" LogType:error];
+            [Toolkit MidLog:@"[下行传输器]token为空!连接存在问题！服务器不可达！" LogType:error];
             return NO;
         }
         if ([[requestString substringToIndex:1] isEqualToString:@"<"]) {
-            [Toolkit MidLog:@"token不合法!" LogType:error];
+            [Toolkit MidLog:@"[下行传输器]token不合法!" LogType:error];
             return NO;
         }
         
@@ -161,7 +161,7 @@
                 //更新任务描述对象的同步文件Dic，并写入对应的任务文件
                 taskDescription.syncFileDic = syncFileDic;
                 [taskDescription writeToTaskFile];
-                NSLog(@"进度%.2f%@", [[NSNumber numberWithDouble:((double)offset * 100.0/fileSize)] doubleValue], @"%");
+                NSLog(@"进度%.2f%@   offset = %li", [[NSNumber numberWithDouble:((double)offset * 100.0/fileSize)] doubleValue], @"%", offset);
                 //当返回的数据长度小于申请的数据长度时，表示这个文件已经传输结束，跳出while循环。否则继续申请数据。
                 if (data.length < useLength) {
                     [Toolkit MidLog:@"[下行传输器]收到的数据小于申请的数据长度，文件结束。" LogType:debug];
@@ -190,11 +190,11 @@
 //        [_csc startUpdateThread];
         
 //        //执行更新方法，处理下载的文件。
-//        if ([_csc doUpdateWithTaskId:taskId DownloadFileNameArray:keys]) {
-//            //如果更新成功，删除已完成的下行任务文件
-//            taskDescription.taskState = Completion;
-//            [_csc deleteTaskFileByName:taskDescription.taskName];
-//        }
+        if ([_csc doUpdateWithTaskId:taskId DownloadFileNameArray:keys]) {
+            //如果更新成功，删除已完成的下行任务文件
+            taskDescription.taskState = Completion;
+            [_csc deleteTaskFileByName:taskDescription.taskName];
+        }
         
     }//结束遍历每一个任务
 
@@ -301,7 +301,7 @@
     
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
     [request setRequestMethod:@"POST"];
-    [request setPostValue:@"DownwardTransmit" forKey:@"requestType"];
+    [request setPostValue:@"DownwardFinish" forKey:@"requestType"];
     [request setPostValue:token forKey:@"strToken"];
     [request setTimeOutSeconds:30];
     [request startSynchronous];

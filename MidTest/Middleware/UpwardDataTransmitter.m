@@ -70,11 +70,11 @@
         
         //在这里判断token是否为空，如为空，则表示申请没有通过。给应用反馈。
         if ([token isEqualToString:@""] || token == nil) {
-            [Toolkit MidLog:@"token为空!连接存在问题！服务器不可达！s" LogType:error];
+            [Toolkit MidLog:@"[上行传输器]token为空!连接存在问题！服务器不可达！" LogType:error];
             return NO;
         }
         if ([[token substringToIndex:1] isEqualToString:@"<"]) {
-            [Toolkit MidLog:@"token不合法!" LogType:error];
+            [Toolkit MidLog:@"[上行传输器]token不合法!" LogType:error];
             return NO;
         }
         
@@ -132,12 +132,15 @@
                 NSData *tmpData = [dataFile readDataOfLength:useLength];
                 //将读出的数据转成Base64编码的NSData，然后再转成NSString格式。
                 NSString *base64String = [[NSString alloc]initWithData:[GTMBase64 encodeData:tmpData] encoding:NSUTF8StringEncoding];
+//                NSLog(@"base64String:\n%@", base64String);
                 
                 //将NSString中的"+"替换为"%2B"，以保证正确传输。
-                base64String = [base64String stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+//                base64String = [base64String stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+//                NSLog(@"base64String:\n%@", base64String);
                 //传输一段数据
                 NSString *resultString = [self upwardTransmitWithToken:token FileName:fileName Offset:offset Base64String:base64String];
                 NSLog(@"上传返回结果为：%@ offset = %li dataLength = %d  fileName = %@", resultString, offset, tmpData.length, fileName);
+                NSLog(@"base64String.length = %d", base64String.length);
                 
                 switch ([resultString intValue]) {
                     case 1://服务器接收成功
