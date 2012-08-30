@@ -275,7 +275,7 @@
     [request setPostValue:[NSNumber numberWithLong:offset] forKey:@"lOffset"];
     [request setPostValue:base64String forKey:@"buffer"];
     //设置超时
-    [request setTimeOutSeconds:30];
+    [request setTimeOutSeconds:5];
     [request startSynchronous];
     NSError *error = [request error];
     NSData *urlData;
@@ -286,8 +286,8 @@
         NSLog(@"[上行传输器]上行传输返回结果为%@", resultString);
         return resultString;
     }
-    [self didFailWithError:error];
     NSLog(@"[上行传输器]上行传输返回结果为%@", resultString);
+    [self didFailWithError:error];
     return resultString;
 }
 
@@ -338,18 +338,21 @@
         case ASIConnectionFailureErrorType:
         {
             NSLog(@"网络错误(%d) 无法连接到服务器！", error.code);
+            exit(0);
             break;
         }
             
         case ASIRequestTimedOutErrorType:
         {
             NSLog(@"网络错误(%d) 连接超时！", error.code);
+            exit(0);
             break;
         }
             
         default:
         {
             NSLog(@"网络错误(%d) 未定义的错误！", error.code);
+            exit(0);
             break;
         }
     }

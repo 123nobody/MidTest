@@ -107,6 +107,18 @@
         long         transSize;//已传输大小
         NSString    *filePath;//文件路径
         
+        //遍历当前任务下每一个同步文件描述SyncFileDescription,计算出需要下载的全部文件总大小
+        long totalFileSize = 0;
+        for (int i = 0; i < keys.count; i++) {
+            fileDescription = [[SyncFileDescription alloc]initWithDictionary:[syncFileDic objectForKey:[keys objectAtIndex:i]]];
+            totalFileSize += fileDescription.fileSize;
+        }
+        //如果磁盘空间不足，则停止任务。调用委托。
+        if ([Toolkit getFreeSpace] < totalFileSize) {
+            [_delegate insufficientDiskSpace];
+            return NO;
+        }
+        
         //遍历当前任务下每一个同步文件描述SyncFileDescription
         for (int i = 0; i < keys.count; i++) {
             fileDescription = [[SyncFileDescription alloc]initWithDictionary:[syncFileDic objectForKey:[keys objectAtIndex:i]]];
@@ -136,7 +148,7 @@
             NSData *data;
             NSString *base64String;
             long offset = transSize;
-            int n = 1;
+//            int n = 1;
             //直到返回的长度小于申请的长度，说明是最后一段数据。
             while (YES) {
                 //NSLog(@"第%d次下行传输。", n++);
@@ -181,7 +193,7 @@
         //如果全部文件下载结束且成功，修改对应的任务状态为待处理。
         if ([finishFlag isEqualToString:@"1"] || YES) {
             taskDescription.taskState = Pending;
-            [Toolkit MidLog:[NSString stringWithFormat:@"[上行传输器]已修改任务状态为待处理态...%i", taskDescription.taskState] LogType:debug];
+            [Toolkit MidLog:[NSString stringWithFormat:@"[下行传输器]已修改任务状态为待处理态...%i", taskDescription.taskState] LogType:debug];
         }
         
         //向更新管理器添加更新任务
@@ -189,15 +201,17 @@
         [_csc addTaskToUpdateSchedulerWithDescription:taskDescription];
 //        [_csc startUpdateThread];
         
+        //已作废
 //        //执行更新方法，处理下载的文件。
-        if ([_csc doUpdateWithTaskId:taskId DownloadFileNameArray:keys]) {
-            //如果更新成功，删除已完成的下行任务文件
-            taskDescription.taskState = Completion;
-            [_csc deleteTaskFileByName:taskDescription.taskName];
-        }
+//        if ([_csc doUpdateWithTaskId:taskId DownloadFileNameArray:keys]) {
+//            //如果更新成功，删除已完成的下行任务文件
+//            taskDescription.taskState = Completion;
+//            [_csc deleteTaskFileByName:taskDescription.taskName];
+//        }
         
     }//结束遍历每一个任务
 
+    //启动更新线程
     [_csc startUpdateThread];
     
     [Toolkit MidLog:@"[下行传输器]下行数据传输线程结束!" LogType:debug];

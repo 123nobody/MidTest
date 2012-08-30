@@ -30,7 +30,6 @@
         _upwardDataTransmitter = [[UpwardDataTransmitter alloc]initWithController:self];
         _downwardDataTransmitter = [[DownwardDataTransmitter alloc]initWithController:self];
         _updateScheduler = [[UpdateScheduler alloc]initWithController:self];
-//        [self startUpdateThread];
         
         _upwardDataTransmitter.delegage = self;
         _downwardDataTransmitter.delegate = self;
@@ -72,13 +71,6 @@
     [_updateScheduler addTaskWithDescription:taskDescription];
 }
 
-//- (BOOL) addTask: (NSString *)msg
-//{
-//    [Toolkit MidLog:@"ClientSyncController.addTask:调用taskmanager.addTask..." LogType:info];
-//    return [_taskManager addTask:msg];
-//}
-
-
 /*!
  @method
  @abstract 删除指定文件名的任务文件
@@ -88,73 +80,6 @@
 - (BOOL) deleteTaskFileByName: (NSString *)taskFileName
 {
     return [_taskManager deleteTaskFileByName:taskFileName];
-}
-
-//测试方法
-- (void) test
-{
-//    if([SyncFile existsFileAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testfile.txt"])
-//        NSLog(@"exist!");
-//    return;
-    
-    [SyncFile createFileAtPath:@"" WithName:@"copyfile.txt"];
-    
-    SyncFile *file = [[SyncFile alloc]initAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/testfile.txt"];
-    
-    SyncFile *copyfile = [[SyncFile alloc]initAtPath:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/copyfile.txt"];
-    
-    NSData *data;
-    while (([file offsetInFile] + 100) < [file fileSize]) {
-        data = [file readDataOfLength:100];
-        [file seekToFileOffset:([file offsetInFile] + 100)];
-        [copyfile writeData:data];
-        [copyfile seekToFileOffset:([copyfile offsetInFile] + 100)];
-    }
-    
-    data = [file readDataToEndOfFile];
-    [copyfile writeData:data];
-    
-    [file close];
-    [copyfile close];
-    NSLog(@"finish!!!!");
-}
-
-#pragma mark - 同步
-- (BOOL) synchronize
-{
-    [Toolkit MidLog:@"同步开始..." LogType:info];
-    
-    [Toolkit MidLog:@"调用用户认证方法，得到用户认证字符串..." LogType:info];
-    
-//    /************多线程********必要时注意加锁*********/
-//    _upwardThread = [[NSThread alloc]initWithTarget:self selector:@selector(doUpload) object:nil];
-//    [_upwardThread setName:@"上行数据传输器线程"];
-//    [Toolkit MidLog:@"上行数据传输器线程start" LogType:info];
-//    [_upwardThread start];
-//    
-//    _downwardThread = [[NSThread alloc]initWithTarget:self selector:@selector(doDownload) object:nil];
-//    [_downwardThread setName:@"下行数据传输器线程"];
-//    [Toolkit MidLog:@"下行数据传输器线程start" LogType:info];
-//    [_downwardThread start];
-    //_downwardThreadStoped = NO;
-    
-    _dataUpdaterThread = [[NSThread alloc]initWithTarget:self selector:@selector(doUpdate) object:nil];
-    [_dataUpdaterThread setName:@"数据更新调度器线程"];
-    [Toolkit MidLog:@"数据更新调度器线程start" LogType:info];
-    [_dataUpdaterThread start];
-    
-    /************多线程*****************/
-    //BOOL loopFlag = YES;
-    while (YES) {
-        if (_upwardThreadStoped && _downwardThreadStoped && _updateThreadStoped) {
-            //loopFlag = NO;
-            break;
-        }
-    }
-    [Toolkit MidLog:@"同步结束。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。" LogType:debug];
-    
-    
-    return YES;
 }
 
 - (void) startUpwardTransmitThread
@@ -271,6 +196,12 @@
 {
     [Toolkit MidLog:@"[同步控制器]开始执行下行更新" LogType:info];
     return [_delegate doUpdateWithTaskId:taskId DownloadFileNameArray:downloadFileNameArray];
+}
+
+- (void)insufficientDiskSpace
+{
+    [Toolkit MidLog:@"磁盘空间不足！" LogType:debug];
+    [_delegate insufficientDiskSpace];
 }
 
 - (void) networkException

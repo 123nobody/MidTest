@@ -41,13 +41,13 @@
     
 //    NSArray *filePathArray = [[NSArray alloc]initWithObjects:@"/Users/wei/Library/Application Support/iPhone Simulator/5.1/Applications/3A846252-D215-4EF4-B647-C0F366A25121/Documents/Middleware/test 副本.JPG", nil];
     
-    [csc addTaskWithFilePathArray:filePathArray];
-    [csc startUpwardTransmitThread];
+//    [csc addTaskWithFilePathArray:filePathArray];
+//    [csc startUpwardTransmitThread];
     
-//    [csc addTaskWithCondition:@"This is condition."];
-//    [csc addTaskWithCondition:@"This is condition.123"];
-//    [csc addTaskWithCondition:@"This is condition.456"];
-//    [csc startDownwardTransmitThread];
+    [csc addTaskWithCondition:@"This is condition."];
+    [csc addTaskWithCondition:@"This is condition.123"];
+    [csc addTaskWithCondition:@"This is condition.456"];
+    [csc startDownwardTransmitThread];
     
     
     return;
@@ -66,22 +66,22 @@
 
 -(void)uploadBegin
 {
-    //NSLog(@"这里是应用程序控制的uploadBegin");
+    NSLog(@"这里是应用程序控制的uploadBegin");
 }
 
 -(void)uploadFinish
 {
-    //NSLog(@"这里是应用程序控制的uploadFinish");
+    NSLog(@"这里是应用程序控制的uploadFinish");
 }
 
 -(void)downloadBegin
 {
-    //NSLog(@"这里是应用程序控制的downloadBegin");
+    NSLog(@"这里是应用程序控制的downloadBegin");
 }
 
 -(void)downloadFinish
 {
-    //NSLog(@"这里是应用程序控制的downloadFinish");
+    NSLog(@"这里是应用程序控制的downloadFinish");
 }
 
 -(BOOL)doUpdateWithTaskId:(NSString *)taskId DownloadFileNameArray:(NSArray *)downloadFileNameArray
@@ -90,6 +90,8 @@
     NSLog(@"taskId:%@", taskId);
     NSLog(@"downloadFileNameArray:\n%@", downloadFileNameArray);
     NSLog(@"这里是应用程序控制的下行更新操作！ -- 结束");
+    
+    //更新成功返回YES
     return YES;
 }
 
@@ -101,6 +103,11 @@
 - (void)networkException
 {
     NSLog(@"这里是应用程序控制的网络异常（没有连接）。");
+}
+
+- (void)insufficientDiskSpace
+{
+    NSLog(@"这里是应用程序控制的磁盘空间不足！需要应用提示用户清理磁盘。");
 }
 
 #pragma mark 
@@ -115,10 +122,4 @@
 {
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-    NSLog(@"进入了代理!%d", error.code);
-}
-
 @end

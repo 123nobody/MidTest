@@ -80,6 +80,20 @@
 
 + (BOOL) netTest;
 
+/*!
+ @method
+ @abstract 得到磁盘的剩余空间量
+ @result 返回磁盘的剩余空间量，单位字节。
+ */
++ (long long) getFreeSpace;
+
+/*!
+ @method
+ @abstract 得到磁盘的总空间量
+ @result 返回磁盘的总空间量，单位字节。
+ */
++(long long)getTotalDiskSpaceInBytes;
+
 + (NSData *)trimData: (NSData *)data;
 
 @end

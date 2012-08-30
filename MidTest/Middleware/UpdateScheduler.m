@@ -51,14 +51,14 @@
         downloadFileNameArray = [[_updateTaskList TaskDescriptionAtIndex:i].syncFileDic allKeys];
         //耗时的更新操作
         [_delegate doUpdateWithTaskId:taskId DownloadFileNameArray:downloadFileNameArray];
-        //更新成功后，删除当前的更新任务
+        //更新成功后，删除当前的更新任务/应该由中间件控制删除任务文件。
         NSLog(@"更新成功后，删除当前的更新任务");
         [_csc deleteTaskFileByName:[_updateTaskList TaskDescriptionAtIndex:i].taskName];
         //更新成功后，删除当前更新任务的文件及文件夹
-//        for (int j = 0; j < downloadFileNameArray.count; j++) {
-//            [SyncFile deleteFileAtPath:[NSString stringWithFormat:@"/download/%@", taskId] WithName:[downloadFileNameArray objectAtIndex:j]];
-//        }
-//        [SyncFile deleteFolderAtPath:@"/download" WithName:taskId];
+        for (int j = 0; j < downloadFileNameArray.count; j++) {
+            [SyncFile deleteFileAtPath:[NSString stringWithFormat:@"/download/%@", taskId] WithName:[downloadFileNameArray objectAtIndex:j]];
+        }
+        [SyncFile deleteFolderAtPath:@"/download" WithName:taskId];
     }
     
     _csc.updateThreadStoped = YES;

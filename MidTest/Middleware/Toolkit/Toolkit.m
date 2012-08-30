@@ -9,9 +9,10 @@
 #import "Toolkit.h"
 #import "Config.h"
 #import "Reachability.h"
+#import "sys/param.h"
+#import "sys/mount.h"
 
 @implementation Toolkit
-
 
 //获取系统时间戳
 + (NSString *) getTimestampString
@@ -142,6 +143,34 @@
     }
     return NO;
 }
+
+/*!
+ @method
+ @abstract 得到磁盘的剩余空间量
+ @result 返回磁盘的剩余空间量，单位字节。
+ */
++ (long long) getFreeSpace {
+    struct statfs buf;
+    long long freespace = -1;
+    if(statfs("/", &buf) >= 0){
+        freespace = (long long)buf.f_bsize * buf.f_bfree;
+    }
+    return freespace;
+}
+
+/*!
+ @method
+ @abstract 得到磁盘的总空间量
+ @result 返回磁盘的总空间量，单位字节。
+ */
++(long long)getTotalDiskSpaceInBytes {   
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);   
+    struct statfs tStats;   
+    statfs([[paths lastObject] cString], &tStats);   
+    long long totalSpace = (long long)(tStats.f_blocks * tStats.f_bsize);   
+    
+    return totalSpace;   
+}  
 
 + (NSData *)trimData: (NSData *)data
 {

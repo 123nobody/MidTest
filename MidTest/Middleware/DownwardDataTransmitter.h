@@ -24,6 +24,9 @@
 //网络状态类委托
 - (void) networkException;
 
+//磁盘剩余空间不足
+- (void) insufficientDiskSpace;
+
 @end
 
 /*!

@@ -35,6 +35,9 @@
 - (void) upwardTransminThreadStoped;
 - (void) downwardTransminThreadStoped;
 
+//磁盘剩余空间不足
+- (void) insufficientDiskSpace;
+
 //下行数据更新
 - (BOOL)doUpdateWithTaskId:(NSString *)taskId DownloadFileNameArray:(NSArray *)downloadFileNameArray;
 
@@ -88,7 +91,6 @@
  @result 是否添加成功, 成功返回YES，失败返回NO。
  */
 - (BOOL) addTaskWithCondition: (NSString *)condition;
-- (BOOL) synchronize;
 /*!
  @method
  @abstract 启动上行传输线程
@@ -121,9 +123,6 @@
 
 
 - (void) setStateOfTask: (NSString *)taskId taskState: (TaskState)taskState;
-
-//测试方法
-- (void) test;
 
 /*!
  @method
