@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "ClientSyncController.h"
 
-@interface ViewController : UIViewController <ClientSyncControllerDelegate>
+@interface ViewController : UIViewController <ClientSyncControllerDelegate, NSURLConnectionDelegate>
 
 @end
