@@ -23,7 +23,6 @@
 //添加一条任务描述信息
 - (BOOL) addTaskDescription: (SyncTaskDescription *)taskDescription
 {
-//    taskDescription.taskState = Draft;
     [_TaskDescriptionList addObject:taskDescription];
     return YES;
 }
