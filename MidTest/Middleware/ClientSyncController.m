@@ -194,7 +194,7 @@
 
 - (BOOL)doUpdateWithTaskId:(NSString *)taskId DownloadFileNameArray:(NSArray *)downloadFileNameArray
 {
-    [Toolkit MidLog:@"[同步控制器]开始执行下行更新" LogType:info];
+    [Toolkit MidLog:@"[同步控制器]执行一次下行更新" LogType:info];
     return [_delegate doUpdateWithTaskId:taskId DownloadFileNameArray:downloadFileNameArray];
 }
 

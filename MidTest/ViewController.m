@@ -14,8 +14,8 @@
 #import "SyncFileDescription.h"
 #import "SyncTaskDescription.h"
 #import "Reachability.h"
-#import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
+#import "GTMBase64.h"
 
 @interface ViewController ()
 
@@ -29,7 +29,20 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    NSLog(@"应用程序启动！");
+    NSLog(@"应用程序启动！");    
+
+    NSURL *url = [[NSURL alloc]initWithString:@"http://weeoa.sinaapp.com/index.php?app=w3g&mod=Public&act=doLogin"];
+    
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    [request setRequestMethod:@"GET"];
+    [request startSynchronous];
+    NSData *pngData = [request responseData];
+    UIImage *image = [[UIImage alloc]initWithData:pngData];
+    NSData *imageData = UIImagePNGRepresentation(image);
+    
+    
+    return;
+    
     ClientSyncController *csc = [[ClientSyncController alloc]init];
     csc.delegate = self;
     
@@ -44,10 +57,15 @@
 //    [csc addTaskWithFilePathArray:filePathArray];
 //    [csc startUpwardTransmitThread];
     
-    [csc addTaskWithCondition:@"This is condition."];
-    [csc addTaskWithCondition:@"This is condition.123"];
-    [csc addTaskWithCondition:@"This is condition.456"];
-    [csc startDownwardTransmitThread];
+    for (int i = 0; i < 1500; i++) {
+        [csc addTaskWithFilePathArray:filePathArray];
+//        [csc addTaskWithCondition:@"This is condition."];
+    }
+//    [csc addTaskWithCondition:@"This is condition."];
+//    [csc addTaskWithCondition:@"This is condition.123"];
+//    [csc addTaskWithCondition:@"This is condition.456"];
+    [csc startUpwardTransmitThread];
+//    [csc startDownwardTransmitThread];
     
     
     return;
@@ -122,4 +140,28 @@
 {
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
+
+
+- (void*)getImageData:(UIImage*)image 
+{ 
+    void* imageData; 
+    if (imageData == NULL)  
+        imageData = malloc(4 * image.size.width * image.size.height); 
+    
+    CGColorSpaceRef cref = CGColorSpaceCreateDeviceRGB(); 
+    CGContextRef gc = CGBitmapContextCreate(imageData, 
+                                            image.size.width,image.size.height, 
+                                            8,image.size.width*4, 
+                                            cref,kCGImageAlphaPremultipliedFirst); 
+    CGColorSpaceRelease(cref); 
+    UIGraphicsPushContext(gc); 
+    
+    [image drawAtPoint:CGPointMake(0.0f, 0.0f)]; 
+    
+    UIGraphicsPopContext(); 
+    CGContextRelease(gc); 
+    
+    return imageData; 
+} 
+
 @end

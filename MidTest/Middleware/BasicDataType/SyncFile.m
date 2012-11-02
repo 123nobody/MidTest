@@ -8,6 +8,7 @@
 
 #import "SyncFile.h"
 #import "Toolkit.h"
+#import "errno.h"
 
 @implementation SyncFile
 
@@ -50,7 +51,7 @@
         //NSLog(@"创建文件夹%@", targetPath);
         if([fileManager createDirectoryAtPath:targetPath withIntermediateDirectories:YES attributes:nil error:nil])
         {
-            [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]创建文件夹%@", targetPath] LogType:info];
+//            [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]创建文件夹%@", targetPath] LogType:info];
         }
         [fileManager changeCurrentDirectoryPath:targetPath];
     }
@@ -60,6 +61,7 @@
         return NO;
     }
     if (![fileManager createFileAtPath:fileName contents:nil attributes:nil]) {
+        NSLog(@"Error was code: %d - message: %s", errno, strerror(errno));
         [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]文件创建失败!\n path = %@\n name = %@", filePath, fileName] LogType:error];
         return NO;
         //NSLog(@"文件创建失败!\n path = %@\n name = %@", filePath, fileName);
@@ -100,7 +102,7 @@
         return YES;
     }
     if ([fileManager removeItemAtPath:fileName error:nil]) {
-        [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]删除文件%@/%@", targetPath, fileName] LogType:info];
+//        [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]删除文件%@/%@", targetPath, fileName] LogType:info];
         return YES;
     }
     [Toolkit MidLog:@"删除文件失败！" LogType:error];
@@ -123,7 +125,7 @@
     NSString *targetPath = [documentsDirectory stringByAppendingFormat:@"%@%@", MIDDLEWARE_DIR, folderPath];
     [fileManager changeCurrentDirectoryPath:targetPath];
     if ([fileManager removeItemAtPath:folderName error:nil]) {
-        [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]删除文件夹%@/%@", targetPath, folderName] LogType:info];
+//        [Toolkit MidLog:[NSString stringWithFormat:@"[SyncFile.m]删除文件夹%@/%@", targetPath, folderName] LogType:info];
         return YES;
     }
     [Toolkit MidLog:@"删除文件夹失败！" LogType:error];

@@ -13,6 +13,7 @@
  @version 1.00 2012/07/26 Creation
  */
 #import <UIKit/UIKit.h>
+#import "ASIFormDataRequest.h"
 @class ClientSyncController;
 
 @protocol DownwardDataTransmitterDelegate <NSObject>
@@ -36,7 +37,7 @@
 @interface DownwardDataTransmitter : NSObject <NSURLConnectionDelegate,NSURLConnectionDataDelegate>
 {
     id<DownwardDataTransmitterDelegate> _delegate;
-    
+    ASIFormDataRequest *_request;
     ClientSyncController *_csc;
 }
 

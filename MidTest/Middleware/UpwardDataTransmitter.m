@@ -28,6 +28,7 @@
     self = [super init];
     if (self) {
         _csc = csc;
+//        _request = [ASIFormDataRequest requestWithURL:nil];
     }
     return self;
 }
@@ -140,7 +141,11 @@
                 //传输一段数据
                 NSString *resultString = [self upwardTransmitWithToken:token FileName:fileName Offset:offset Base64String:base64String];
                 NSLog(@"上传返回结果为：%@ offset = %li dataLength = %d  fileName = %@", resultString, offset, tmpData.length, fileName);
-                NSLog(@"base64String.length = %d", base64String.length);
+                //如果返回结果为“-2”，说明session过期，重新申请。
+//                if ([resultString isEqualToString:@"-2"]) {
+//                    i--;
+//                    continue;
+//                }
                 
                 switch ([resultString intValue]) {
                     case 1://服务器接收成功
@@ -230,19 +235,20 @@
     //URL
     NSURL *url = [NSURL URLWithString:webServicePath];
     //Requst
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    [request setRequestMethod:@"POST"];
-    [request setPostValue:@"UpwardRequest" forKey:@"requestType"];
-    [request setPostValue:jsonTask forKey:@"strJsonTask"];
-    [request setPostValue:jsonIdentity forKey:@"strJsonIdentity"];
+    _request = [ASIFormDataRequest requestWithURL:url];
+//    [_request setURL:url];
+    [_request setRequestMethod:@"POST"];
+    [_request setPostValue:@"UpwardRequest" forKey:@"requestType"];
+    [_request setPostValue:jsonTask forKey:@"strJsonTask"];
+    [_request setPostValue:jsonIdentity forKey:@"strJsonIdentity"];
     //设置超时
-    [request setTimeOutSeconds:30];
-    [request startSynchronous];
-    NSError *error = [request error];
+    [_request setTimeOutSeconds:TIME_OUT_SECONDS];
+    [_request startSynchronous];
+    NSError *error = [_request error];
     NSData *urlData;
     NSString *token;
     if (!error) {
-        urlData = [request responseData];
+        urlData = [_request responseData];
         token = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
         return token;
     }
@@ -267,26 +273,27 @@
     //URL
     NSURL *url = [NSURL URLWithString:webServicePath];
     //Requst
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    [request setRequestMethod:@"POST"];
-    [request setPostValue:@"UpwardTransmit" forKey:@"requestType"];
-    [request setPostValue:token forKey:@"strToken"];
-    [request setPostValue:fileName forKey:@"fileName"];
-    [request setPostValue:[NSNumber numberWithLong:offset] forKey:@"lOffset"];
-    [request setPostValue:base64String forKey:@"buffer"];
+    _request = [ASIFormDataRequest requestWithURL:url];
+//    [_request setURL:url];
+    [_request setRequestMethod:@"POST"];
+    [_request setPostValue:@"UpwardTransmit" forKey:@"requestType"];
+    [_request setPostValue:token forKey:@"strToken"];
+    [_request setPostValue:fileName forKey:@"fileName"];
+    [_request setPostValue:[NSNumber numberWithLong:offset] forKey:@"lOffset"];
+    [_request setPostValue:base64String forKey:@"buffer"];
     //设置超时
-    [request setTimeOutSeconds:5];
-    [request startSynchronous];
-    NSError *error = [request error];
+    [_request setTimeOutSeconds:TIME_OUT_SECONDS];
+    [_request startSynchronous];
+    NSError *error = [_request error];
     NSData *urlData;
     NSString *resultString;
     if (!error) {
-        urlData = [request responseData];
+        urlData = [_request responseData];
         resultString = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
-        NSLog(@"[上行传输器]上行传输返回结果为%@", resultString);
+        NSLog(@"[上行传输器](无错误)上行传输返回结果为%@", resultString);
         return resultString;
     }
-    NSLog(@"[上行传输器]上行传输返回结果为%@", resultString);
+    NSLog(@"[上行传输器](有错误)上行传输返回结果为%@", resultString);
     [self didFailWithError:error];
     return resultString;
 }
@@ -305,19 +312,20 @@
     //URL
     NSURL *url = [NSURL URLWithString:webServicePath];
     //Requst
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    [request setRequestMethod:@"POST"];
-    [request setPostValue:@"UpwardFinish" forKey:@"requestType"];
-    [request setPostValue:token forKey:@"strToken"];
-    [request setPostValue:trash forKey:@"bTrash"];
+    _request = [ASIFormDataRequest requestWithURL:url];
+//    [_request setURL:url];
+    [_request setRequestMethod:@"POST"];
+    [_request setPostValue:@"UpwardFinish" forKey:@"requestType"];
+    [_request setPostValue:token forKey:@"strToken"];
+    [_request setPostValue:trash forKey:@"bTrash"];
     //设置超时
-    [request setTimeOutSeconds:30];
-    [request startSynchronous];
-    NSError *error = [request error];
+    [_request setTimeOutSeconds:TIME_OUT_SECONDS];
+    [_request startSynchronous];
+    NSError *error = [_request error];
     NSData *urlData;
     NSString *resultString;
     if (!error) {
-        urlData = [request responseData];
+        urlData = [_request responseData];
         resultString = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
         NSLog(@"[上行传输器]上行结束返回结果为%@", resultString);
         return resultString;

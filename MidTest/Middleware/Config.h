@@ -25,7 +25,8 @@ static const NSString *TASKS_SUFFIX_U = @"midtasku";
 static const NSString *TASKS_SUFFIX_D = @"midtaskd";
 //默认的时间格式
 static const NSString *DEFAULT_DATE_FORMAT = @"yyyy-MM-dd HH:mm:ss";//2012-12-21 23:59:59 应与服务器时间格式相同
-
+//超时时间(秒)
+static const int TIME_OUT_SECONDS = 30;
 
 //分隔符,用于分割Requst返回的字符串
 static const NSString *SEPARATOR = @"!@#";

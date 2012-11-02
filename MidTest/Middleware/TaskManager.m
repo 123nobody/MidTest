@@ -111,6 +111,7 @@
     NSData *taskFileContent = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     
     [taskFile writeData:taskFileContent];
+    [taskFile close];
     
     return YES;
 }
@@ -152,6 +153,7 @@
     NSData *taskFileContent = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     
     [taskFile writeData:taskFileContent];
+    [taskFile close];
     
     return YES;
 }
@@ -200,6 +202,7 @@
     NSData *taskFileContent = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     [taskFile seekToFileOffset:0];
     [taskFile writeData:taskFileContent];
+    [taskFile close];
     return YES;
 }
 

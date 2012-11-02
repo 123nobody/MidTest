@@ -41,18 +41,17 @@
 - (void) doUpdate
 {
     _csc.updateThreadStoped = NO;
-    int n = 0;
     
     NSString *taskId;
     NSArray *downloadFileNameArray;
     for (int i = 0; i < _updateTaskList.count; i++) {
-        NSLog(@"这是第%d个更新任务！！！", (n + 1));
+        NSLog(@"这是第%d个更新任务！！！", (i + 1));
         taskId = [_updateTaskList TaskDescriptionAtIndex:i].taskId;
         downloadFileNameArray = [[_updateTaskList TaskDescriptionAtIndex:i].syncFileDic allKeys];
         //耗时的更新操作
         [_delegate doUpdateWithTaskId:taskId DownloadFileNameArray:downloadFileNameArray];
         //更新成功后，删除当前的更新任务/应该由中间件控制删除任务文件。
-        NSLog(@"更新成功后，删除当前的更新任务");
+//        NSLog(@"更新成功后，删除当前的更新任务");
         [_csc deleteTaskFileByName:[_updateTaskList TaskDescriptionAtIndex:i].taskName];
         //更新成功后，删除当前更新任务的文件及文件夹
         for (int j = 0; j < downloadFileNameArray.count; j++) {
